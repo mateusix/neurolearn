@@ -1,0 +1,18 @@
+{
+  "guia-vogais": "Veja a letra pedida na pergunta. Procure a mesma letra nas opções e toque nela. Depois, toque em Confirmar.",
+  "guia-letra-inicial": "Olhe o nome da imagem. Qual é a primeira letra dessa palavra? Escolha essa letra e depois toque em Confirmar.",
+  "guia-minusculas": "Compare a letra grande com as letras pequenas. Qual delas representa a mesma letra? Escolha uma opção e confirme.",
+  "guia-completar-silaba": "Observe a palavra com um pedacinho faltando. Escolha a sílaba que completa essa palavra e depois toque em Confirmar.",
+  "guia-imagem-palavra": "Olhe a imagem. Como se chama o que aparece nela? Leia as opções, escolha o nome da imagem e toque em Confirmar.",
+  "guia-montar-modelo": "Olhe a palavra do modelo. Toque nas sílabas na mesma ordem para montar essa palavra. Toque de novo para retirar um pedacinho. Quando terminar, confirme.",
+  "guia-montar-imagem": "Olhe a imagem e pense no nome dela. Toque nas sílabas na ordem desse nome. Você pode retirar um pedacinho tocando nele de novo. Depois, confirme.",
+  "guia-montar-frase": "Leia a frase do modelo. Toque nas palavras na mesma ordem para formar essa frase. Você pode retirar uma palavra tocando nela de novo. Depois, confirme.",
+  "guia-escrever-modelo": "Olhe a palavra do modelo. Toque no espaço Sua palavra e escreva as mesmas letras, na mesma ordem. Quando terminar, toque em Confirmar.",
+  "guia-escrever-imagem": "Olhe a imagem. Como se chama o que aparece nela? Toque no espaço Sua palavra e escreva esse nome. Se precisar, abra uma dica. Depois, confirme.",
+  "guia-sons-animais": "Olhe o animal da imagem. Qual som ele faz? Escolha o som desse animal nas opções e depois toque em Confirmar.",
+  "guia-ouvir-frase": "Toque em Ouvir a frase. Escute e monte a mesma frase tocando nas palavras na ordem que ouviu. Pode ouvir de novo. Quando terminar, confirme.",
+  "guia-frase-gato": "Leia a frase: O gato mia. A pergunta é: Quem mia? Procure na frase o nome do animal que faz essa ação. Escolha essa palavra e confirme.",
+  "guia-frase-pato": "Leia a frase: O pato nada. A pergunta é: O que o pato faz? Procure na frase a palavra que conta a ação dele. Escolha essa palavra e confirme.",
+  "guia-frase-bola": "Leia a frase: A bola rola. A pergunta é: O que rola? Procure na frase o nome do objeto que está rolando. Escolha essa palavra e confirme.",
+  "guia-frase-vaca": "Leia a frase: A vaca muge. A pergunta é: Quem muge? Procure na frase o nome do animal que faz esse som. Escolha essa palavra e confirme."
+}

@@ -1,0 +1,733 @@
+{
+  "language": "pt-BR",
+  "voice": "nina",
+  "voiceOptions": [
+    "nina"
+  ],
+  "status": "partially_generated",
+  "instructions": "Fale em português brasileiro com tom calmo, acolhedor e natural. Use ritmo moderado, articulação clara e pausas suaves. Evite euforia exagerada, sussurros e efeitos sonoros. Leia somente o texto fornecido.",
+  "phrases": [
+    {
+      "id": "boas-vindas",
+      "context": "Boas-vindas",
+      "text": "Olá! Vamos aprender juntos? Você pode ir no seu ritmo. Eu estou aqui com você.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "trilha-instrucoes",
+      "context": "Orientação da trilha",
+      "text": "Comece por conhecer as vogais. As próximas atividades vão abrir quando você terminar cada etapa.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "vogais-apresentacao",
+      "context": "Introdução às vogais",
+      "text": "Vamos conhecer as vogais: A, E, I, O e U.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "ouvir-novamente",
+      "context": "Repetição",
+      "text": "Quer ouvir mais uma vez? Toque no botão de ouvir.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "escolher-resposta",
+      "context": "Instrução de escolha",
+      "text": "Olhe as opções e escolha a sua resposta.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "confirmar-resposta",
+      "context": "Confirmação",
+      "text": "Quando estiver pronto, toque em confirmar.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "acerto",
+      "context": "Feedback de acerto",
+      "text": "Isso! Você acertou.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "nova-tentativa",
+      "context": "Feedback de apoio",
+      "text": "Tudo bem! Vamos olhar a dica e tentar de outro jeito. Você pode ir com calma.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "dica",
+      "context": "Introdução à dica",
+      "text": "Vamos pensar juntos.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "continuar",
+      "context": "Avançar",
+      "text": "Vamos para a próxima descoberta?",
+      "status": "pending_generation"
+    },
+    {
+      "id": "conclusao",
+      "context": "Conclusão",
+      "text": "Mais uma descoberta! Vamos descansar um pouquinho ou seguir para a próxima etapa, no seu ritmo.",
+      "status": "generated"
+    },
+    {
+      "id": "etapa-liberada",
+      "context": "Etapa liberada",
+      "text": "Uma nova etapa está pronta para você.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "pausa",
+      "context": "Pausa",
+      "text": "Podemos fazer uma pausa. Continue quando estiver pronto.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "retorno",
+      "context": "Retorno da pausa",
+      "text": "Que bom ter você de volta! Vamos continuar no seu ritmo.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "ajuda",
+      "context": "Pedido de ajuda",
+      "text": "Se precisar, você pode pedir ajuda a um adulto.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "inicio-atividade",
+      "context": "Orientação",
+      "text": "Vamos começar. Você pode ouvir a instrução mais de uma vez.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "observe-imagem",
+      "context": "Orientação",
+      "text": "Olhe a imagem com calma.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "ouca-som",
+      "context": "Orientação",
+      "text": "Ouça o som. Depois, escolha uma opção.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "escolha-letra",
+      "context": "Orientação",
+      "text": "Qual letra você ouviu? Toque nela.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "escolha-imagem",
+      "context": "Orientação",
+      "text": "Qual imagem combina com o que você ouviu?",
+      "status": "pending_generation"
+    },
+    {
+      "id": "trocar-escolha",
+      "context": "Orientação",
+      "text": "Você pode mudar sua escolha antes de confirmar.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "resposta-pendente",
+      "context": "Orientação",
+      "text": "Escolha uma opção antes de confirmar.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "letras-apresentacao",
+      "context": "Apresentação de etapa",
+      "text": "Vamos descobrir as letras e seus sons.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "silabas-apresentacao",
+      "context": "Apresentação de etapa",
+      "text": "Agora vamos juntar os pedacinhos das palavras. Toque nas sílabas e, quando quiser testar, toque em confirmar.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "palavras-apresentacao",
+      "context": "Apresentação de etapa",
+      "text": "Vamos descobrir palavras do nosso dia a dia.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "acerto-descoberta",
+      "context": "Feedback de acerto",
+      "text": "Isso mesmo! Você fez uma descoberta.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "acerto-continuar",
+      "context": "Feedback de acerto",
+      "text": "Você acertou! Podemos continuar quando quiser.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "apoio-ouvir",
+      "context": "Feedback de apoio",
+      "text": "Ainda não é essa. Vamos ouvir de novo?",
+      "status": "pending_generation"
+    },
+    {
+      "id": "apoio-dica",
+      "context": "Feedback de apoio",
+      "text": "Vamos olhar a dica e tentar novamente.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "apoio-sem-pressa",
+      "context": "Feedback de apoio",
+      "text": "Você tem tempo para pensar. Vamos com calma.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "apoio-ajuda",
+      "context": "Feedback de apoio",
+      "text": "Podemos pedir ajuda e pensar juntos.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "rever-atividade",
+      "context": "Revisão",
+      "text": "Quer praticar esta atividade mais uma vez?",
+      "status": "pending_generation"
+    },
+    {
+      "id": "voltar-trilha",
+      "context": "Navegação",
+      "text": "Vamos voltar à sua trilha.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "etapa-bloqueada",
+      "context": "Navegação",
+      "text": "Esta etapa abre depois da anterior.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "continuar-atividade",
+      "context": "Navegação",
+      "text": "Vamos continuar de onde você parou.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "pausa-escolha",
+      "context": "Pausa",
+      "text": "Quer descansar um pouquinho? Você pode fazer uma pausa.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "fim-sessao",
+      "context": "Encerramento",
+      "text": "Por hoje, podemos parar aqui. Até a próxima descoberta!",
+      "status": "pending_generation"
+    },
+    {
+      "id": "conclusao-etapa",
+      "context": "Conclusão",
+      "text": "Você concluiu esta etapa. Vamos conhecer a próxima?",
+      "status": "pending_generation"
+    },
+    {
+      "id": "conclusao-trilha",
+      "context": "Conclusão",
+      "text": "Você terminou esta trilha! Pode voltar para praticar suas descobertas.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "incentivo-pratica",
+      "context": "Incentivo",
+      "text": "Praticar também faz parte de aprender.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "incentivo-ritmo",
+      "context": "Incentivo",
+      "text": "Vamos seguir no seu ritmo, um passo de cada vez.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "audio-indisponivel",
+      "context": "Ajuda técnica",
+      "text": "Não consegui tocar este áudio. Você pode tentar novamente ou pedir ajuda.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "atividade-indisponivel",
+      "context": "Ajuda técnica",
+      "text": "Esta atividade não abriu agora. Vamos tentar novamente em um momento.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "som-ajuste",
+      "context": "Preferências",
+      "text": "Você pode ajustar o volume para ficar confortável.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "instrucoes-repetir",
+      "context": "Preferências",
+      "text": "Toque em ouvir sempre que quiser repetir a instrução.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "luna-apresentacao",
+      "context": "Apresentação da guia Luna",
+      "text": "Olá! Eu sou a Luna. Vamos aprender juntos, no seu ritmo. Pode tentar com calma. Eu estou aqui para ajudar você!",
+      "status": "generated"
+    },
+    {
+      "id": "vogal-a",
+      "context": "Conhecer as vogais: instrução",
+      "text": "Encontre a vogal A. Olhe as opções e toque na letra A.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "vogal-a-dica",
+      "context": "Conhecer as vogais: dica",
+      "text": "A letra A tem duas linhas inclinadas e um tracinho no meio.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "vogal-e",
+      "context": "Conhecer as vogais: instrução",
+      "text": "Agora encontre a vogal E.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "vogal-e-dica",
+      "context": "Conhecer as vogais: dica",
+      "text": "A letra E tem uma linha em pé e três tracinhos para o lado.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "vogal-i",
+      "context": "Conhecer as vogais: instrução",
+      "text": "Encontre a vogal I.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "vogal-i-dica",
+      "context": "Conhecer as vogais: dica",
+      "text": "Procure a letra I, com sua linha em pé.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "vogal-o",
+      "context": "Conhecer as vogais: instrução",
+      "text": "Encontre a vogal O.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "vogal-o-dica",
+      "context": "Conhecer as vogais: dica",
+      "text": "A letra O é redondinha, como um círculo.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "vogal-u",
+      "context": "Conhecer as vogais: instrução",
+      "text": "Encontre a vogal U.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "vogal-u-dica",
+      "context": "Conhecer as vogais: dica",
+      "text": "A letra U é aberta em cima e tem uma curva embaixo.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "inicio-abelha",
+      "context": "Letras e sons: instrução",
+      "text": "Abelha. Com qual letra começa a palavra abelha?",
+      "status": "pending_generation"
+    },
+    {
+      "id": "inicio-abelha-dica",
+      "context": "Letras e sons: dica",
+      "text": "ABELHA começa com A. Olhe a primeira letra da palavra.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "inicio-estrela",
+      "context": "Letras e sons: instrução",
+      "text": "Estrela. Com qual letra começa a palavra estrela?",
+      "status": "pending_generation"
+    },
+    {
+      "id": "inicio-estrela-dica",
+      "context": "Letras e sons: dica",
+      "text": "ESTRELA começa com E. Olhe a primeira letra da palavra.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "inicio-uva",
+      "context": "Letras e sons: instrução",
+      "text": "Uva. Com qual letra começa a palavra uva?",
+      "status": "pending_generation"
+    },
+    {
+      "id": "inicio-uva-dica",
+      "context": "Letras e sons: dica",
+      "text": "UVA começa com U. Olhe a primeira letra da palavra.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "montar-bola",
+      "context": "Juntar sílabas: instrução",
+      "text": "Vamos montar a palavra bola. Toque nos pedacinhos na ordem da palavra.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "montar-bola-dica",
+      "context": "Juntar sílabas: dica",
+      "text": "BOLA começa com BO. Depois vem LA.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "montar-pato",
+      "context": "Juntar sílabas: instrução",
+      "text": "Vamos montar a palavra pato.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "montar-pato-dica",
+      "context": "Juntar sílabas: dica",
+      "text": "PATO começa com PA. Depois vem TO.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "montar-gato",
+      "context": "Juntar sílabas: instrução",
+      "text": "Vamos montar a palavra gato.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "montar-gato-dica",
+      "context": "Juntar sílabas: dica",
+      "text": "GATO começa com GA. Depois vem TO.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "escrever-bola",
+      "context": "Minhas primeiras palavras: instrução",
+      "text": "Vamos escrever a palavra bola. Você pode olhar o modelo e digitar as letras.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "escrever-bola-dica",
+      "context": "Minhas primeiras palavras: dica",
+      "text": "Você pode copiar o modelo: B, O, L, A.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "escrever-gato",
+      "context": "Minhas primeiras palavras: instrução",
+      "text": "Agora vamos escrever a palavra gato.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "escrever-gato-dica",
+      "context": "Minhas primeiras palavras: dica",
+      "text": "Você pode copiar o modelo: G, A, T, O.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "escrever-uva",
+      "context": "Minhas primeiras palavras: instrução",
+      "text": "Vamos escrever a palavra uva.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "escrever-uva-dica",
+      "context": "Minhas primeiras palavras: dica",
+      "text": "Você pode copiar o modelo: U, V, A.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "ouvir-gato",
+      "context": "Escutar e ordenar palavras",
+      "text": "O gato mia.",
+      "status": "pending_generation",
+      "recordingState": "generated_in_elevenlabs_awaiting_download"
+    },
+    {
+      "id": "ouvir-pato",
+      "context": "Escutar e ordenar palavras",
+      "text": "O pato nada.",
+      "status": "pending_generation",
+      "recordingState": "generated_in_elevenlabs_awaiting_download"
+    },
+    {
+      "id": "ouvir-bola",
+      "context": "Escutar e ordenar palavras",
+      "text": "A bola rola.",
+      "status": "pending_generation",
+      "recordingState": "generated_in_elevenlabs_awaiting_download"
+    },
+    {
+      "id": "som-miau",
+      "context": "Opção sonora reutilizável",
+      "text": "Miau.",
+      "status": "pending_generation",
+      "recordingState": "generated_in_elevenlabs_awaiting_download"
+    },
+    {
+      "id": "som-au-au",
+      "context": "Opção sonora reutilizável",
+      "text": "Au, au.",
+      "status": "pending_generation",
+      "recordingState": "generated_in_elevenlabs_awaiting_download"
+    },
+    {
+      "id": "som-muu",
+      "context": "Opção sonora reutilizável",
+      "text": "Muuu.",
+      "status": "pending_generation",
+      "recordingState": "generated_in_elevenlabs_awaiting_download"
+    },
+    {
+      "id": "palavra-gato",
+      "context": "Opção sonora reutilizável",
+      "text": "Gato.",
+      "status": "pending_generation",
+      "recordingState": "generated_in_elevenlabs_awaiting_download"
+    },
+    {
+      "id": "acerto-1",
+      "context": "Acerto variado",
+      "text": "Isso! Você encontrou a resposta. Vamos para a próxima descoberta?",
+      "status": "generated",
+      "recordingState": "downloaded",
+      "sourceFile": "ElevenLabs_2026-10-04T23_45_55_Nina M._pvc_sp102_s50_sb75_v4.mp3"
+    },
+    {
+      "id": "acerto-2",
+      "context": "Acerto variado",
+      "text": "Você conseguiu! Cada tentativa ajuda a aprender.",
+      "status": "generated",
+      "recordingState": "downloaded",
+      "sourceFile": "ElevenLabs_2026-10-04T23_48_17_Nina M._pvc_sp102_s50_sb75_v4.mp3"
+    },
+    {
+      "id": "acerto-3",
+      "context": "Acerto variado",
+      "text": "Muito bem! Vamos continuar com calma.",
+      "status": "generated",
+      "recordingState": "downloaded",
+      "sourceFile": "ElevenLabs_2026-10-04T23_49_03_Nina M._pvc_sp102_s50_sb75_v4.mp3"
+    },
+    {
+      "id": "apoio-1",
+      "context": "Apoio variado",
+      "text": "Tudo bem. Olhe a dica e tente de outro jeito. Eu estou aqui com você.",
+      "status": "generated",
+      "recordingState": "downloaded",
+      "sourceFile": "ElevenLabs_2026-10-04T23_49_41_Nina M._pvc_sp102_s50_sb75_v4.mp3"
+    },
+    {
+      "id": "apoio-2",
+      "context": "Apoio variado",
+      "text": "Podemos pensar juntos. Observe os pedacinhos e tente novamente.",
+      "status": "generated",
+      "recordingState": "downloaded",
+      "sourceFile": "ElevenLabs_2026-10-04T23_49_53_Nina M._pvc_sp102_s50_sb75_v4.mp3"
+    },
+    {
+      "id": "apoio-3",
+      "context": "Apoio variado",
+      "text": "Pode ir com calma. Você pode mudar a resposta antes de confirmar.",
+      "status": "generated",
+      "recordingState": "downloaded",
+      "sourceFile": "ElevenLabs_2026-10-04T23_49_58_Nina M._pvc_sp102_s50_sb75_v4.mp3"
+    },
+    {
+      "id": "orientacao-escolha",
+      "context": "Orientação de escolha",
+      "text": "Observe a imagem ou a pergunta. Escolha uma resposta e toque em confirmar.",
+      "status": "generated",
+      "recordingState": "downloaded",
+      "sourceFile": "ElevenLabs_2026-10-04T23_50_14_Nina M._pvc_sp102_s50_sb75_v4.mp3"
+    },
+    {
+      "id": "orientacao-montagem",
+      "context": "Orientação de montagem",
+      "text": "Toque nos pedacinhos para montar. Você pode mudar a ordem antes de confirmar.",
+      "status": "generated",
+      "recordingState": "downloaded",
+      "sourceFile": "ElevenLabs_2026-10-04T23_50_19_Nina M._pvc_sp102_s50_sb75_v4.mp3"
+    },
+    {
+      "id": "orientacao-escrita",
+      "context": "Orientação de escrita",
+      "text": "Escreva com calma. Se precisar, abra uma dica. Depois, toque em confirmar.",
+      "status": "generated",
+      "recordingState": "downloaded",
+      "sourceFile": "ElevenLabs_2026-10-04T23_50_23_Nina M._pvc_sp102_s50_sb75_v4.mp3"
+    },
+    {
+      "id": "conclusao-1",
+      "context": "Conclusão variada",
+      "text": "Você terminou mais uma etapa! Quer descansar ou continuar? Vamos no seu ritmo.",
+      "status": "generated",
+      "recordingState": "downloaded",
+      "sourceFile": "ElevenLabs_2026-10-04T23_50_33_Nina M._pvc_sp102_s50_sb75_v4.mp3"
+    },
+    {
+      "id": "conclusao-2",
+      "context": "Conclusão variada",
+      "text": "Que descoberta legal! Podemos voltar à trilha ou seguir para a próxima etapa.",
+      "status": "generated",
+      "recordingState": "downloaded",
+      "sourceFile": "ElevenLabs_2026-10-04T23_50_37_Nina M._pvc_sp102_s50_sb75_v4.mp3"
+    },
+    {
+      "id": "conquista-1",
+      "context": "Nova conquista",
+      "text": "Você liberou uma conquista! Ela está guardada em Minhas conquistas.",
+      "status": "generated",
+      "recordingState": "downloaded",
+      "sourceFile": "ElevenLabs_2026-10-04T23_50_42_Nina M._pvc_sp102_s50_sb75_v4.mp3"
+    },
+    {
+      "id": "conclusao-final",
+      "context": "Final da trilha",
+      "text": "Você percorreu toda a trilha! Pode descansar ou voltar para praticar quando quiser.",
+      "status": "generated",
+      "recordingState": "downloaded",
+      "sourceFile": "ElevenLabs_2026-10-04T23_50_46_Nina M._pvc_sp102_s50_sb75_v4.mp3"
+    },
+    {
+      "id": "palavras-boas-vindas",
+      "context": "Apoio para novas palavras",
+      "text": "Vamos descobrir novas palavras. Observe as imagens e conte comigo.",
+      "status": "generated",
+      "recordingState": "downloaded",
+      "sourceFile": "ElevenLabs_2026-10-04T23_50_51_Nina M._pvc_sp102_s50_sb75_v4.mp3"
+    },
+    {
+      "id": "guia-vogais",
+      "context": "Orientação específica do exercício",
+      "text": "Veja a letra pedida na pergunta. Procure a mesma letra nas opções e toque nela. Depois, toque em Confirmar.",
+      "status": "generated",
+      "recordingState": "downloaded",
+      "sourceFile": "ElevenLabs_2026-10-05T02_07_57_Nina M._pvc_sp102_s50_sb75_v4.mp3"
+    },
+    {
+      "id": "guia-letra-inicial",
+      "context": "Orientação específica do exercício",
+      "text": "Olhe o nome da imagem. Qual é a primeira letra dessa palavra? Escolha essa letra e depois toque em Confirmar.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "guia-minusculas",
+      "context": "Orientação específica do exercício",
+      "text": "Compare a letra grande com as letras pequenas. Qual delas representa a mesma letra? Escolha uma opção e confirme.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "guia-completar-silaba",
+      "context": "Orientação específica do exercício",
+      "text": "Observe a palavra com um pedacinho faltando. Escolha a sílaba que completa essa palavra e depois toque em Confirmar.",
+      "status": "generated",
+      "recordingState": "downloaded",
+      "sourceFile": "ElevenLabs_2026-10-05T02_10_04_Nina M._pvc_sp102_s50_sb75_v4.mp3"
+    },
+    {
+      "id": "guia-imagem-palavra",
+      "context": "Orientação específica do exercício",
+      "text": "Olhe a imagem. Como se chama o que aparece nela? Leia as opções, escolha o nome da imagem e toque em Confirmar.",
+      "status": "generated",
+      "recordingState": "downloaded",
+      "sourceFile": "ElevenLabs_2026-10-05T02_11_11_Nina M._pvc_sp102_s50_sb75_v4.mp3"
+    },
+    {
+      "id": "guia-montar-modelo",
+      "context": "Orientação específica do exercício",
+      "text": "Olhe a palavra do modelo. Toque nas sílabas na mesma ordem para montar essa palavra. Toque de novo para retirar um pedacinho. Quando terminar, confirme.",
+      "status": "generated",
+      "recordingState": "downloaded",
+      "sourceFile": "ElevenLabs_2026-10-05T02_11_18_Nina M._pvc_sp102_s50_sb75_v4.mp3"
+    },
+    {
+      "id": "guia-montar-imagem",
+      "context": "Orientação específica do exercício",
+      "text": "Olhe a imagem e pense no nome dela. Toque nas sílabas na ordem desse nome. Você pode retirar um pedacinho tocando nele de novo. Depois, confirme.",
+      "status": "generated",
+      "recordingState": "downloaded",
+      "sourceFile": "ElevenLabs_2026-10-05T02_11_28_Nina M._pvc_sp102_s50_sb75_v4.mp3"
+    },
+    {
+      "id": "guia-montar-frase",
+      "context": "Orientação específica do exercício",
+      "text": "Leia a frase do modelo. Toque nas palavras na mesma ordem para formar essa frase. Você pode retirar uma palavra tocando nela de novo. Depois, confirme.",
+      "status": "generated",
+      "recordingState": "downloaded",
+      "sourceFile": "ElevenLabs_2026-10-05T02_11_55_Nina M._pvc_sp102_s50_sb75_v4.mp3"
+    },
+    {
+      "id": "guia-escrever-modelo",
+      "context": "Orientação específica do exercício",
+      "text": "Olhe a palavra do modelo. Toque no espaço Sua palavra e escreva as mesmas letras, na mesma ordem. Quando terminar, toque em Confirmar.",
+      "status": "generated",
+      "recordingState": "downloaded",
+      "sourceFile": "ElevenLabs_2026-10-05T02_12_11_Nina M._pvc_sp102_s50_sb75_v4.mp3"
+    },
+    {
+      "id": "guia-escrever-imagem",
+      "context": "Orientação específica do exercício",
+      "text": "Olhe a imagem. Como se chama o que aparece nela? Toque no espaço Sua palavra e escreva esse nome. Se precisar, abra uma dica. Depois, confirme.",
+      "status": "generated",
+      "recordingState": "downloaded",
+      "sourceFile": "ElevenLabs_2026-10-05T02_14_43_Nina M._pvc_sp102_s50_sb75_v4.mp3"
+    },
+    {
+      "id": "guia-sons-animais",
+      "context": "Orientação específica do exercício",
+      "text": "Olhe o animal da imagem. Qual som ele faz? Escolha o som desse animal nas opções e depois toque em Confirmar.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "guia-ouvir-frase",
+      "context": "Orientação específica do exercício",
+      "text": "Toque em Ouvir a frase. Escute e monte a mesma frase tocando nas palavras na ordem que ouviu. Pode ouvir de novo. Quando terminar, confirme.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "guia-frase-gato",
+      "context": "Orientação específica do exercício",
+      "text": "Leia a frase: O gato mia. A pergunta é: Quem mia? Procure na frase o nome do animal que faz essa ação. Escolha essa palavra e confirme.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "guia-frase-pato",
+      "context": "Orientação específica do exercício",
+      "text": "Leia a frase: O pato nada. A pergunta é: O que o pato faz? Procure na frase a palavra que conta a ação dele. Escolha essa palavra e confirme.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "guia-frase-bola",
+      "context": "Orientação específica do exercício",
+      "text": "Leia a frase: A bola rola. A pergunta é: O que rola? Procure na frase o nome do objeto que está rolando. Escolha essa palavra e confirme.",
+      "status": "generated",
+      "recordingState": "downloaded",
+      "sourceFile": "Abolarola.mp3"
+    },
+    {
+      "id": "guia-frase-vaca",
+      "context": "Orientação específica do exercício",
+      "text": "Leia a frase: A vaca muge. A pergunta é: Quem muge? Procure na frase o nome do animal que faz esse som. Escolha essa palavra e confirme.",
+      "status": "pending_generation"
+    }
+  ],
+  "guideName": "Luna",
+  "provider": "elevenlabs",
+  "voiceId": "GM2UA3fbsIaLHcswCDX9"
+}

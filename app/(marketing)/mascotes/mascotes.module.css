@@ -1,0 +1,25 @@
+.page { max-width:1100px; width:100%; padding:30px 28px 44px; margin:auto; color:#36758d; font-family:var(--font-nunito),sans-serif; }
+.back { display:inline-block; color:#36758d; font-weight:800; border:2px solid #dce6eb; border-bottom-width:4px; border-radius:14px; padding:12px 18px; background:white; }
+.back:focus-visible { outline:3px solid #36758d; outline-offset:4px; }
+.intro { margin:32px 0; }
+.eyebrow { font-size:11px; letter-spacing:1.5px; color:#526e7c; font-weight:800; }
+.intro h1 { font-size:32px; font-weight:900; letter-spacing:-.5px; line-height:1.2; margin:8px 0 12px; }
+.intro > p:last-child { color:#526e7c; font-size:17px; line-height:1.5; }
+.grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:20px; }
+.card { background:white; border:2px solid #dce6eb; border-bottom-width:5px; border-radius:24px; padding:16px 14px 22px; text-align:center; }
+.portrait { background:#eff8fa; border-radius:18px; }
+.portrait img { width:100%; height:auto; }
+.card h2 { font-size:20px; font-weight:900; margin:18px 0 8px; }
+.message { font-size:15px; color:#526e7c; min-height:44px; margin:0 0 12px; }
+.use { display:inline-block; background:#edf6f9; color:#36758d; border-radius:10px; padding:6px 9px; font-size:12px; font-weight:700; }
+.note { text-align:center; color:#526e7c; font-size:14px; margin-top:28px; }
+@media(max-width:850px) { .grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:450px) { .page { padding:20px 16px 30px; } .grid { gap:12px; } .card { padding:10px 8px 16px; border-radius:20px; } .card h2 { font-size:17px; } .message { font-size:13px; min-height:40px; } .use { font-size:11px; } .intro h1 { font-size:26px; } }
+
+.bodySection { margin-bottom:40px; }
+.bodySection > h2, .expressionsTitle { font-size:24px; font-weight:900; margin:0 0 10px; }
+.sectionDescription { color:#526e7c; margin:0 0 20px; font-size:15px; }
+.bodyGrid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px; max-width:740px; }
+.poseTitle { font-size:20px; font-weight:900; margin:18px 0 8px; }
+.expressionsTitle { margin-bottom:20px; }
+@media(max-width:450px) { .bodyGrid { gap:12px; } .poseTitle { font-size:17px; } }

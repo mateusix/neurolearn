@@ -1,0 +1,30 @@
+.panel { width: 100%; max-width: 920px; margin: 0 auto; padding: 30px 20px; color: var(--nl-c486579); }
+.panel h1 { font-size: clamp(26px,4vw,34px); font-weight: 800; color: var(--nl-c39799e); margin: 6px 0 14px; }
+.panel h2 { font-size: 21px; font-weight: 800; }
+.panel p { margin: 12px 0; line-height: 1.6; }
+.eyebrow { font-size: 12px; font-weight: 800; letter-spacing: .12em; }
+.profiles { display: grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap: 18px; margin: 24px 0; }
+.card, .form { background: var(--nl-cfff); border: 2px solid var(--nl-cdce7ee); border-bottom-width: 5px; border-radius: 22px; padding: 22px; }
+.card:nth-child(2n) { background:var(--nl-cfffaf2); }
+.card progress { width: 100%; accent-color: var(--nl-c7fab8c); height: 12px; }
+.next { min-height: 52px; }
+.card details { margin: 16px 0; }
+.card summary { cursor: pointer; font-weight: 700; }
+.card ul { padding-left: 22px; list-style: disc; line-height: 1.8; }
+.primary, .secondary, .notice button { min-height: 46px; padding: 10px 18px; border: 2px solid var(--nl-ca5c6dc); border-bottom-width: 4px; border-radius: 14px; background: var(--nl-ceaf5fc); color: var(--nl-c39799e); font-weight: 800; cursor: pointer; margin-top: 10px; }
+.primary:disabled { opacity: .55; cursor: default; }
+.secondary { margin: 14px 12px 0 0; background: var(--nl-cfff); }
+.form > label { display: block; font-weight: 700; margin: 20px 0 8px; }
+.form > input { padding: 12px; width: 100%; border: 2px solid var(--nl-ccbdfe9); border-radius: 12px; }
+.form fieldset { border: 0; margin: 20px 0; }
+.form legend { font-weight: 700; margin-bottom: 12px; }
+.animals { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+.animals label { display: flex; flex-direction: column; align-items: center; padding: 12px; border: 2px solid var(--nl-cdce7ee); border-radius: 16px; cursor: pointer; position: relative; }
+.animals label.chosen { background: var(--nl-ceaf5fc); border-color: var(--nl-c7bb2d3); }
+.animals input { position: absolute; opacity: 0; }
+.animals label:has(input:focus-visible), .panel button:focus-visible, .panel input:focus-visible { outline: 3px solid var(--nl-c39799e); outline-offset: 3px; }
+.notice { padding: 12px 18px; background: var(--nl-cfff5df); border-radius: 16px; }
+@media(max-width:480px) { .animals { grid-template-columns: repeat(2,1fr); } }
+
+.form > label.import { display:flex; align-items:center; gap:12px; line-height:1.6; }
+.import input { width:20px; height:20px; flex-shrink:0; accent-color:var(--nl-c39799e); }

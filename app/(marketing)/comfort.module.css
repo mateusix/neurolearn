@@ -1,0 +1,12 @@
+.surface { min-height:100vh; }
+.controls { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:8px; padding:10px 16px; background:var(--nl-cf6f9fc); border-bottom:1px solid var(--nl-ce2eaf0); color:var(--nl-c526e7c); }
+.controls button { display:flex; align-items:center; gap:6px; min-height:40px; padding:8px 12px; border:1px solid var(--nl-cd6e3ec); border-radius:12px; background:var(--nl-cfff); font-size:13px; font-weight:800; cursor:pointer; }
+.controls button[aria-pressed=true] { background:var(--nl-ceaf5f1); border-color:var(--nl-cb7d2c6); }
+.controls button:focus-visible { outline:3px solid var(--nl-c39799e); outline-offset:3px; }
+.controls span:empty { display:none; }
+.controls span { font-size:12px; width:100%; text-align:center; }
+
+.controls button:disabled { cursor:default; color:var(--nl-c62717b); background:var(--nl-cf5f7f9); }
+
+.controls button { touch-action:manipulation; }
+@media(max-width:600px) { .controls { padding:6px 10px; gap:6px; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); } .controls button { min-height:44px; justify-content:center; padding:6px; font-size:11px; } .controls span { grid-column:1 / -1; } }

@@ -1,0 +1,21 @@
+.header { width:100%; border-bottom:2px solid var(--nl-cdce7ee); padding:10px 16px; }
+.inner { max-width:1024px; min-height:54px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.brand { display:flex; align-items:center; gap:12px; flex-shrink:0; white-space:nowrap; }
+.account { display:flex; align-items:center; justify-content:flex-end; gap:12px; min-width:0; }
+.avatar { display:flex; height:48px; width:48px; flex-shrink:0; align-items:center; justify-content:center; border-radius:50%; border:2px solid var(--nl-cc6dde4); background:var(--nl-cf6f9fc); }
+.mobileLabel { display:none; }
+@media(max-width:600px) {
+ .header { padding:6px 12px; }
+ .inner { min-height:48px; gap:8px; }
+ .brand { gap:6px; }
+ .brand > img { width:26px; height:26px; }
+ .brand > span { font-size:17px; letter-spacing:0; }
+ .account { gap:6px; }
+ .avatar { width:32px; height:32px; }
+ .avatar img { width:28px; height:28px; }
+ .signIn { min-height:44px; padding:6px; font-size:11px; }
+ .desktopLabel { display:none; }
+ .mobileLabel { display:inline; }
+ .account > a { padding:4px; font-size:11px; }
+}
+@media(max-width:350px) { .brand > span { font-size:15px; } .brand > img { width:22px; height:22px; } .account { gap:4px; } .avatar { width:28px; height:28px; } }

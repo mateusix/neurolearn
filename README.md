@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NeuroLearn
 
-## Getting Started
+Aplicação web de apoio à alfabetização infantil desenvolvida no contexto de um Trabalho de Conclusão de Curso. O projeto considera a diversidade de ritmos e preferências das crianças, com atenção à experiência de crianças com TEA e TDAH.
 
-First, run the development server:
+**Aplicação:** https://neurolearn-beige.vercel.app
+
+## Funcionalidades
+
+- Trilha com 21 etapas e 82 exercícios de letras, sílabas, palavras, frases e escuta.
+- Liberação gradual das etapas e retomada das atividades.
+- Escolha de bichinho, tema das atividades e quatro paletas de cores.
+- Demonstrações de uso, dicas e feedback de incentivo com a mascote Luna.
+- Narração opcional em português, efeitos sonoros e controle de animações.
+- Conquistas e painel do responsável com até cinco perfis infantis separados.
+- Progresso local para visitantes e sincronização na conta para perfis autenticados.
+- Layout responsivo para computadores e celulares.
+
+## Tecnologias
+
+Next.js, React, TypeScript, CSS Modules, Tailwind CSS e Clerk. Os ícones usam Lucide. A interface usa a fonte Nunito. A narração usa arquivos MP3 previamente gerados com a voz Nina no ElevenLabs; não depende de uma API de geração de voz durante os exercícios.
+
+## Executar localmente
+
+É necessário ter Node.js e npm instalados. Para reproduzir o ambiente de desenvolvimento, use Node.js 22.
+
+```bash
+npm ci
+cp .env.example .env.local
+```
+
+Preencha as duas variáveis com as chaves do seu próprio aplicativo no Clerk. Nunca publique a chave secreta. Depois:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abra http://localhost:3000. Se essa porta estiver ocupada, confira a porta informada pelo servidor.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Verificação
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run typecheck
+npm run lint
+npm test
+npm run build
+```
 
-## Learn More
+Os testes verificam respostas, montagem de palavras, retomada, personalização, orientações, efeitos sonoros, isolamento de perfis e tratamento de falhas no carregamento e salvamento. Alguns testes usam serviços simulados; não substituem testes com crianças nem testes de integração com uma conta real.
 
-To learn more about Next.js, take a look at the following resources:
+## Progresso e perfis
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+O responsável autentica com o Clerk. Os perfis e o progresso são armazenados nos metadados privados da conta, acessados pelo servidor em `/api/family`. O navegador guarda a seleção do perfil e uma cópia das alterações ainda não sincronizadas. No modo visitante, as preferências e o progresso ficam neste navegador e não são transferidos automaticamente para outro aparelho.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Publicação
 
-## Deploy on Vercel
+O projeto está hospedado na Vercel. Configure nela as mesmas variáveis do arquivo de exemplo. Uma atualização local só chega ao site após uma nova publicação; a integração automática com o GitHub precisa ser configurada na Vercel.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Estado do projeto
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Esta é uma versão de protótipo acadêmico. As atividades de reconhecimento de fala estão desativadas. A configuração atual do Clerk usa o ambiente de desenvolvimento. A adequação pedagógica e a usabilidade precisam ser avaliadas com os participantes e profissionais envolvidos na pesquisa.
+
+## Referências e recursos
+
+O Duolingo e o projeto `AntonioErdeljac/lingo-early-access` foram referências de interface. O NeuroLearn tem atividades e identidade próprias voltadas à alfabetização. Bibliotecas e serviços citados mantêm seus próprios termos e licenças; os áudios do ElevenLabs também estão sujeitos aos termos do plano usado para sua geração.
