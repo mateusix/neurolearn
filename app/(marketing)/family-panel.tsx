@@ -19,6 +19,12 @@ export default function FamilyPanel({onContinue,onClose}:{onContinue:()=>void;on
     try { await createChild(name,avatar,importProgress ? guestCompleted : 0); setImportProgress(false); setName(''); setAvatar(''); } catch (error) { setError(error instanceof Error ? error.message : 'Não foi possível criar o perfil.'); }
     finally { setCreating(false); }
   }
+  function downloadBackup() {
+    const blob = new Blob([JSON.stringify({format:'neurolearn-family-backup',version:1,exportedAt:new Date().toISOString(),pending:state.pending,family:state.family},null,2)],{type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a'); link.href = url; link.download = 'neurolearn-perfis-backup.json'; link.click();
+    setTimeout(() => URL.revokeObjectURL(url),1000);
+  }
   return <section className={styles.panel} aria-labelledby="family-title">
     <p className={styles.eyebrow}>ACOMPANHAR COM CARINHO</p><h1 id="family-title">Painel do responsável</h1>
     {!isSignedIn ? <><p>Entre na sua conta para criar perfis e recuperar o progresso em outro computador.</p><SignInButton mode="modal"><button className={styles.primary}>Entrar como responsável</button></SignInButton><button className={styles.secondary} onClick={onClose}>Voltar à aprendizagem</button></> : <>
@@ -42,6 +48,7 @@ export default function FamilyPanel({onContinue,onClose}:{onContinue:()=>void;on
         </form>}
         {Object.keys(state.family.children).length >= MAX_CHILDREN && <p>Até cinco perfis por responsável nesta versão.</p>}
         {state.selected && <button className={styles.secondary} onClick={onClose}>Voltar à aprendizagem</button>}
+        {!state.error && Object.keys(state.family.children).length > 0 && <><button className={styles.secondary} onClick={downloadBackup}>Baixar cópia dos perfis</button><p>Esta cópia contém apelidos e progresso. Guarde em um local privado. A restauração exige suporte; não há importação automática.</p></>}
         <p role="status">{state.saving ? 'Salvando na conta…' : state.pending ? 'Há descobertas aguardando salvamento.' : state.error ? '' : 'Perfis e progresso salvos na sua conta.'}</p>
       </>}
     </>}

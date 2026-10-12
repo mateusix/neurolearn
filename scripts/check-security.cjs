@@ -1,0 +1,21 @@
+const assert = require('node:assert/strict');
+const ts = require('typescript');
+const fs = require('node:fs');
+const vm = require('node:vm');
+const exported = {};
+vm.runInNewContext(ts.transpileModule(fs.readFileSync('lib/api-security.ts','utf8'),{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.CommonJS}}).outputText,{exports:exported,Buffer,Date,console});
+(async()=>{
+ assert.equal(exported.validChildName(' Ana Júlia '),true);
+ for(const name of ['', ' '.repeat(3), '<script>', 'Ana\u0000', 'a'.repeat(33)])assert.equal(exported.validChildName(name),false);
+ for(let i=0;i<120;i++)assert.equal(exported.allowFamilyRequest('one','POST',1000).allowed,true);
+ assert.equal(exported.allowFamilyRequest('one','POST',1000).allowed,false);
+ assert.equal(exported.allowFamilyRequest('two','POST',1000).allowed,true);
+ assert.equal(exported.allowFamilyRequest('one','GET',1000).allowed,true);
+ assert.equal(exported.allowFamilyRequest('one','POST',61000).allowed,true);
+ const request=(body)=>new Request('http://localhost',{method:'POST',body});
+ assert.equal((await exported.readLimitedJson(request('{"name":"Ana"}'))).name,'Ana');
+ await assert.rejects(exported.readLimitedJson(request('[]')));
+ await assert.rejects(exported.readLimitedJson(request('invalid')));
+ await assert.rejects(exported.readLimitedJson(request('á'.repeat(9000))),/body-size/);
+ console.log('Security checks passed: input, byte limit, JSON shape, rate reset and account isolation.');
+})().catch(e=>{console.error(e);process.exit(1)});

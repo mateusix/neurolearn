@@ -25,7 +25,7 @@ function load(file) {
   if(name.startsWith('@/'))return load(name.slice(2)+'.ts');
   if(name.startsWith('./'))return load('lib/'+name.slice(2)+'.ts');
   return require(name);
- },AbortController,structuredClone,Response,Request,URL,Buffer,crypto:webcrypto,Event,Date,setTimeout:(fn,delay)=>{timers.set(++timerId,{fn,delay});return timerId;},clearTimeout:id=>timers.delete(id),
+ },RangeError,SyntaxError,AbortController,structuredClone,Response,Request,URL,Buffer,crypto:webcrypto,Event,Date,setTimeout:(fn,delay)=>{timers.set(++timerId,{fn,delay});return timerId;},clearTimeout:id=>timers.delete(id),
  localStorage:{getItem:key=>local.get(key)||null,setItem:(key,value)=>local.set(key,value),removeItem:key=>local.delete(key)},
  window:{dispatchEvent:e=>events.push(e.type),addEventListener(){},removeEventListener(){}},
  fetch:async(url,options)=>{if(stalled)return new Promise((_,reject)=>options.signal.addEventListener('abort',()=>reject(new Error('timeout'))));if(offline)throw new Error('offline');return options?.method==='POST'?route.POST(new Request('http://localhost/api/family',{...options,headers:{...options.headers,origin:'http://localhost'}})):route.GET();},
@@ -45,6 +45,9 @@ async function post(body,origin='http://localhost') {return route.POST(new Reque
  owner=null;assert.equal((await route.GET()).status,401);assert.equal((await post({action:'create',name:'Teste',avatar:'panda'})).status,401);
  owner='parent-a';assert.equal((await post({action:'create',name:'Teste',avatar:'panda'},'https://other.test')).status,403);
  assert.equal((await post({action:'create',name:'',avatar:'panda'})).status,400);
+ assert.equal((await post({action:'create',name:'<script>',avatar:'panda'})).status,400);
+ assert.equal((await route.POST(new Request('http://localhost/api/family',{method:'POST',headers:{origin:'http://localhost','Content-Type':'text/plain'},body:'{}'}))).status,415);
+ assert.equal((await route.POST(new Request('http://localhost/api/family',{method:'POST',headers:{origin:'http://localhost','Content-Type':'application/json'},body:JSON.stringify({name:'á'.repeat(9000)})}))).status,413);
  const first=await (await post({action:'create',name:'Teste A',avatar:'panda'})).json();
  const second=await (await post({action:'create',name:'Teste B',avatar:'coelho'})).json();
  await store.loadFamily(owner);store.selectChild(first.id);assert.equal(avatars.getAvatar(),'panda');assert.equal(lessons.getProgress(),0);
