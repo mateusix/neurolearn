@@ -38,3 +38,7 @@ A cópia manual dos perfis inclui esses dados. Existe limite total de 7.500 byte
 Testes de conteúdo, confirmação, personalização, perfis, memória, favoritos, relatórios, desbloqueios, migração, limites e tutorial. Conferência da jornada pelo navegador em origem local de teste separada dos dados do usuário. Sem pesquisa com crianças nesta atualização.
 
 Na primeira gravação do formato novo, todos os perfis legados são migrados juntos; posições das antigas atividades de fala são removidas explicitamente para não serem confundidas com as novas histórias. A gravação usa as regras de mesclagem de metadados documentadas em https://clerk.com/docs/reference/backend/user/update-user-metadata.
+
+## Sugestões da Luna
+
+Painel com próxima etapa e revisões por tentativas registradas. Integração inicial e opcional de Transformers.js para ordenar revisões por afinidade com um tema. Não gera respostas livres, não altera a correção nem desbloqueia etapas. Download apenas por ação explícita, processamento em worker, cancelamento e alternativa por regras. Detalhes, limites de desempenho e privacidade em [IA_LOCAL.md](IA_LOCAL.md).

@@ -8,10 +8,11 @@
     "start": "next start",
     "lint": "eslint app lib components",
     "typecheck": "next typegen && tsc --noEmit",
-    "test": "node scripts/check-learning.cjs && node scripts/check-family.cjs && node scripts/check-personalization.cjs && node scripts/check-exercise-guidance.cjs && node scripts/check-comfort.cjs && node scripts/check-security.cjs && node scripts/check-tutorial.cjs && node scripts/check-discoveries.cjs && node scripts/check-narration.cjs"
+    "test": "node scripts/check-learning.cjs && node scripts/check-family.cjs && node scripts/check-personalization.cjs && node scripts/check-exercise-guidance.cjs && node scripts/check-comfort.cjs && node scripts/check-security.cjs && node scripts/check-tutorial.cjs && node scripts/check-discoveries.cjs && node scripts/check-narration.cjs && node scripts/check-suggestions.cjs"
   },
   "dependencies": {
     "@clerk/nextjs": "^7.9.2",
+    "@huggingface/transformers": "4.3.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cn": "^0.2.6",

@@ -20,6 +20,7 @@ import { earnedAchievements } from "@/lib/achievements";
 import { getFamilySnapshot, getServerFamilySnapshot, subscribeFamily, syncFamily, currentChild } from "@/lib/family-store";
 import styles from "./trail.module.css";
 
+const SuggestionsPanel = dynamic(() => import('./suggestions-panel'), {loading: () => <LearningLoading />});
 const CollectionPanel = dynamic(() => import('./collection-panel'));
 const FavoritesPanel = dynamic(() => import('./favorites-panel'));
 const Lesson = dynamic(() => import("./lesson"), {loading: () => <LearningLoading />});
@@ -59,7 +60,7 @@ function LearningHome() {
   const preferences = useMemo(() => preferenceSnapshot ? JSON.parse(preferenceSnapshot) as Preferences : null, [preferenceSnapshot]);
   const [changingPreferences, setChangingPreferences] = useState(false);
   const experience=JSON.parse(useSyncExternalStore(subscribeExperience,getExperienceSnapshot,getServerExperienceSnapshot)) as Experience;
-  const [panel,setPanel]=useState<'collection'|'favorites'|null>(null);
+  const [panel,setPanel]=useState<'collection'|'favorites'|'suggestions'|null>(null);
   const [showAchievements, setShowAchievements] = useState(false);
   const avatarId = useSyncExternalStore(subscribeAvatar, getAvatar, () => "");
   const [changingAvatar, setChangingAvatar] = useState(false);
@@ -95,6 +96,7 @@ function LearningHome() {
     stop(); if (!savePreferences(value)) setStorageMessage("Suas escolhas valem nesta sessão, mas não foi possível salvá-las neste navegador."); setChangingPreferences(false);
   }} onCancel={() => setChangingPreferences(false)} /><p role="status" className={styles.audioStatus}>{storageMessage}</p></div>;
   if (!preferences.palette) return <div className={styles.page}><PalettePicker current={preferences.palette} onSave={palette=>{ if (!savePreferences({...preferences,palette})) setStorageMessage("As cores valem nesta sessão, mas não foi possível salvá-las."); }} /><p role="status">{storageMessage}</p></div>;
+  if (panel==='suggestions') return <SuggestionsPanel completed={completed} experience={experience} preferences={preferences} onBack={()=>setPanel(null)} onOpen={index=>{setPanel(null);openLesson(index);}}/>;
   if (panel==='collection') return <CollectionPanel onBack={()=>setPanel(null)}/>;
   if (panel==='favorites') return <FavoritesPanel onBack={()=>setPanel(null)} onOpen={index=>{setPanel(null);openLesson(index);}}/>;
   if (showAchievements) return <div className={styles.page}><AchievementsPanel completed={completed} onBack={() => setShowAchievements(false)} /></div>;
@@ -102,7 +104,7 @@ function LearningHome() {
     <div className={styles.avatarProfile}><div><span>Meu bichinho: <strong>{avatar.name}</strong></span></div><button onClick={() => { stop(); setChangingAvatar(true); }}>Trocar bichinho</button></div>
     <div className={styles.topline}><span><BookOpen size={18} aria-hidden="true" /> Minha aprendizagem</span><span className={styles.previewTag}>Protótipo de aprendizagem</span></div>
     {active === null && <>
-      <nav className={styles.trailTabs} aria-label="Minha aprendizagem"><button aria-current="page">Minha trilha</button><button onClick={() => { stop(); setShowAchievements(true); }}><Trophy size={18} aria-hidden="true" /> Minhas conquistas ({earnedAchievements(completed).length})</button><button onClick={()=>{stop();setPanel("collection");}}>Meu bichinho e coleção</button><button onClick={()=>{stop();setPanel("favorites");}}>Favoritos ({experience.favorites.length})</button></nav>
+      <nav className={styles.trailTabs} aria-label="Minha aprendizagem"><button aria-current="page">Minha trilha</button><button onClick={() => { stop(); setShowAchievements(true); }}><Trophy size={18} aria-hidden="true" /> Minhas conquistas ({earnedAchievements(completed).length})</button><button onClick={()=>{stop();setPanel("collection");}}>Meu bichinho e coleção</button><button onClick={()=>{stop();setPanel("favorites");}}>Favoritos ({experience.favorites.length})</button><button onClick={()=>{stop();setPanel("suggestions");}}>Sugestões da Luna</button></nav>
       <div className={styles.preferenceSummary}><span>Meu tema: {themes.find(theme => theme.id === preferences.theme)?.name}</span><button onClick={() => { stop(); setChangingPreferences(true); }}>Mudar meus gostos</button></div>
     </>}
     {active !== null ? <Lesson key={`${family.selected}:${active}`} preferences={preferences} index={active} onBack={back} onComplete={complete} onNext={active + 1 < lessons.length ? nextStage : undefined} /> : <>

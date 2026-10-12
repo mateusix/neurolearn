@@ -44,3 +44,9 @@
 .lockedArt { filter:grayscale(1); opacity:.35; }
 .lockBadge { display:inline-flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:6px; font-size:12px; font-weight:800; line-height:1.5; }
 button.card { cursor:pointer; }
+
+.localOption { margin:28px 0 16px; padding:18px; border:2px solid var(--nl-cc6dde4); border-radius:18px; background:var(--nl-cfff); }
+.localOption summary { cursor:pointer; font-weight:800; line-height:1.6; }
+.localOption p { margin:16px 0; }
+.localOption button[aria-pressed=true] { background:var(--nl-ce4f4fa); border-color:var(--nl-c36758d); }
+.localOption button:disabled { opacity:.6; cursor:default; }
