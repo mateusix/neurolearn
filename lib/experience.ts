@@ -1,6 +1,6 @@
 import {currentChild,isAccountMode,updateChild} from './family-store';
 import {lessons,getProgress} from './lessons';
-import {emptyExperience,validExperience,cleanExperience,type Experience} from './experience-values';
+import {accessories,emptyExperience,validExperience,cleanExperience,type Experience} from './experience-values';
 const key='neurolearn-experience-v1';let session='';
 export function getExperienceSnapshot(){
  if(isAccountMode()){const value=currentChild()?.experience;return JSON.stringify(validExperience(value,lessons.length)?value:emptyExperience());}
@@ -9,7 +9,7 @@ export function getExperienceSnapshot(){
 export const getServerExperienceSnapshot=()=>JSON.stringify(emptyExperience());
 export const readExperience=():Experience=>JSON.parse(getExperienceSnapshot());
 export function saveExperience(value:Experience){
- if(!validExperience(value,lessons.length))return false;
+ if(!validExperience(value,lessons.length)||!accessories.some(a=>a.id===value.accessory&&a.at<=getProgress()))return false;
  if(isAccountMode())return updateChild({experience:cleanExperience(value)});
  session=JSON.stringify(cleanExperience(value));let saved=true;
  try{localStorage.setItem(key,session);}catch{saved=false;}

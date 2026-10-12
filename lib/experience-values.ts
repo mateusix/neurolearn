@@ -1,8 +1,12 @@
 export const accessories = [
   {id:'none',name:'Sem acessório',icon:'○',at:0},
   {id:'hat',name:'Chapéu',icon:'🎩',at:4},
+  {id:'cap',name:'Boné',icon:'🧢',at:6},
   {id:'glasses',name:'Óculos',icon:'👓',at:8},
+  {id:'flower',name:'Flor',icon:'🌸',at:10},
   {id:'bow',name:'Laço',icon:'🎀',at:12},
+  {id:'crown',name:'Coroa',icon:'👑',at:16},
+  {id:'scarf',name:'Cachecol',icon:'🧣',at:20},
 ] as const;
 export type Experience = {favorites:number[];accessory:string;fontSize:'small'|'standard'|'large';stats:Record<string,[number,number]>};
 export const emptyExperience = ():Experience => ({favorites:[],accessory:'none',fontSize:'standard',stats:{}});

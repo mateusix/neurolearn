@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { useState } from "react";
-import { Check, ArrowRight } from "lucide-react";
+import { Check, ArrowRight, LockKeyhole } from "lucide-react";
 import { getProgress } from "@/lib/lessons";
 import { avatars } from "@/lib/avatars";
 import styles from "./trail.module.css";
@@ -14,7 +14,7 @@ export default function ChooseAvatar({ current, onChoose, onCancel }: {
     <p className={styles.eyebrow}>UMA AVENTURA NO SEU RITMO</p>
     <h1 id="avatar-title">Qual vai ser seu bichinho?</h1>
     <p>Escolha um amigo para acompanhar suas descobertas. Você pode trocar depois!</p>
-    <fieldset className={styles.avatarChoices}><legend>Escolha seu bichinho</legend>{avatars.map(avatar => <label key={avatar.id} className={`${styles.avatarCard} ${selected === avatar.id ? styles.avatarSelected : ""}`}>
+    <fieldset className={styles.avatarChoices}><legend>Escolha seu bichinho</legend>{avatars.map(avatar => getProgress()<avatar.at ? <div key={avatar.id} className={`${styles.avatarCard} ${styles.avatarLocked}`}><span className={styles.avatarLock}><LockKeyhole size={16} aria-hidden="true"/> Bloqueado</span><Image src={`/avatars/${avatar.id}.svg`} alt="" width={104} height={104}/><span>{avatar.name}</span><small>Abre após {avatar.at} etapas</small></div> : <label key={avatar.id} className={`${styles.avatarCard} ${selected === avatar.id ? styles.avatarSelected : ""}`}>
       <input type="radio" name="avatar" value={avatar.id} disabled={getProgress()<avatar.at} checked={selected === avatar.id} onChange={() => setSelected(avatar.id)} />
       <Image src={`/avatars/${avatar.id}.svg`} alt="" width={104} height={104} />
       <span>{avatar.name}</span>{getProgress()<avatar.at&&<small>Abre após {avatar.at} etapas</small>}{selected === avatar.id && <Check className={styles.avatarCheck} size={20} aria-hidden="true" />}

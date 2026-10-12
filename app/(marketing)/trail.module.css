@@ -151,3 +151,8 @@
 .favoriteButton { position:relative; z-index:2; display:block; margin-top:14px; padding:10px 14px; border:1px solid var(--nl-cc6dde4); border-radius:12px; background:var(--nl-cfff); min-height:44px; font-size:14px; font-weight:800; }
 .favoriteButton[aria-pressed=true] { background:var(--nl-cfff8e5); }
 .stepCard .favoriteButton { pointer-events:auto; }
+
+.avatarCard.avatarLocked { background:var(--nl-ceef8fa); border-bottom-width:2px; cursor:default; }
+.avatarLocked > img { filter:grayscale(1); opacity:.35; }
+.avatarLocked small { font-size:13px; line-height:1.5; text-align:center; }
+.avatarLock { display:inline-flex; align-items:center; gap:6px; font-size:12px; line-height:1.5; }

@@ -21,7 +21,7 @@ Fora do escopo por decisão do usuário: cenários e acesso/painel de professor.
 
 26 etapas e 96 exercícios. As etapas 1 a 21 mantêm sua ordem; as novas etapas 22 e 23 são histórias em três trechos/perguntas cada, a 24 associa quatro imagens a palavras e as 25 e 26 têm duas rodadas de memória com três pares cada. O jogo não tem cronômetro; cartas incorretas permanecem abertas até a criança escolher virá-las novamente.
 
-Pato: 3 etapas; dinossauro: 9; pinguim: 15. Chapéu: 4; óculos: 8; laço: 12. Os seis bichinhos iniciais continuam disponíveis. Adesivos acompanham as nove conquistas. Acessórios aparecem no cabeçalho, na coleção e nos perfis.
+Pato: 3 etapas; dinossauro: 9; pinguim: 15. Chapéu: 4; óculos: 8; laço: 12; boné: 6; flor: 10; coroa: 16; cachecol: 20. Itens bloqueados são cartões sem ação, com cadeado e desenho dessaturado; nomes e requisitos permanecem legíveis. Os seis bichinhos iniciais continuam disponíveis. Adesivos acompanham as nove conquistas. Acessórios aparecem no cabeçalho, na coleção e nos perfis.
 
 Favoritos guardam etapas da trilha e respeitam seu acesso. Tamanho de leitura: menor, padrão e maior, alterável no topo. Relatórios mostram conclusão, acertos/tentativas por etapa e taxa agregada; repetições também são contadas. Na memória cada combinação de duas cartas é uma tentativa. Não são armazenadas respostas individuais nem dados clínicos.
 

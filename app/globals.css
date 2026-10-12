@@ -680,3 +680,7 @@
 [data-reading-size=small] main button[class*=wordOption] { font-size:17px; }
 [data-reading-size=large] main button[class*=wordOption] { font-size:22px; }
 @media(max-width:600px) { [data-reading-size=large] main button[class*=wordOption] { font-size:20px; } }
+
+.avatar-accessory-cap, .avatar-accessory-crown { width:70%; left:15%; top:-8%; font-size:1.6em; }
+.avatar-accessory-flower { width:45%; left:52%; top:3%; font-size:1.3em; }
+.avatar-accessory-scarf { width:64%; left:18%; top:70%; font-size:1.6em; }

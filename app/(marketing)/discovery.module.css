@@ -39,3 +39,8 @@
 .lunaMessage strong { font-weight:900; }
 .lunaMessage p { margin:6px 0 0; }
 .panel h1, .panel h2, .card strong { overflow-wrap:anywhere; }
+
+.lockedCard { background:var(--nl-ceef8fa); border-bottom-width:2px; cursor:default; justify-content:center; }
+.lockedArt { filter:grayscale(1); opacity:.35; }
+.lockBadge { display:inline-flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:6px; font-size:12px; font-weight:800; line-height:1.5; }
+button.card { cursor:pointer; }
