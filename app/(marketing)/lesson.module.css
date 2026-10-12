@@ -107,12 +107,31 @@
 [data-motion=off] .voiceMeter span { transform:none!important; }
 .voiceServiceNotice { padding:12px; border-radius:12px; background:var(--nl-cfff8e5); color:var(--nl-c715d32); font-size:13px; }
 
-.tutorial { padding:18px; margin:18px 0; border:2px solid var(--nl-cc6dde4); border-radius:20px; background:var(--nl-ceef8fa); line-height:1.6; }
-.tutorialHeading { display:flex; align-items:center; gap:12px; }
-.tutorialHeading p { margin:2px 0; font-size:13px; }
+.tutorial { padding:24px; margin:24px 0; border:2px solid var(--nl-cc6dde4); border-radius:20px; background:var(--nl-ceef8fa); line-height:1.6; }
+.tutorialHeading { display:flex; align-items:center; gap:16px; }
+.tutorialHeading img { flex-shrink:0; }
+.tutorialHeading h3 { margin:8px 0 4px; font-size:22px; line-height:1.35; }
+.tutorialHeading p { margin:0; font-size:15px; }
+.tutorialBadge { display:inline-block; font-size:12px; font-weight:900; letter-spacing:.07em; line-height:1.5; color:var(--nl-c36758d); }
+.tutorialProgress { display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-top:24px; font-size:13px; font-weight:800; }
 .tutorial > p { margin:16px 0; }
-.tutorialActions { display:flex; flex-wrap:wrap; gap:10px; }
-@media(max-width:600px) { .tutorialActions button { flex:1; font-size:13px; } }
+.tutorialActions { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin-top:24px; padding-top:20px; border-top:1px solid var(--nl-cc6dde4); }
+.tutorialActions button { min-height:52px; padding:14px 18px; line-height:1.4; white-space:normal; overflow-wrap:anywhere; }
+.tutorial .tutorialHint { margin:18px 0 0; font-size:14px; }
+.tutorialReopen { margin:8px 0 24px; }
+.activity { outline:none; }
+.activity:focus-visible { outline:3px solid var(--nl-c36758d); outline-offset:6px; border-radius:12px; }
+.demoNotice { font-size:11px; font-weight:900; letter-spacing:.05em; line-height:1.5; }
+.demoFinished { font-size:14px; }
+@media(max-width:600px) {
+  .tutorial { padding:16px; margin:20px 0; }
+  .tutorialHeading { align-items:flex-start; gap:12px; }
+  .tutorialHeading h3 { font-size:19px; }
+  .tutorialHeading img { width:44px; height:44px; }
+  .tutorialActions { grid-template-columns:1fr; gap:12px; }
+  .tutorialActions button { width:100%; font-size:15px; }
+  .demo { padding:14px; }
+}
 
 .demo { display:flex; flex-direction:column; gap:12px; padding:18px; border:2px dashed var(--nl-c91bdcc); border-radius:16px; background:var(--nl-cfff); text-align:center; }
 .demoOptions { display:flex; justify-content:center; gap:10px; flex-wrap:wrap; }

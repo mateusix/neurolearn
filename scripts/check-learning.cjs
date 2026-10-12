@@ -41,7 +41,7 @@ const lessonModule = {exports:{}, require(name) {
  if(name==='@/lib/personalized-lessons') return {personalizedLesson:index=>api.lessons[index]};
  if(name==='@/lib/achievements') return {achievements:[]};
  if(name==='@/lib/use-narration') return {useNarration:()=>({speak(){},stop(){},message:'',hasAudio:()=>true})};
- if(name==='./mini-tutorial') return {default:()=>null,tutorialKind:exercise=>exercise.listening?'listening':exercise.kind};
+ if(name==='./mini-tutorial') return {default:({children})=>children,tutorialKind:exercise=>exercise.listening?'listening':exercise.kind};
  if(name==='./speaking-exercise') return {default:()=>null};
  if(name==='./lesson.module.css') return {default:new Proxy({}, {get:(_,key)=>String(key)})};
  if(name==='next/image') return {default:({src,alt})=>React.createElement('img',{src,alt})};

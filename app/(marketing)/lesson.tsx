@@ -83,7 +83,7 @@ export default function Lesson({ index, onBack, onComplete, onNext, preferences 
     </div> : <>
       <p className={styles.eyebrow}>{lesson.title}</p>
       <h2 id="lesson-title" ref={title} tabIndex={-1}>{exercise.prompt}</h2>
-      <MiniTutorial key={tutorialKind(exercise)} kind={tutorialKind(exercise)} />
+      <MiniTutorial key={tutorialKind(exercise)} kind={tutorialKind(exercise)}>
       {orientation && <div className={styles.lunaOrientation}><strong>Luna explica</strong><p>{orientation.text}</p>{hasAudio(orientation.id)&&<button className={styles.secondary} onClick={() => speak(orientation.id)} aria-label="Ouvir a explicação da Luna"><Volume2 size={18} aria-hidden="true"/> Ouvir a Luna</button>}</div>}
       {hasAudio(exercise.id) && <button className={styles.secondary} onClick={() => speak(exercise.id)}><Volume2 size={20} aria-hidden="true" /> {exercise.listening ? "Ouvir a frase" : "Ouvir a instrução"}</button>}
       {exercise.listening && <div className={styles.listeningSupport}>
@@ -106,6 +106,7 @@ export default function Lesson({ index, onBack, onComplete, onNext, preferences 
       {hint && <div className={styles.hint}><p>{exercise.hint}</p>{hasAudio(`${exercise.id}-dica`) && <button className={styles.secondary} onClick={() => speak(`${exercise.id}-dica`)}><Volume2 size={18} aria-hidden="true" /> Ouvir a dica</button>}</div>}
       {feedback && <div className={`${styles.feedback} ${feedback === "correct" ? styles.correct : styles.retry}`} role="status"><Image className={feedback === "correct" ? "luna-happy" : "luna-encourage"} src={`/mascotes/${feedback === "correct" ? "feliz" : "encorajador"}.svg`} width={80} height={80} alt={feedback === "correct" ? "Mascote feliz" : "Mascote encorajando"} /><div><strong>{feedback === "correct" ? exercise.kind === "speak" ? "Muito bem! Você praticou com sua voz." : "Isso! Você acertou." : "Vamos tentar de outro jeito?"}</strong><p>{dialogue?.text || (feedback === "correct" ? "Mais uma descoberta na sua trilha." : "Olhe a dica. Você pode tentar novamente.")}</p>{dialogue && hasAudio(dialogue.id) && <button className={styles.feedbackAudio} onClick={() => speak(dialogue!.id)} aria-label="Ouvir a mensagem de apoio"><Volume2 size={17} aria-hidden="true" /> Ouvir</button>}</div></div>}
       <div className={styles.actions}>{feedback === "correct" ? <button className={styles.primary} onClick={next}>{position === lesson.exercises.length - 1 ? "Concluir etapa" : exercise.kind === "speak" ? "Próximo" : "Continuar"}<ArrowRight size={18} aria-hidden="true" /></button> : exercise.kind === "order" && feedback === "retry" ? <button className={styles.primary} onClick={retryOrder}><RotateCcw size={18} aria-hidden="true" /> Tentar novamente</button> : <>{exercise.kind !== "speak" && <button className={styles.secondary} onClick={() => setHint(!hint)}>{hint ? "Fechar dica" : "Ver uma dica"}</button>}{exercise.kind !== "speak" && <button className={styles.primary} onClick={confirm} disabled={!ready}>Confirmar</button>}</>}</div>
+      </MiniTutorial>
     </>}
     <p role="status" className={styles.error}>{message || storageWarning}</p>
   </section>;
