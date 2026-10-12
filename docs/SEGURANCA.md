@@ -43,3 +43,5 @@ Os metadados têm versão 1; não há banco SQL nem migrations SQL. Uma futura m
 ## Auditoria de dependências nesta revisão
 
 Next atualizado para 16.3.8 e correções compatíveis aplicadas ao lockfile. A auditoria npm sem dependências de desenvolvimento retornou zero alertas conhecidos nesta execução. Permanecem nove alertas altos no conjunto de ferramentas de desenvolvimento (cadeia de glob/braces de ESLint e shadcn), sem correção compatível indicada pela auditoria. O CLI shadcn foi classificado como ferramenta de desenvolvimento; seu CSS continua presente no build. Não usar npm audit fix --force sem revisão: a proposta alteraria versões de forma incompatível. A auditoria é um retrato dos avisos conhecidos, não prova de segurança total.
+
+Verificação da aplicação publicada: o formulário do Clerk ainda indica Development mode. Migrar para uma instância de produção e configurar o domínio quando a aplicação deixar a fase de protótipo; não basta publicar o Next.js na Vercel para mudar o ambiente do Clerk. Essa migração não foi feita automaticamente, pois pode exigir domínio, novas chaves e revisão da recuperação dos perfis existentes.
