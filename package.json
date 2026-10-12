@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint app lib components",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "next typegen && tsc --noEmit",
     "test": "node scripts/check-learning.cjs && node scripts/check-family.cjs && node scripts/check-personalization.cjs && node scripts/check-exercise-guidance.cjs && node scripts/check-comfort.cjs && node scripts/check-security.cjs && node scripts/check-tutorial.cjs"
   },
   "dependencies": {
