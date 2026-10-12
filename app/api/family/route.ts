@@ -1,3 +1,4 @@
+import { accessories, validExperience, cleanExperience, emptyExperience, mergeExperience } from '@/lib/experience-values';
 import { allowFamilyRequest, isRecord, validChildName, readLimitedJson, logFamilyFailure } from '@/lib/api-security';
 import { auth, clerkClient } from '@clerk/nextjs/server';
 import { validPreferences } from '@/lib/preferences';
@@ -11,16 +12,17 @@ function familyFrom(value: unknown): Family {
   const children: Record<string,ChildProfile> = Object.create(null);
   for (const [id, child] of Object.entries(value.children as Record<string,ChildProfile>)) {
     if (!child || child.id !== id || !Number.isInteger(child.completed) || child.completed < 0 || !avatars.some(item => item.id === child.avatar) || !validChildName(child.name)) continue;
-    const completed = Math.min(child.completed, lessons.length);
+    const migrated = 'version' in value && value.version === 2;
+    const completed = Math.min(child.completed, migrated ? lessons.length : 21);
     const positions: Record<string,number> = {};
     for (const [index,position] of Object.entries(isRecord(child.positions) ? child.positions : {})) {
       const stage = Number(index);
-      if (/^\d+$/.test(index) && lessons[stage] && Number.isInteger(position) && position >= 0 && position < lessons[stage].exercises.length) positions[index] = stage < completed ? 0 : position;
+      if (/^\d+$/.test(index) && lessons[stage] && (migrated || stage < 21) && Number.isInteger(position) && position >= 0 && position < lessons[stage].exercises.length) positions[index] = stage < completed ? 0 : position;
     }
     if (!/^[a-zA-Z0-9-]{1,80}$/.test(id) || Object.keys(children).length >= MAX_CHILDREN) continue;
-    children[id] = {id,name:child.name.trim(),avatar:child.avatar,completed,positions,updatedAt:typeof child.updatedAt === 'string' ? child.updatedAt : '',...(validPreferences(child.preferences) ? {preferences:child.preferences} : {})};
+    children[id] = {id,name:child.name.trim(),avatar:child.avatar,completed,positions,updatedAt:typeof child.updatedAt === 'string' ? child.updatedAt : '',...(validPreferences(child.preferences) ? {preferences:child.preferences} : {}),...(validExperience(child.experience,lessons.length)?{experience:cleanExperience(child.experience)}:{})};
   }
-  return {version:1,children};
+  return {version:2,children};
 }
 const json = (value: unknown, status = 200) => Response.json(value,{status,headers:{'Cache-Control':'no-store'}});
 function limited(userId: string, method: 'GET' | 'POST') {
@@ -47,7 +49,7 @@ export async function POST(request: Request) {
     let child: ChildProfile;
     if (body.action === 'create') {
       if (Object.keys(family.children).length >= MAX_CHILDREN) return json({error:'Esta versão permite até cinco perfis por responsável.'},400);
-      if (!validChildName(body.name) || typeof body.avatar !== 'string' || !avatars.some(a => a.id === body.avatar)) return json({error:'Escolha um bichinho e um apelido com até 32 caracteres.'},400);
+      if (!validChildName(body.name) || typeof body.avatar !== 'string' || !avatars.some(a => a.id === body.avatar && a.at === 0)) return json({error:'Escolha um bichinho e um apelido com até 32 caracteres.'},400);
       child = {id:crypto.randomUUID(),name:body.name.trim(),avatar:body.avatar,completed:0,positions:{},updatedAt:new Date().toISOString()};
     } else if (body.action === 'progress') {
       if (typeof body.childId !== 'string' || !Object.hasOwn(family.children,body.childId)) return json({error:'Perfil não encontrado nesta conta.'},404);
@@ -55,18 +57,31 @@ export async function POST(request: Request) {
       if (typeof body.avatar !== 'string' || !avatars.some(a => a.id === body.avatar) || !Number.isInteger(body.completed) || Number(body.completed) < 0 || Number(body.completed) > lessons.length || !body.positions || typeof body.positions !== 'object' || Array.isArray(body.positions)) return json({error:'Progresso inválido.'},400);
       if (body.preferences !== undefined && !validPreferences(body.preferences)) return json({error:'Preferências inválidas.'},400);
       const completed = Math.max(existing.completed,Number(body.completed));
+      if (!avatars.some(a=>a.id===body.avatar && a.at<=completed)) return json({error:'Este bichinho ainda não foi liberado.'},400);
+      const experience = body.experience;
+      if (experience !== undefined && (!validExperience(experience,lessons.length) || !accessories.some(a=>a.id===experience.accessory && a.at<=completed))) return json({error:'Personalização inválida.'},400);
       const positions = {...existing.positions};
       for (const [index,value] of Object.entries(body.positions)) {
         const i = Number(index);
         if (!/^\d+$/.test(index) || !Number.isInteger(i) || !lessons[i] || !Number.isInteger(value) || value < 0 || value >= lessons[i].exercises.length) return json({error:'Atividade inválida.'},400);
         positions[index] = i < completed ? 0 : Math.max(positions[index] || 0,value);
       }
-      child = {...existing,avatar:body.avatar,...(validPreferences(body.preferences) ? {preferences:body.preferences} : {}),completed,positions,updatedAt:new Date().toISOString()};
+      child = {...existing,...(validExperience(body.experience,lessons.length)?{experience:mergeExperience(validExperience(existing.experience,lessons.length)?existing.experience:emptyExperience(),body.experience)}:{}),avatar:body.avatar,...(validPreferences(body.preferences) ? {preferences:body.preferences} : {}),completed,positions,updatedAt:new Date().toISOString()};
     } else return json({error:'Ação inválida.'},400);
-    // Send only the changed child: Clerk deep-merges metadata and preserves other profiles.
+    // Migrate every legacy profile before marking the whole family as version 2.
+    // Clerk deep-merges nested objects, so obsolete positions need explicit nulls.
+    const stored = user.privateMetadata.neurolearn;
+    const migrating = !isRecord(stored) || stored.version !== 2;
+    const updates = migrating ? Object.fromEntries(Object.entries({...family.children,[child.id]:child}).map(([id,profile])=>{
+      const rawChildren = isRecord(stored) && isRecord(stored.children) ? stored.children : {};
+      const raw = rawChildren[id];
+      const oldPositions = isRecord(raw) && isRecord(raw.positions) ? raw.positions : {};
+      const removed = Object.fromEntries(Object.keys(oldPositions).filter(key=>!Object.hasOwn(profile.positions,key)).map(key=>[key,null]));
+      return [id,{...profile,positions:{...removed,...profile.positions}}];
+    })) : {[child.id]:child};
     const nextMetadata = {...user.privateMetadata,neurolearn:{...family,children:{...family.children,[child.id]:child}}};
     if (Buffer.byteLength(JSON.stringify(nextMetadata),'utf8') > 7500) return json({error:'O espaço desta conta está cheio. Não foi possível salvar.'},400);
-    await client.users.updateUserMetadata(userId,{privateMetadata:{neurolearn:{version:1,children:{[child.id]:child}}}});
+    await client.users.updateUserMetadata(userId,{privateMetadata:{neurolearn:{version:2,children:updates}}});
     return json(child);
   });
   locks.set(userId,task);

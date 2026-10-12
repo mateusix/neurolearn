@@ -1,4 +1,5 @@
 "use client";
+import { getExperienceSnapshot, getServerExperienceSnapshot, subscribeExperience, readExperience, saveExperience } from '@/lib/experience';
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { Volume2, VolumeX, Sparkles, Palette } from 'lucide-react';
 import { getComfortSnapshot,getServerComfortSnapshot,saveComfort,subscribeComfort,type SoundCue } from '@/lib/comfort';
@@ -8,6 +9,7 @@ const notes:Record<SoundCue,number[]>={click:[440],success:[440,554],complete:[3
 function subscribeReducedMotion(callback:()=>void) { const query=window.matchMedia('(prefers-reduced-motion: reduce)');query.addEventListener('change',callback);return()=>query.removeEventListener('change',callback); }
 const getReducedMotion=()=>window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 export default function ComfortProvider({children}:{children:React.ReactNode}) {
+ const experience=JSON.parse(useSyncExternalStore(subscribeExperience,getExperienceSnapshot,getServerExperienceSnapshot));
  const preferences=useSyncExternalStore(subscribePreferences,getPreferencesSnapshot,()=>'');
  const settings=useSyncExternalStore(subscribeComfort,getComfortSnapshot,getServerComfortSnapshot);
  const reduced=useSyncExternalStore(subscribeReducedMotion,getReducedMotion,()=>false);
@@ -52,6 +54,7 @@ export default function ComfortProvider({children}:{children:React.ReactNode}) {
     <button aria-pressed={motion} disabled={reduced} title={reduced ? "Movimento reduzido ativado no seu computador" : undefined} onClick={()=>change(`${settings[0]}${motion?'0':'1'}`)}><Sparkles size={17} aria-hidden="true"/> Animações: {reduced?'reduzidas':motion?'ligadas':'desligadas'}</button>
     {preferences&&<button onClick={()=>window.dispatchEvent(new Event('neurolearn-open-colors'))}><Palette size={17} aria-hidden="true"/> Mudar cores</button>}
     {sound&&<button type="button" aria-label="Testar efeitos sonoros" onClick={()=>void play('success',true)}><Volume2 size={17} aria-hidden="true"/> Testar som</button>}
+    <button onClick={()=>{const sizes=['small','standard','large'] as const; const value=readExperience(); const next=sizes[(sizes.indexOf(value.fontSize)+1)%sizes.length];setMessage(saveExperience({...value,fontSize:next})?'Tamanho do texto atualizado.':'A escolha vale nesta sessão; o salvamento está indisponível.');}}>Texto: {({small:'menor',standard:'padrão',large:'maior'} as const)[experience.fontSize as 'small'|'standard'|'large']}</button>
     <span role="status">{message}</span>
    </aside>
    {children}

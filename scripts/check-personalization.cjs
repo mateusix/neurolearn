@@ -15,5 +15,5 @@ assert.equal(personalizedLesson(2,{theme:'food',support:'model'}).exercises[0].w
 assert.equal(personalizedLesson(11,{theme:'animals',support:'model'}).exercises[0].hideModel,false);assert.equal(personalizedLesson(11,{theme:'animals',support:'hint'}).exercises[0].hideModel,true);
 assert.equal(personalizedLesson(10,{theme:'food',support:'model'}).exercises[0].hideModel,true);
 assert.equal(personalizedLesson(2,{theme:'food',support:'hint'}).exercises[0].optionAudio,undefined);
-assert.equal(earnedAchievements(2).length,0);assert.equal(earnedAchievements(3).length,1);assert.equal(earnedAchievements(10).length,3);assert.equal(earnedAchievements(21).length,7);assert.equal(new Set(achievements.map(a=>a.id)).size,7);
-console.log('QA: 8 combinações de preferências × 21 etapas; respostas válidas, retomada com mesmos tamanhos, modelos, transcrições e conquistas graduais passaram.');
+assert.equal(earnedAchievements(2).length,0);assert.equal(earnedAchievements(3).length,1);assert.equal(earnedAchievements(10).length,3);assert.equal(earnedAchievements(21).length,7);assert.equal(new Set(achievements.map(a=>a.id)).size,9);
+console.log('QA: 8 combinações de preferências × 26 etapas; respostas válidas, retomada com mesmos tamanhos, modelos, transcrições e conquistas graduais passaram.');

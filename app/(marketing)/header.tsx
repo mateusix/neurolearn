@@ -1,5 +1,6 @@
 "use client";
 
+import AvatarBuddy from './avatar-buddy';
 import Image from 'next/image';
 import styles from './header.module.css';
 import Link from 'next/link';
@@ -29,7 +30,7 @@ export const Header = () => {
 
         <div className={styles.account}>
           {avatar && <div className={styles.avatar} title={`Meu bichinho: ${avatar.name}`}>
-            <Image src={`/avatars/${avatar.id}.svg`} width={42} height={42} alt={`Meu bichinho: ${avatar.name}`} />
+            <AvatarBuddy id={avatar.id} size={42} alt={`Meu bichinho: ${avatar.name}`} />
           </div>}
           {isLoaded && isSignedIn && <Link className="min-h-11 px-2 text-xs sm:text-sm font-bold text-[var(--nl-text)] flex items-center" href="/responsavel">Meus perfis</Link>}
           {!isLoaded ? (

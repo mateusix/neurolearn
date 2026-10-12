@@ -1,8 +1,10 @@
+import { getProgress } from './lessons';
 import { currentChild, isAccountMode, updateChild } from "./family-store";
 export const avatars = [
-  { id: "panda", name: "Panda" }, { id: "urso", name: "Urso" },
-  { id: "borboleta", name: "Borboleta" }, { id: "gato", name: "Gato" },
-  { id: "coelho", name: "Coelho" }, { id: "raposa", name: "Raposa" },
+  { id: "panda", name: "Panda", at:0 }, { id: "urso", name: "Urso", at:0 },
+  { id: "borboleta", name: "Borboleta", at:0 }, { id: "gato", name: "Gato", at:0 },
+  { id: "coelho", name: "Coelho", at:0 }, { id: "raposa", name: "Raposa", at:0 },
+  {id:"pato",name:"Pato",at:3}, {id:"dinossauro",name:"Dinossauro",at:9}, {id:"pinguim",name:"Pinguim",at:15},
 ] as const;
 const key = "neurolearn-avatar-v1";
 let sessionAvatar = "";
@@ -14,7 +16,7 @@ export function getAvatar() {
   catch { return sessionAvatar; }
 }
 export function saveAvatar(id: string) {
-  if (!validAvatar(id)) return false;
+  if (!avatars.some(a=>a.id===id && a.at<=getProgress())) return false;
   if (isAccountMode()) return updateChild({avatar:id});
   sessionAvatar = id;
   let saved = true;

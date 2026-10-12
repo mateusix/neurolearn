@@ -1,5 +1,7 @@
 "use client";
 import dynamic from "next/dynamic";
+import { getExperienceSnapshot, getServerExperienceSnapshot, subscribeExperience, toggleFavorite } from '@/lib/experience';
+import type { Experience } from '@/lib/experience-values';
 import LearningLoading from "./learning-loading";
 import Image from "next/image";
 import { canOpenStage } from "@/lib/learning-access";
@@ -18,6 +20,8 @@ import { earnedAchievements } from "@/lib/achievements";
 import { getFamilySnapshot, getServerFamilySnapshot, subscribeFamily, syncFamily, currentChild } from "@/lib/family-store";
 import styles from "./trail.module.css";
 
+const CollectionPanel = dynamic(() => import('./collection-panel'));
+const FavoritesPanel = dynamic(() => import('./favorites-panel'));
 const Lesson = dynamic(() => import("./lesson"), {loading: () => <LearningLoading />});
 const ChooseAvatar = dynamic(() => import("./choose-avatar"), {loading: () => <LearningLoading />});
 const PreferencesQuiz = dynamic(() => import("./preferences-quiz"), {loading: () => <LearningLoading />});
@@ -40,8 +44,8 @@ steps.push(
 
 steps.push(...lessons.slice(8).map((lesson,index) => ({
   title:lesson.title,
-  detail:["Combine letras maiúsculas e minúsculas.","Encontre a sílaba que falta.","Leia e associe a palavra à imagem.","Monte palavras conhecidas usando uma dica se precisar.","Descubra palavras um pouco maiores.","Escreva sem copiar; abra uma dica quando quiser.","Coloque palavras em ordem para formar uma frase.","Leia uma frase e descubra o que ela conta.","Escute a Nina e coloque as palavras em ordem.","Descubra miau, au au e muu.","Conheça palavras com frutas coloridas.","Descubra os objetos que usamos para aprender.","Leia os nomes dos transportes."][index] || "Use sua voz para praticar palavras e frases, no seu ritmo.",
-  icon:["vogais","silabas","palavras","silabas","silabas","palavras","palavras","sons","sons","sons","palavras","palavras","palavras"][index],
+  detail:["Combine letras maiúsculas e minúsculas.","Encontre a sílaba que falta.","Leia e associe a palavra à imagem.","Monte palavras conhecidas usando uma dica se precisar.","Descubra palavras um pouco maiores.","Escreva sem copiar; abra uma dica quando quiser.","Coloque palavras em ordem para formar uma frase.","Leia uma frase e descubra o que ela conta.","Escute a Nina e coloque as palavras em ordem.","Descubra miau, au au e muu.","Conheça palavras com frutas coloridas.","Descubra os objetos que usamos para aprender.","Leia os nomes dos transportes."][index] || (lesson.exercises[0]?.kind === "memory" ? "Vire cartas e combine imagens com palavras, sem pressa." : "Leia, observe e responda com a ajuda da Luna."),
+  icon:["vogais","silabas","palavras","silabas","silabas","palavras","palavras","sons","sons","sons","palavras","palavras","palavras"][index] || "palavras",
   color:["blue","purple","green","peach"][index % 4],
 })));
 
@@ -54,6 +58,8 @@ function LearningHome() {
   const preferenceSnapshot = useSyncExternalStore(subscribePreferences, getPreferencesSnapshot, () => "");
   const preferences = useMemo(() => preferenceSnapshot ? JSON.parse(preferenceSnapshot) as Preferences : null, [preferenceSnapshot]);
   const [changingPreferences, setChangingPreferences] = useState(false);
+  const experience=JSON.parse(useSyncExternalStore(subscribeExperience,getExperienceSnapshot,getServerExperienceSnapshot)) as Experience;
+  const [panel,setPanel]=useState<'collection'|'favorites'|null>(null);
   const [showAchievements, setShowAchievements] = useState(false);
   const avatarId = useSyncExternalStore(subscribeAvatar, getAvatar, () => "");
   const [changingAvatar, setChangingAvatar] = useState(false);
@@ -89,18 +95,20 @@ function LearningHome() {
     stop(); if (!savePreferences(value)) setStorageMessage("Suas escolhas valem nesta sessão, mas não foi possível salvá-las neste navegador."); setChangingPreferences(false);
   }} onCancel={() => setChangingPreferences(false)} /><p role="status" className={styles.audioStatus}>{storageMessage}</p></div>;
   if (!preferences.palette) return <div className={styles.page}><PalettePicker current={preferences.palette} onSave={palette=>{ if (!savePreferences({...preferences,palette})) setStorageMessage("As cores valem nesta sessão, mas não foi possível salvá-las."); }} /><p role="status">{storageMessage}</p></div>;
+  if (panel==='collection') return <CollectionPanel onBack={()=>setPanel(null)}/>;
+  if (panel==='favorites') return <FavoritesPanel onBack={()=>setPanel(null)} onOpen={index=>{setPanel(null);openLesson(index);}}/>;
   if (showAchievements) return <div className={styles.page}><AchievementsPanel completed={completed} onBack={() => setShowAchievements(false)} /></div>;
   return <div className={styles.page}>
     <div className={styles.avatarProfile}><div><span>Meu bichinho: <strong>{avatar.name}</strong></span></div><button onClick={() => { stop(); setChangingAvatar(true); }}>Trocar bichinho</button></div>
     <div className={styles.topline}><span><BookOpen size={18} aria-hidden="true" /> Minha aprendizagem</span><span className={styles.previewTag}>Protótipo de aprendizagem</span></div>
     {active === null && <>
-      <nav className={styles.trailTabs} aria-label="Minha aprendizagem"><button aria-current="page">Minha trilha</button><button onClick={() => { stop(); setShowAchievements(true); }}><Trophy size={18} aria-hidden="true" /> Minhas conquistas ({earnedAchievements(completed).length})</button></nav>
+      <nav className={styles.trailTabs} aria-label="Minha aprendizagem"><button aria-current="page">Minha trilha</button><button onClick={() => { stop(); setShowAchievements(true); }}><Trophy size={18} aria-hidden="true" /> Minhas conquistas ({earnedAchievements(completed).length})</button><button onClick={()=>{stop();setPanel("collection");}}>Meu bichinho e coleção</button><button onClick={()=>{stop();setPanel("favorites");}}>Favoritos ({experience.favorites.length})</button></nav>
       <div className={styles.preferenceSummary}><span>Meu tema: {themes.find(theme => theme.id === preferences.theme)?.name}</span><button onClick={() => { stop(); setChangingPreferences(true); }}>Mudar meus gostos</button></div>
     </>}
     {active !== null ? <Lesson key={`${family.selected}:${active}`} preferences={preferences} index={active} onBack={back} onComplete={complete} onNext={active + 1 < lessons.length ? nextStage : undefined} /> : <>
       <section className={styles.welcome} aria-labelledby="welcome-title">
         <div className={styles.mascot}><Image src="/mascotes/corpo-acenando.svg" width={112} height={112} className="luna-wave" alt="Luna, o mascote azul do NeuroLearn, acenando" preload /></div>
-        <div className={styles.welcomeText}><p className={styles.eyebrow}>UM PASSO DE CADA VEZ</p><h1 id="welcome-title">Olá, eu sou a Luna!</h1><p>Vamos aprender juntos, no seu ritmo. Pode tentar com calma. Eu estou aqui para ajudar você!</p></div>
+        <div className={styles.welcomeText}><p className={styles.eyebrow}>UM PASSO DE CADA VEZ</p><h1 id="welcome-title">Que bom ter você aqui{currentChild()?.name ? `, ${currentChild()!.name}` : ""}!</h1><p>Eu sou a Luna. Seu amigo {avatar.name.toLocaleLowerCase("pt-BR")} já está pronto! Vamos descobrir letras, palavras e histórias, no seu ritmo.</p></div>
         <button className={styles.listen} onClick={() => speak("luna-apresentacao")} aria-label="Ouvir a apresentação da Luna"><Volume2 size={22} aria-hidden="true" /><span>Ouvir</span></button>
       </section>
       <p role="status" className={styles.audioStatus}>{message}</p>
@@ -120,6 +128,7 @@ function LearningHome() {
               <span className={styles.stepLabel}>{done ? "CONCLUÍDA" : index === completed ? "SUA PRÓXIMA DESCOBERTA" : `ETAPA ${index + 1}`}</span>
               <h3>{step.title}</h3><p>{preferences.theme !== "mixed" && [2,3,5,6,9,10,11,13].includes(index) ? `Palavras no tema ${themes.find(theme => theme.id === preferences.theme)?.name.toLocaleLowerCase("pt-BR")}, com imagens e dicas para ajudar.` : step.detail}</p>
               {available ? <button className={`${styles.start} ${done ? styles.practiceStart : styles.nextStart}`} onClick={() => openLesson(index)} aria-label={`${done ? "Praticar de novo" : "Começar"}: ${step.title}`}><Play size={17} fill="currentColor" aria-hidden="true" /> {done ? "Praticar de novo" : "Começar"}<ArrowRight size={19} aria-hidden="true" /></button> : <span className={styles.lockLabel}><LockKeyhole size={15} aria-hidden="true" /> Abre depois da etapa {index}</span>}
+              {available&&<button type="button" className={styles.favoriteButton} aria-label={`${experience.favorites.includes(index)?"Retirar dos favoritos":"Favoritar"}: ${step.title}`} aria-pressed={experience.favorites.includes(index)} onClick={()=>{if(!toggleFavorite(index))setStorageMessage('Não foi possível guardar esta preferência.');}}>{experience.favorites.includes(index)?'★ Favoritada':'☆ Favoritar'}</button>}
             </div>
           </li>;
         })}</ol>

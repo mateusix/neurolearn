@@ -725,6 +725,78 @@
       "context": "Orientação específica do exercício",
       "text": "Leia a frase: A vaca muge. A pergunta é: Quem muge? Procure na frase o nome do animal que faz esse som. Escolha essa palavra e confirme.",
       "status": "pending_generation"
+    },
+    {
+      "id": "guia-memoria",
+      "context": "Novas atividades",
+      "text": "Vire duas cartas. Procure uma imagem e a palavra que dá nome a ela. Os pares ficam abertos. Se não combinarem, observe e vire as cartas de novo. Sem pressa!",
+      "status": "pending_generation"
+    },
+    {
+      "id": "guia-historia",
+      "context": "Novas atividades",
+      "text": "Leia o pequeno trecho da história. Depois, escolha a resposta para a pergunta. Você pode reler e abrir uma dica antes de confirmar.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "guia-combinar-imagens",
+      "context": "Novas atividades",
+      "text": "Observe a imagem. Leia as palavras e escolha o nome que combina com ela. Depois, toque em Confirmar.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "luna-success-0",
+      "context": "Mensagens variadas da Luna",
+      "text": "Você observou com atenção. Mais uma descoberta!",
+      "status": "pending_generation"
+    },
+    {
+      "id": "luna-success-1",
+      "context": "Mensagens variadas da Luna",
+      "text": "As palavras estão ganhando sentido. Vamos no seu ritmo!",
+      "status": "pending_generation"
+    },
+    {
+      "id": "luna-success-2",
+      "context": "Mensagens variadas da Luna",
+      "text": "Que bom ver você tentando! Você encontrou a resposta.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "luna-success-3",
+      "context": "Mensagens variadas da Luna",
+      "text": "Um passo de cada vez. Hoje você descobriu algo novo!",
+      "status": "pending_generation"
+    },
+    {
+      "id": "luna-support-0",
+      "context": "Mensagens variadas da Luna",
+      "text": "Você pode reler a pergunta. Eu continuo aqui com você.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "luna-support-1",
+      "context": "Mensagens variadas da Luna",
+      "text": "Vamos olhar uma parte de cada vez? A dica pode ajudar.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "luna-support-2",
+      "context": "Mensagens variadas da Luna",
+      "text": "Tudo bem tentar de novo. Você pode mudar sua resposta.",
+      "status": "pending_generation"
+    },
+    {
+      "id": "luna-finish-0",
+      "context": "Mensagens variadas da Luna",
+      "text": "Você descobriu mais um pedacinho desta aventura! Quer descansar ou continuar?",
+      "status": "pending_generation"
+    },
+    {
+      "id": "luna-finish-1",
+      "context": "Mensagens variadas da Luna",
+      "text": "Uma etapa concluída. Seu esforço faz parte da aprendizagem. Vamos com calma!",
+      "status": "pending_generation"
     }
   ],
   "guideName": "Luna",

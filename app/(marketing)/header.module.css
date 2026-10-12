@@ -19,3 +19,7 @@
  .account > a { padding:4px; font-size:11px; }
 }
 @media(max-width:350px) { .brand > span { font-size:15px; } .brand > img { width:22px; height:22px; } .account { gap:4px; } .avatar { width:28px; height:28px; } }
+@media(max-width:600px) {
+ .avatar > span { width:28px!important; height:28px!important; font-size:7px!important; }
+ .avatar img { display:block; }
+}

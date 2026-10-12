@@ -1,3 +1,4 @@
+import { emptyExperience, validExperience, mergeExperience } from './experience-values';
 import { lessons } from './lessons';
 import type { ChildProfile, Family } from './family-types';
 import { emptyFamily } from './family-types';
@@ -12,7 +13,7 @@ const listeners = new Set<() => void>();
 export const getFamilySnapshot = () => state;
 export const getServerFamilySnapshot = () => initial;
 export function subscribeFamily(listener: () => void) { listeners.add(listener); return () => { listeners.delete(listener); }; }
-function emit() { for (const listener of listeners) listener(); if (typeof window !== 'undefined') { window.dispatchEvent(new Event('neurolearn-progress')); window.dispatchEvent(new Event('neurolearn-avatar-change')); window.dispatchEvent(new Event('neurolearn-preferences')); } }
+function emit() { for (const listener of listeners) listener(); if (typeof window !== 'undefined') { window.dispatchEvent(new Event('neurolearn-progress')); window.dispatchEvent(new Event('neurolearn-avatar-change')); window.dispatchEvent(new Event('neurolearn-preferences')); window.dispatchEvent(new Event('neurolearn-experience')); } }
 function set(patch: Partial<Snapshot>) { state = { ...state, ...patch }; emit(); }
 const cacheKey = (user: string, child: string) => `neurolearn-pending:${user}:${child}`;
 function cache(child: ChildProfile) { try { localStorage.setItem(cacheKey(state.userId!, child.id), JSON.stringify(child)); } catch { set({error:'Não foi possível guardar uma cópia neste navegador. Mantenha a página aberta até salvar na conta.'}); } }
@@ -23,7 +24,7 @@ function merge(server: ChildProfile, local: ChildProfile): ChildProfile {
     const stage = Number(index);
     if (/^\d+$/.test(index) && lessons[stage] && Number.isInteger(value) && value >= 0 && value < lessons[stage].exercises.length) positions[index] = stage < completed ? 0 : Math.max(positions[index] || 0, value);
   }
-  return { ...server, avatar: local.avatar, preferences:local.preferences ?? server.preferences, completed, positions };
+  return { ...server, ...(validExperience(local.experience,lessons.length) ? {experience:mergeExperience(validExperience(server.experience,lessons.length)?server.experience:emptyExperience(),local.experience)} : {}), avatar: local.avatar, preferences:local.preferences ?? server.preferences, completed, positions };
 }
 export function currentChild() { return state.family.children[state.selected]; }
 export function isAccountMode() { return state.userId !== null; }
@@ -67,7 +68,7 @@ export function selectChild(id: string) {
   set({selected:id});
   try { localStorage.setItem(`neurolearn-child:${state.userId}`,id); } catch {}
 }
-export function updateChild(patch: Partial<Pick<ChildProfile,'avatar'|'completed'|'positions'|'preferences'>>) {
+export function updateChild(patch: Partial<Pick<ChildProfile,'avatar'|'completed'|'positions'|'preferences'|'experience'>>) {
   const child = currentChild(); if (!child) return false;
   const updated = {...child,...patch,updatedAt:new Date().toISOString()};
   set({family:{...state.family,children:{...state.family.children,[child.id]:updated}},pending:true,error:''});
@@ -86,7 +87,7 @@ export function syncFamily() {
     set({saving:true,error:''});
     try {
       for (const child of children) {
-        const remote: ChildProfile = await familyRequest({method:'POST',keepalive:true,headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'progress',childId:child.id,avatar:child.avatar,completed:child.completed,positions:child.positions,preferences:child.preferences})});
+        const remote: ChildProfile = await familyRequest({method:'POST',keepalive:true,headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'progress',childId:child.id,avatar:child.avatar,completed:child.completed,positions:child.positions,preferences:child.preferences,experience:child.experience})});
         if (generation !== revision) return;
         const latest = state.family.children[child.id];
         // Preserve edits made while this request was in flight.

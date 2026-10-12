@@ -1,0 +1,26 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),ts=require('typescript'),React=require('react');
+const {renderToStaticMarkup}=require('react-dom/server');
+const modules=new Map(),storage=new Map();
+function load(file){if(modules.has(file))return modules.get(file);const exports={};modules.set(file,exports);vm.runInNewContext(ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.CommonJS}}).outputText,{exports,require(name){if(name==='./family-store')return {isAccountMode:()=>false,currentChild:()=>undefined,updateChild:()=>false};return load('lib/'+name.replace('./','')+'.ts');},localStorage:{getItem:k=>storage.get(k)||null,setItem:(k,v)=>storage.set(k,v)},window:{dispatchEvent(){}},Event});return exports;}
+const learning=load('lib/lessons.ts'),values=load('lib/experience-values.ts'),experience=load('lib/experience.ts'),avatars=load('lib/avatars.ts');
+const {lessons}=learning;
+storage.set('neurolearn-progress-v1','23');assert.equal(learning.getProgress(),21);storage.set(learning.progressKey,'26');storage.set('neurolearn-progress-v1','broken');assert.equal(learning.getProgress(),26);storage.clear();
+assert.equal(avatars.saveAvatar('pato'),false);learning.saveProgress(3);assert.equal(avatars.saveAvatar('pato'),true);assert.equal(avatars.saveAvatar('dinossauro'),false);
+assert.equal(experience.toggleFavorite(0),true);assert.equal(experience.readExperience().favorites[0],0);assert.equal(experience.toggleFavorite(20),false);experience.toggleFavorite(0);assert.equal(experience.readExperience().favorites.length,0);
+experience.recordAttempt(0,false);experience.recordAttempt(0,true);assert.equal(experience.readExperience().stats['0'][0],2);assert.equal(experience.readExperience().stats['0'][1],1);
+const full={favorites:Array.from({length:26},(_,i)=>i),accessory:'bow',fontSize:'large',stats:Object.fromEntries(lessons.map((_,i)=>[i,[9999,5000]]))};assert.equal(values.validExperience(full,26),true);
+const family={version:2,children:Object.fromEntries(Array.from({length:5},(_,i)=>[String(i),{id:String(i),name:'Um apelido de tamanho razoável',avatar:'dinossauro',completed:26,positions:Object.fromEntries(lessons.map((_,i)=>[i,0])),updatedAt:new Date().toISOString(),experience:full,preferences:{theme:'mixed',support:'hint',palette:'night'}}]))};assert.ok(Buffer.byteLength(JSON.stringify({neurolearn:family}))<7500);
+for(const stage of lessons.slice(21,23)){let last=0;for(const e of stage.exercises){assert.ok(e.passage.length>last);last=e.passage.length;assert.ok(e.options.includes(e.answer));}}
+let states=[],cursor=0,attempts=[],solved=0;
+const pairs=[{word:'GATO',picture:'🐱'},{word:'PATO',picture:'🦆'},{word:'SAPO',picture:'🐸'}];
+const memory={exports:{},Math:{random:()=>0},require(name){if(name==='react')return {...React,useState(initial){const i=cursor++;if(!(i in states))states[i]=typeof initial==='function'?initial():initial;return [states[i],v=>states[i]=typeof v==='function'?v(states[i]):v];}};if(name.endsWith('.css'))return {default:{}};return require(name);}};
+vm.runInNewContext(ts.transpileModule(fs.readFileSync('app/(marketing)/memory-game.tsx','utf8'),{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.CommonJS,jsx:ts.JsxEmit.ReactJSX}}).outputText,memory);
+function render(){cursor=0;return memory.exports.default({pairs,onAttempt:x=>attempts.push(x),onSolved:()=>solved++});}
+function nodes(node){if(!node)return [];if(Array.isArray(node))return node.flatMap(nodes);if(typeof node!=='object')return [];return [node,...nodes(node.props?.children)];}
+function flip(i){const tree=render();const button=nodes(tree).filter(n=>n.type==='button'&&n.props['aria-pressed']!==undefined)[i];assert.equal(!!button.props.disabled,false);button.props.onClick();}
+flip(0);flip(2);assert.equal(attempts[0],false);assert.equal(solved,0);let tree=render();nodes(tree).find(n=>n.type==='button'&&n.props.children==='Virar estas cartas de novo').props.onClick();
+for(const i of [0,1,2,3,4,5])flip(i);assert.equal(solved,1);assert.equal(attempts.filter(Boolean).length,3);assert.ok(renderToStaticMarkup(render()).includes('Todos os pares encontrados'));
+const report={exports:{},require(name){if(name==='@/lib/lessons')return learning;if(name==='@/lib/experience-values')return values;if(name.endsWith('.css'))return {default:{}};return require(name);}};
+vm.runInNewContext(ts.transpileModule(fs.readFileSync('app/(marketing)/progress-report.tsx','utf8'),{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.CommonJS,jsx:ts.JsxEmit.ReactJSX}}).outputText,report);
+const html=renderToStaticMarkup(React.createElement(report.exports.default,{name:'Teste',completed:3,experience:experience.readExperience(),onBack(){}}));assert.ok(html.includes('50%'));assert.ok(html.includes('dados começam nesta atualização'));
+console.log('QA das descobertas: histórias progressivas, memória com erro/retentativa/conclusão, relatório, favoritos, desbloqueios, migração e tamanho de cinco perfis passaram.');

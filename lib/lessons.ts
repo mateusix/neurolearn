@@ -1,12 +1,16 @@
 import { currentChild, isAccountMode, updateChild } from "./family-store";
 export type Exercise = {
   id: string;
-  kind: "choice" | "order" | "write" | "speak";
+  passage?: string;
+  storyTitle?: string;
+  memoryPairs?: {word:string;picture:string}[];
+  kind: "choice" | "order" | "write" | "speak" | "memory";
   prompt: string;
   spoken: string;
   answer: string;
   options?: string[];
   picture?: string;
+  pictureLabel?: string;
   word?: string;
   hint: string;
   hideModel?: boolean;
@@ -134,6 +138,24 @@ for (const [themeIndex, theme] of themedWords.entries()) {
     hint:`A imagem mostra ${word}. Observe as letras desta palavra.`,
   }))});
 }
+
+// New content is appended so previously completed stages keep their indexes.
+const stories = [
+ {title:'A bola do Pato',picture:'🦆',parts:[
+  {text:'O Pato foi ao parque. Ele levou uma bola azul.',question:'O que o Pato levou?',answer:'BOLA',options:['BOLA','LIVRO','UVA'],hint:'Ele levou uma bola azul.'},
+  {text:'O Pato encontrou a Gata. A Gata chutou a bola, e a bola rolou na grama.',question:'Quem chutou a bola?',answer:'GATA',options:['PATO','GATA','SAPO'],hint:'A Gata chutou a bola.'},
+  {text:'Os dois guardaram a bola e beberam água. Foi uma tarde divertida!',question:'O que eles beberam?',answer:'ÁGUA',options:['SUCO','LEITE','ÁGUA'],hint:'Depois da brincadeira, eles beberam água.'},
+ ]},
+ {title:'O piquenique do Coelho',picture:'🐰',parts:[
+  {text:'O Coelho preparou um piquenique. Na cesta, colocou maçã e pão.',question:'Qual fruta estava na cesta?',answer:'MAÇÃ',options:['UVA','MAÇÃ','PERA'],hint:'A cesta tinha maçã e pão.'},
+  {text:'A Borboleta chegou. Eles abriram a cesta embaixo de uma árvore.',question:'Onde fizeram o piquenique?',answer:'EMBAIXO DA ÁRVORE',options:['NO MAR','EMBAIXO DA ÁRVORE','NA LUA'],hint:'A árvore fazia uma sombra gostosa.'},
+  {text:'Depois de comer, o Coelho e a Borboleta recolheram o lixo. O parque ficou limpo.',question:'O que eles recolheram?',answer:'LIXO',options:['LIXO','BOLAS','FLORES'],hint:'Eles cuidaram do parque recolhendo o lixo.'},
+ ]},
+];
+for(const [i,story] of stories.entries())lessons.push({title:`História: ${story.title}`,exercises:story.parts.map((part,j)=>({id:`historia-${i}-${j}`,kind:'choice',prompt:part.question,spoken:part.question,answer:part.answer,options:part.options,hint:part.hint,picture:story.picture,pictureLabel:i===0?"Pato":"Coelho",storyTitle:story.title,passage:story.parts.slice(0,j+1).map(p=>p.text).join('\n\n')}))});
+lessons.push({title:'Combinar imagens e palavras',exercises:[['GATO','🐱'],['BOLA','⚽'],['MAÇÃ','🍎'],['LIVRO','📚']].map(([answer,picture],i)=>({id:`combinar-imagem-${i}`,kind:'choice',prompt:'Qual palavra combina com esta imagem?',spoken:'Observe a imagem e escolha a palavra que combina com ela.',picture,pictureLabel:answer.toLocaleLowerCase("pt-BR"),answer,options:[answer,...['GATO','BOLA','MAÇÃ','LIVRO'].filter(w=>w!==answer).slice(0,2)].reverse(),hint:`A imagem mostra ${answer.toLocaleLowerCase('pt-BR')}. Procure essa palavra.`}))});
+for(const [i,title,words] of [[0,'Memória dos bichinhos',[['GATO','🐱'],['PATO','🦆'],['SAPO','🐸']]],[1,'Memória das frutas',[['UVA','🍇'],['MAÇÃ','🍎'],['PERA','🍐']]]] as const)lessons.push({title,exercises:[0,1].map(round=>({id:`memoria-${i}-${round}`,kind:'memory',prompt:'Encontre os pares de imagem e palavra',spoken:'Vire duas cartas. Combine a imagem com seu nome, sem pressa.',answer:'COMPLETO',hint:'Procure a palavra que dá nome à imagem. Se precisar, vire as cartas de novo.',memoryPairs:words.map(([word,picture])=>({word,picture}))}))});
+
 // Recordings are reused across activities; no generation occurs while a child plays.
 for (const lesson of lessons) for (const exercise of lesson.exercises) {
   if (exercise.picture === "🐱" && !exercise.listening) exercise.pictureAudioId = "palavra-gato";
@@ -145,7 +167,8 @@ export const learningBlocks = [
   { title:"Experimentar com mais autonomia", detail:"Ler e montar com menos apoio; as dicas continuam disponíveis." },
   { title:"Das palavras às frases", detail:"Três sílabas, escrita e leitura de frases curtas." },
   { title:"Escutar e descobrir", detail:"Frases, sons dos animais e palavras do dia a dia." },
-  { title:"Explorar novos lugares", detail:"Transportes e descobertas do nosso cotidiano." },
+  { title:"Histórias e descobertas", detail:"Transportes, pequenas histórias e associação de imagens." },
+  { title:"Brincar com as palavras", detail:"Jogos de memória com imagens e palavras." },
 ];
 export function assembleAnswer(exercise: Exercise, pieces: number[]) {
   return pieces.map(i => exercise.options?.[i] ?? "").join(exercise.separator ?? "");
@@ -177,10 +200,10 @@ export function saveLessonPosition(index: number, position: number) {
     return true;
   } catch { return false; }
 }
-export const progressKey = "neurolearn-progress-v1";
+export const progressKey = "neurolearn-progress-v2";
 export function normalizeAnswer(value: string) { return value.trim().toLocaleUpperCase("pt-BR").normalize("NFC"); }
 export function readProgress(): number {
-  try { const value = JSON.parse(localStorage.getItem(progressKey) || "0"); return Number.isInteger(value) && value >= 0 && value <= 23 ? Math.min(value, lessons.length) : 0; } catch { return 0; }
+  try { const raw = localStorage.getItem(progressKey); let value:unknown; if(raw!==null)value=JSON.parse(raw);else{const legacy=JSON.parse(localStorage.getItem("neurolearn-progress-v1")||"0");value=Number.isInteger(legacy)&&legacy>=0&&legacy<=23?Math.min(legacy,21):0;} return typeof value === "number" && Number.isInteger(value) && value >= 0 && value <= lessons.length ? value : 0; } catch { return 0; }
 }
 let sessionProgress = 0;
 export function getProgress() { return isAccountMode() ? Math.min(currentChild()?.completed || 0, lessons.length) : Math.min(lessons.length, Math.max(sessionProgress, readProgress())); }

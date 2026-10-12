@@ -3,7 +3,10 @@ import type { Exercise } from './lessons';
 export function exerciseGuidance(exercise:Exercise):{id:string;text:string}|null {
  let id:keyof typeof texts;
  if(exercise.kind==='speak')return null;
- if(exercise.listening)id='guia-ouvir-frase';
+ if(exercise.kind==='memory')id='guia-memoria';
+ else if(exercise.passage)id='guia-historia';
+ else if(exercise.id.startsWith('combinar-imagem-'))id='guia-combinar-imagens';
+ else if(exercise.listening)id='guia-ouvir-frase';
  else if(exercise.id==='ler-frase-gato')id='guia-frase-gato';
  else if(exercise.id==='ler-frase-pato')id='guia-frase-pato';
  else if(exercise.id==='ler-frase-bola')id='guia-frase-bola';

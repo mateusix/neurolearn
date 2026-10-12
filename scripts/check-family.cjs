@@ -9,12 +9,11 @@ const accounts = new Map();
 const local = new Map();
 const events = [];
 const modules = new Map();
+function deepMerge(base,patch){const out={...base};for(const [key,value]of Object.entries(patch)){if(value===null)delete out[key];else if(value&&typeof value==='object'&&!Array.isArray(value))out[key]=deepMerge(out[key]&&typeof out[key]==='object'?out[key]:{},value);else out[key]=structuredClone(value);}return out;}
 const clerk = {auth:async()=>({userId:owner}),clerkClient:async()=>({users:{
  getUser:async(id)=>({privateMetadata:structuredClone(accounts.get(id)||{other:'preserved'})}),
  updateUserMetadata:async(id,{privateMetadata})=>{
-  const existing = accounts.get(id)||{other:'preserved'};
-  const old = existing.neurolearn||{version:1,children:{}};
-  accounts.set(id,{...existing,...privateMetadata,neurolearn:{version:1,children:{...old.children,...privateMetadata.neurolearn.children}}});
+  accounts.set(id,deepMerge(accounts.get(id)||{other:'preserved'},privateMetadata));
  },
 }})};
 function load(file) {
@@ -62,6 +61,12 @@ async function post(body,origin='http://localhost') {return route.POST(new Reque
  assert.equal((await post({action:'progress',childId:first.id,avatar:'panda',completed:3,positions:{'3':99}})).status,400);
  await store.loadFamily(owner);store.selectChild(first.id);lessons.saveProgress(4);offline=true;await store.syncFamily();assert.equal(store.getFamilySnapshot().pending,true);assert.ok(store.getFamilySnapshot().error);assert.equal(accounts.get(owner).neurolearn.children[first.id].completed,3);offline=false;await store.syncFamily();assert.equal(store.getFamilySnapshot().pending,false);assert.equal(accounts.get(owner).neurolearn.children[first.id].completed,4);
  preferences.savePreferences({theme:'food',support:'model'});await store.syncFamily();await store.loadFamily(owner);store.selectChild(first.id);assert.equal(preferences.readPreferences().theme,'food');store.selectChild(second.id);assert.equal(preferences.readPreferences(),null);assert.equal((await post({action:'progress',childId:first.id,avatar:'gato',completed:4,positions:{},preferences:{theme:'invalid',support:'model'}})).status,400);
+ const experience=load('lib/experience.ts');
+ store.selectChild(first.id);assert.equal(experience.saveExperience({favorites:[0],accessory:'hat',fontSize:'large',stats:{'0':[2,1]}}),true);await store.syncFamily();await store.loadFamily(owner);store.selectChild(first.id);assert.equal(experience.readExperience().accessory,'hat');assert.equal(experience.readExperience().fontSize,'large');assert.equal(experience.readExperience().stats['0'][1],1);store.selectChild(second.id);assert.equal(experience.readExperience().favorites.length,0);assert.equal(experience.readExperience().accessory,'none');
+ assert.equal((await post({action:'progress',childId:second.id,avatar:'dinossauro',completed:0,positions:{}})).status,400);
+ assert.equal((await post({action:'progress',childId:second.id,avatar:'coelho',completed:0,positions:{},experience:{favorites:[],accessory:'hat',fontSize:'standard',stats:{}}})).status,400);
+ assert.equal((await post({action:'progress',childId:first.id,avatar:'gato',completed:4,positions:{},experience:{favorites:[999],accessory:'hat',fontSize:'standard',stats:{}}})).status,400);
+ assert.equal((await post({action:'progress',childId:first.id,avatar:'gato',completed:4,positions:{},experience:{favorites:[],accessory:'hat',fontSize:'standard',stats:{'0':[1,2]}}})).status,400);
  owner='parent-b';assert.equal((await post({action:'progress',childId:first.id,avatar:'panda',completed:3,positions:{}})).status,404);
  assert.equal(Object.keys((await (await route.GET()).json()).children).length,0);
  await store.loadFamily(owner);assert.equal(lessons.getProgress(),0);assert.equal(avatars.getAvatar(),'');
@@ -76,13 +81,20 @@ async function post(body,origin='http://localhost') {return route.POST(new Reque
   if(name==='@/lib/family-store')return {...store,getServerFamilySnapshot:()=>preview};
   if(name.startsWith('@/'))return load(name.slice(2)+'.ts');
   if(name==='./family.module.css')return {default:new Proxy({},{get:(_,key)=>String(key)})};
-  if(name==='next/image')return {default:({src,alt})=>React.createElement('img',{src,alt})};
+  if(name==='./avatar-buddy')return {default:({id})=>React.createElement('img',{src:`/avatars/${id}.svg`,alt:''})};
+ if(name==='./progress-report')return {default:()=>null};
+ if(name==='next/image')return {default:({src,alt})=>React.createElement('img',{src,alt})};
   return require(name);
  }};
  vm.runInNewContext(ts.transpileModule(fs.readFileSync('app/(marketing)/family-panel.tsx','utf8'),{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.CommonJS,jsx:ts.JsxEmit.ReactJSX}}).outputText,panel);
  const html=renderToStaticMarkup(React.createElement(panel.exports.default,{onContinue(){},onClose(){}}));
  assert.ok(html.includes('Teste A'));assert.ok(html.includes('Teste B'));assert.ok(html.includes(`4 de ${lessons.lessons.length} etapas concluídas`));assert.ok(html.includes('Ver etapas concluídas'));assert.ok(html.includes('Novo perfil infantil'));assert.ok(html.includes('/avatars/coelho.svg'));
- const legacy=accounts.get('parent-a').neurolearn.children[first.id];legacy.completed=23;legacy.positions['22']=1;owner='parent-a';const migrated=await (await route.GET()).json();assert.equal(migrated.children[first.id].completed,21);assert.equal(migrated.children[first.id].positions['22'],undefined);
+ accounts.get('parent-a').neurolearn.version=1;
+ const legacy=accounts.get('parent-a').neurolearn.children[first.id];legacy.completed=23;legacy.positions['22']=1;
+ const legacyOther=accounts.get('parent-a').neurolearn.children[second.id];legacyOther.completed=23;legacyOther.positions['22']=1;
+ owner='parent-a';const migrated=await (await route.GET()).json();assert.equal(migrated.children[first.id].completed,21);assert.equal(migrated.children[first.id].positions['22'],undefined);
+ assert.equal((await post({action:'progress',childId:first.id,avatar:'gato',completed:22,positions:{'21':1}})).status,200);
+ const migratedAll=await (await route.GET()).json();assert.equal(migratedAll.children[first.id].completed,22);assert.equal(migratedAll.children[second.id].completed,21);assert.equal(migratedAll.children[second.id].positions['22'],undefined);assert.equal(accounts.get(owner).neurolearn.children[second.id].positions['22'],undefined);
  console.log('QA de carregamento: login indisponível, requisição travada com limite de espera e histórico de fases removidas passaram.');
  console.log('QA do painel: perfis, etapas concluídas, próximo passo e criação renderizados.');
  console.log('QA de perfis: autenticação, origem, isolamento entre responsáveis/crianças, retomada, avatar, limite de perfis, falha de conexão/retentativa e progresso monotônico passaram.');

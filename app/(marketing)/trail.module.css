@@ -147,3 +147,7 @@
 .quizSecondaryActions { margin-top:4px; }
 
 .voicePracticeLink { display:inline-flex; align-items:center; justify-content:center; padding:12px 16px; border:2px solid var(--nl-cc6dde4); border-bottom-width:4px; border-radius:14px; background:var(--nl-cfff); font-weight:800; min-height:48px; }
+
+.favoriteButton { position:relative; z-index:2; display:block; margin-top:14px; padding:10px 14px; border:1px solid var(--nl-cc6dde4); border-radius:12px; background:var(--nl-cfff); min-height:44px; font-size:14px; font-weight:800; }
+.favoriteButton[aria-pressed=true] { background:var(--nl-cfff8e5); }
+.stepCard .favoriteButton { pointer-events:auto; }

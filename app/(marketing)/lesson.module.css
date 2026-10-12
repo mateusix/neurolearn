@@ -139,3 +139,7 @@
 .demoOptions .demoSelected { border-color:var(--nl-c327f9e); background:var(--nl-ce4f4fa); }
 .demoConfirm { opacity:.5; }
 .demoConfirm[data-ready=true] { opacity:1; background:var(--nl-cedf7ee); color:var(--nl-c356543); }
+
+.options .wordOption { font-size:20px; white-space:normal; overflow-wrap:anywhere; line-height:1.45; }
+@media(max-width:600px) { .phraseOptions { grid-template-columns:1fr; } .options .wordOption { font-size:18px; } }
+.guideHeading { display:flex; align-items:center; gap:12px; margin-bottom:12px; }

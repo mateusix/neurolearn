@@ -32,7 +32,7 @@ O responsável pode baixar uma cópia JSON dos perfis no painel. Inclui o estado
 4. Perda de dados: usar a cópia privada como referência para restauração assistida, validando titular e estrutura. Não aceitar JSON arbitrário direto em metadados.
 5. Vazamento de secret: revogar/rotacionar no Clerk, atualizar Vercel e .env, republicar e conferir o login. Nunca registrar o secret em logs.
 
-Os metadados têm versão 1; não há banco SQL nem migrations SQL. Uma futura mudança de formato precisa de transformação testada, cópia prévia e leitura compatível. Rollback do deployment sozinho não desfaz transformações nos dados.
+Os metadados têm versão 2, com leitura compatível e migração do formato anterior; não há banco SQL nem migrations SQL. Uma futura mudança de formato precisa de transformação testada, cópia prévia e leitura compatível. Rollback do deployment sozinho não desfaz transformações nos dados.
 
 ## Referências administrativas
 

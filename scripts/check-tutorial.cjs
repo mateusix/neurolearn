@@ -15,7 +15,7 @@ const context={exports:{},localStorage:{getItem:key=>storage.get(key)||null,setI
 }};
 vm.runInNewContext(ts.transpileModule(fs.readFileSync('app/(marketing)/mini-tutorial.tsx','utf8'),{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.CommonJS,jsx:ts.JsxEmit.ReactJSX}}).outputText,context);
 function find(node,label){if(!node)return;if(Array.isArray(node)){for(const x of node){const found=find(x,label);if(found)return found;}return;}if(typeof node!=='object')return;if(node.type==='button'&&renderToStaticMarkup(node).includes(label))return node;return find(node.props?.children,label);}
-for(const kind of ['choice','write','order','sentence','listening']){
+for(const kind of ['choice','write','order','sentence','listening','memory']){
  states=[];storage.clear();
  const render=()=>{cursor=0;effects=[];const tree=context.exports.default({kind,children:React.createElement('button',{},'REAL EXERCISE')});for(const effect of effects)effect();return tree;};
  let tree=render();let html=renderToStaticMarkup(tree);
@@ -29,4 +29,4 @@ for(const kind of ['choice','write','order','sentence','listening']){
  assert.equal(storage.size,1);assert.ok([...storage.keys()][0].startsWith('neurolearn-demo-v2:'));
  find(tree,'Ver o tutorial de novo').props.onClick();tree=render();assert.ok(!renderToStaticMarkup(tree).includes('REAL EXERCISE'));
 }
-console.log('QA do tutorial: cinco tipos, demonstração isolada, pausa, término, exercício e reabertura passaram.');
+console.log('QA do tutorial: seis tipos, demonstração isolada, pausa, término, exercício e reabertura passaram.');

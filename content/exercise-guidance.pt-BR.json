@@ -14,5 +14,8 @@
   "guia-frase-gato": "Leia a frase: O gato mia. A pergunta é: Quem mia? Procure na frase o nome do animal que faz essa ação. Escolha essa palavra e confirme.",
   "guia-frase-pato": "Leia a frase: O pato nada. A pergunta é: O que o pato faz? Procure na frase a palavra que conta a ação dele. Escolha essa palavra e confirme.",
   "guia-frase-bola": "Leia a frase: A bola rola. A pergunta é: O que rola? Procure na frase o nome do objeto que está rolando. Escolha essa palavra e confirme.",
-  "guia-frase-vaca": "Leia a frase: A vaca muge. A pergunta é: Quem muge? Procure na frase o nome do animal que faz esse som. Escolha essa palavra e confirme."
+  "guia-frase-vaca": "Leia a frase: A vaca muge. A pergunta é: Quem muge? Procure na frase o nome do animal que faz esse som. Escolha essa palavra e confirme.",
+  "guia-memoria": "Vire duas cartas. Procure uma imagem e a palavra que dá nome a ela. Os pares ficam abertos. Se não combinarem, observe e vire as cartas de novo. Sem pressa!",
+  "guia-historia": "Leia o pequeno trecho da história. Depois, escolha a resposta para a pergunta. Você pode reler e abrir uma dica antes de confirmar.",
+  "guia-combinar-imagens": "Observe a imagem. Leia as palavras e escolha o nome que combina com ela. Depois, toque em Confirmar."
 }

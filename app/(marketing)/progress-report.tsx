@@ -1,0 +1,8 @@
+"use client";
+import {lessons} from '@/lib/lessons';
+import {emptyExperience,type Experience} from '@/lib/experience-values';
+import styles from './discovery.module.css';
+export default function ProgressReport({name,completed,experience=emptyExperience(),onBack}:{name:string;completed:number;experience?:Experience;onBack:()=>void}){
+ const [attempts,correct]=Object.values(experience.stats).reduce(([a,c],[x,y])=>[a+x,c+y],[0,0]);
+ return <section className={styles.panel} aria-labelledby="report-title"><button className={styles.button} onClick={onBack}>← Voltar ao painel</button><h1 id="report-title">Descobertas de {name}</h1><div className={styles.stats}><div><strong>{completed}/{lessons.length}</strong>Etapas concluídas</div><div><strong>{attempts?`${Math.round(correct/attempts*100)}%`:'Sem dados'}</strong>Taxa de acerto registrada</div><div><strong>{correct}/{attempts}</strong>Acertos / tentativas</div></div><p>Contamos confirmações de respostas e tentativas de combinar pares na memória, incluindo repetições. Os dados começam nesta atualização; atividades anteriores não têm taxa de acerto registrada. Não é uma avaliação de capacidade ou diagnóstico.</p><div className={styles.tableWrap}><table className={styles.table}><thead><tr><th>Etapa</th><th>Situação</th><th>Acertos / tentativas</th></tr></thead><tbody>{lessons.map((l,i)=><tr key={l.title}><td>{l.title}</td><td>{i<completed?'Concluída':i===completed?'Próxima':'Ainda não aberta'}</td><td>{experience.stats[i]?`${experience.stats[i][1]} / ${experience.stats[i][0]}`:'Sem registro'}</td></tr>)}</tbody></table></div><p>Favoritos: {experience.favorites.length}. O progresso continua salvo por perfil na conta do responsável.</p></section>;
+}
