@@ -143,3 +143,16 @@
 .options .wordOption { font-size:20px; white-space:normal; overflow-wrap:anywhere; line-height:1.45; }
 @media(max-width:600px) { .phraseOptions { grid-template-columns:1fr; } .options .wordOption { font-size:18px; } }
 .guideHeading { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
+
+.assembled { display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:10px; min-height:82px; }
+.options [data-bank][aria-pressed=true] { opacity:.55; border-style:dashed; }
+.resultIcon { display:grid; place-items:center; flex-shrink:0; width:34px; height:34px; border-radius:50%; background:var(--nl-cfff); font-size:24px; font-weight:900; }
+.sparkles { display:block; letter-spacing:12px; color:var(--nl-c756039); font-size:32px; }
+@keyframes result-arrive { from { opacity:0; transform:translateY(8px) scale(.98); } to { opacity:1; transform:translateY(0) scale(1); } }
+@keyframes result-check { 0% { transform:scale(.7); } 65% { transform:scale(1.12); } 100% { transform:scale(1); } }
+@keyframes retry-turn { from { transform:rotate(-35deg); } to { transform:rotate(0); } }
+:global([data-motion=on]) .feedback, :global([data-motion=on]) .finish { animation:result-arrive .35s ease-out both; }
+:global([data-motion=on]) .correct .resultIcon { animation:result-check .45s ease-out; }
+:global([data-motion=on]) .retry .resultIcon { animation:retry-turn .4s ease-out; }
+:global([data-motion=on]) .sparkles { animation:result-check .65s ease-out; }
+@media(max-width:600px) { .feedback { flex-wrap:wrap; } .feedback > div { flex-basis:100%; } }

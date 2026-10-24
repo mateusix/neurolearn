@@ -50,3 +50,7 @@ button.card { cursor:pointer; }
 .localOption p { margin:16px 0; }
 .localOption button[aria-pressed=true] { background:var(--nl-ce4f4fa); border-color:var(--nl-c36758d); }
 .localOption button:disabled { opacity:.6; cursor:default; }
+
+@keyframes memory-result { from { transform:scale(.97); } to { transform:scale(1); } }
+:global([data-motion=on]) .memoryCard[data-matched=true], :global([data-motion=on]) .memoryCard[data-mismatch=true] { animation:memory-result .3s ease-out; }
+.memoryCard[data-mismatch=true] { border-color:var(--nl-ce5b7af); background:var(--nl-cfff1ef); }

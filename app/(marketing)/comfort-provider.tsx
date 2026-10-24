@@ -5,7 +5,7 @@ import { Volume2, VolumeX, Sparkles, Palette } from 'lucide-react';
 import { getComfortSnapshot,getServerComfortSnapshot,saveComfort,subscribeComfort,type SoundCue } from '@/lib/comfort';
 import styles from './comfort.module.css';
 import { getPreferencesSnapshot, subscribePreferences } from '@/lib/preferences';
-const notes:Record<SoundCue,number[]>={click:[440],success:[440,554],complete:[392,494,587],achievement:[440,554,659]};
+const notes:Record<SoundCue,number[]>={click:[440],success:[440,554],retry:[392,349],complete:[392,494,587],achievement:[440,554,659]};
 function subscribeReducedMotion(callback:()=>void) { const query=window.matchMedia('(prefers-reduced-motion: reduce)');query.addEventListener('change',callback);return()=>query.removeEventListener('change',callback); }
 const getReducedMotion=()=>window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 export default function ComfortProvider({children}:{children:React.ReactNode}) {
@@ -14,17 +14,32 @@ export default function ComfortProvider({children}:{children:React.ReactNode}) {
  const settings=useSyncExternalStore(subscribeComfort,getComfortSnapshot,getServerComfortSnapshot);
  const reduced=useSyncExternalStore(subscribeReducedMotion,getReducedMotion,()=>false);
  const sound=settings[0]==='1', motion=settings[1]==='1'&&!reduced;
- const context=useRef<AudioContext|null>(null);const last=useRef(0);const voices=useRef<OscillatorNode[]>([]);
+ const context=useRef<AudioContext|null>(null);const last=useRef(0);const voices=useRef<AudioScheduledSourceNode[]>([]);
+ const playId=useRef(0);
+ const buffers=useRef<Record<string,Promise<AudioBuffer>>>({});
  const [message,setMessage]=useState('');
  const play=useCallback(async(cue:SoundCue,test=false)=>{
    if(!sound)return;
    const now=Date.now();if(!test&&now-last.current<180)return;last.current=now;
+   const id=++playId.current;
    try {
     const AudioEngine=typeof AudioContext!=='undefined'?AudioContext:(window as Window & {webkitAudioContext?:typeof AudioContext}).webkitAudioContext;
     if(!AudioEngine)throw new Error('Audio unavailable');
     const ctx=context.current||new AudioEngine();context.current=ctx;
     if(ctx.state!=='running')await ctx.resume();
     if(ctx.state!=='running')throw new Error('Audio paused');
+    if(getComfortSnapshot()[0]!=='1'||id!==playId.current)return;
+    if((cue==="success"||cue==="retry")&&typeof ctx.createBufferSource==="function"){
+     try{
+      const path=cue==="success"?"/sounds/correct.wav":"/sounds/retry.wav";
+      buffers.current[path] ||= fetch(path).then(response=>{if(!response.ok)throw Error("Sound unavailable");return response.arrayBuffer();}).then(bytes=>ctx.decodeAudioData(bytes));
+      const buffer=await buffers.current[path];if(getComfortSnapshot()[0]!=='1'||id!==playId.current)return;
+      const source=ctx.createBufferSource(),gain=ctx.createGain();source.buffer=buffer;gain.gain.setValueAtTime(test?.18:.10,ctx.currentTime);source.connect(gain);gain.connect(ctx.destination);voices.current.push(source);
+      source.onended=()=>{source.disconnect();gain.disconnect();voices.current=voices.current.filter(v=>v!==source);};source.start();
+      if(test)setMessage("Som de teste reproduzido. Se não ouviu, confira o volume do celular.");return;
+     }catch{delete buffers.current[cue==="success"?"/sounds/correct.wav":"/sounds/retry.wav"];}
+    }
+    if(id!==playId.current||getComfortSnapshot()[0]!=='1')return;
     const start=ctx.currentTime;const sequence=notes[cue];
     sequence.forEach((frequency,i)=>{
       const oscillator=ctx.createOscillator(),gain=ctx.createGain();oscillator.type='sine';oscillator.frequency.value=frequency;
@@ -38,11 +53,11 @@ export default function ComfortProvider({children}:{children:React.ReactNode}) {
    }catch{setMessage('O som não está disponível neste navegador. Você pode continuar normalmente.');}
  },[sound]);
  useEffect(()=>{
-   const listener=(event:Event)=>{const cue=(event as CustomEvent).detail;if(['click','success','complete','achievement'].includes(cue))void play(cue);};
+   const listener=(event:Event)=>{const cue=(event as CustomEvent).detail;if(['click','success','retry','complete','achievement'].includes(cue))void play(cue);};
    window.addEventListener('neurolearn-sound',listener);return()=>window.removeEventListener('neurolearn-sound',listener);
  },[play]);
- useEffect(()=>{if(!sound)for(const voice of voices.current){try{voice.stop();}catch{}}},[sound]);
- useEffect(()=>()=>{void context.current?.close();},[]);
+ useEffect(()=>{if(!sound){playId.current++;}if(!sound)for(const voice of voices.current){try{voice.stop();}catch{}}},[sound]);
+ useEffect(()=>()=>{playId.current++;void context.current?.close();},[]);
  function change(value:string){setMessage(saveComfort(value)?'':'Sua escolha vale nesta sessão, mas não foi possível salvá-la neste navegador.');}
  return <div className={styles.surface} data-motion={motion?'on':'off'} onClick={event=>{
    const target=event.target as Element;const button=target.closest('button');

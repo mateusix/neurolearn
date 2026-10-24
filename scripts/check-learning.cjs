@@ -34,6 +34,7 @@ const {renderToStaticMarkup} = require('react-dom/server');
 const guidanceContext={exports:{},require:name=>name==='@/content/exercise-guidance.pt-BR.json'?{default:JSON.parse(fs.readFileSync('content/exercise-guidance.pt-BR.json','utf8'))}:require(name)};
 vm.runInNewContext(ts.transpileModule(fs.readFileSync('lib/exercise-guidance.ts','utf8'),{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.CommonJS}}).outputText,guidanceContext);
 const lessonModule = {exports:{}, require(name) {
+ if(name==='@/lib/piece-motion')return {movePiece(){},cancelPieceTransfers(){}};
  if(name==='@/lib/lessons') return api;
  if(name==='@/lib/experience') return {recordAttempt:()=>true};
  if(name==='@/lib/avatars')return {avatars:[]};

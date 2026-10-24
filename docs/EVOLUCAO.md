@@ -42,3 +42,7 @@ Na primeira gravação do formato novo, todos os perfis legados são migrados ju
 ## Sugestões da Luna
 
 Painel com próxima etapa e revisões por tentativas registradas. Integração inicial e opcional de Transformers.js para ordenar revisões por afinidade com um tema. Não gera respostas livres, não altera a correção nem desbloqueia etapas. Download apenas por ação explícita, processamento em worker, cancelamento e alternativa por regras. Detalhes, limites de desempenho e privacidade em [IA_LOCAL.md](IA_LOCAL.md).
+
+## Retorno visual e sonoro
+
+Acerto e nova tentativa: entrada suave do painel, símbolo de confirmação ou de tentar novamente e gesto da Luna. Conclusão de etapa tem breve comemoração. Montagem de palavras e frases anima cada opção entre origem e quadro por 320 ms; a resposta muda imediatamente, sem bloquear seleção rápida. Movimento interrompido ao mudar exercício, confirmar, rolar, redimensionar ou desligar animações; respeita movimento reduzido do sistema. Sons curtos do Kenney, CC0, em arquivos WAV locais com volume baixo e alternativa de tons. Nenhum som de erro punitivo prolongado. Memória também tem retorno para combinações corretas e novas tentativas.

@@ -13,7 +13,7 @@ export default function MemoryGame({pairs,onAttempt,onSolved}:{pairs:{word:strin
  }
  return <div className={styles.memory}>
   <p>Sem tempo marcado. Os pares encontrados ficam abertos.</p>
-  <div className={styles.memoryGrid} role="group" aria-label="Cartas do jogo de memória">{deck.map((card,index)=>{const found=matched.includes(card.id),shown=found||open.includes(index);return <button key={index} type="button" className={styles.memoryCard} data-matched={found} aria-pressed={shown} disabled={found||open.length===2&&!open.includes(index)} aria-label={shown?(card.type==='picture'?`Imagem de ${pairs[card.id].word}`:card.text):`Virar carta ${index+1}`} onClick={()=>flip(index)}>{shown?<span className={card.type==='picture'?styles.memoryPicture:undefined}>{card.text}</span>:'?'}</button>;})}</div>
+  <div className={styles.memoryGrid} role="group" aria-label="Cartas do jogo de memória">{deck.map((card,index)=>{const found=matched.includes(card.id),shown=found||open.includes(index);return <button key={index} type="button" className={styles.memoryCard} data-matched={found} data-mismatch={!found&&open.length===2&&open.includes(index)} aria-pressed={shown} disabled={found||open.length===2&&!open.includes(index)} aria-label={shown?(card.type==='picture'?`Imagem de ${pairs[card.id].word}`:card.text):`Virar carta ${index+1}`} onClick={()=>flip(index)}>{shown?<span className={card.type==='picture'?styles.memoryPicture:undefined}>{card.text}</span>:'?'}</button>;})}</div>
   <p role="status" className={styles.memoryStatus}>{message}</p>
   {open.length===2&&<button className={styles.button} onClick={()=>{setOpen([]);setMessage('Vamos procurar outro par. Você pode tentar de novo.');}}>Virar estas cartas de novo</button>}
  </div>;

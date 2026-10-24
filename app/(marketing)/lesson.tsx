@@ -1,4 +1,5 @@
 "use client";
+import { movePiece, cancelPieceTransfers } from "@/lib/piece-motion";
 import MemoryGame from './memory-game';
 import { recordAttempt } from '@/lib/experience';
 import { avatars } from '@/lib/avatars';
@@ -37,6 +38,8 @@ export default function Lesson({ index, onBack, onComplete, onNext, preferences 
   const exercise = lesson.exercises[position];
   const orientation = exerciseGuidance(exercise);
   useEffect(() => { title.current?.focus(); }, [position, finished]);
+  const assemblyRoot=useRef<HTMLDivElement>(null);
+  useEffect(()=>{const root=assemblyRoot.current;return ()=>cancelPieceTransfers(root);},[exercise.id]);
   const answer = exercise.kind === "order" ? assembleAnswer(exercise, pieces) : choice;
   const ready = isAnswerReady(exercise, choice, pieces);
   const [storageWarning, setStorageWarning] = useState("");
@@ -45,8 +48,8 @@ export default function Lesson({ index, onBack, onComplete, onNext, preferences 
     showResult(normalizeAnswer(answer) === exercise.answer);
   }
   function showResult(correct:boolean,track=true) {
-    stop();
-    if (correct) requestSound("success");
+    stop(); cancelPieceTransfers(assemblyRoot.current);
+    requestSound(correct ? "success" : "retry");
     if(track && !recordAttempt(index,correct))setStorageWarning('A tentativa vale nesta sessão; confira o salvamento.');
     setFeedback(correct ? "correct" : "retry");
     setHint(!correct);
@@ -55,19 +58,20 @@ export default function Lesson({ index, onBack, onComplete, onNext, preferences 
   }
   function togglePiece(index:number) {
     if (feedback === "correct") return;
+    movePiece(assemblyRoot.current,index,pieces.includes(index));
     setPieces(current=>current.includes(index)?current.filter(piece=>piece!==index):[...current,index]);
     setFeedback(null);setHint(false);setDialogue(null);
   }
   function retryOrder() {
-    stop(); setPieces([]); setFeedback(null); setHint(false);
+    stop(); cancelPieceTransfers(assemblyRoot.current); setPieces([]); setFeedback(null); setHint(false);
     requestAnimationFrame(() => title.current?.focus());
   }
   function changeChoice(value: string) { setChoice(value); setFeedback(null); }
   function restart() {
-    stop(); saveLessonPosition(index, 0); setPosition(0); setChoice(""); setPieces([]); setFeedback(null); setHint(false); setShowTranscript(false); setDialogue(null); setFinishDialogue(null); setFinished(false);
+    stop(); cancelPieceTransfers(assemblyRoot.current); saveLessonPosition(index, 0); setPosition(0); setChoice(""); setPieces([]); setFeedback(null); setHint(false); setShowTranscript(false); setDialogue(null); setFinishDialogue(null); setFinished(false);
   }
   function next() {
-    stop();
+    stop(); cancelPieceTransfers(assemblyRoot.current);
     if (position === lesson.exercises.length - 1) { saveLessonPosition(index, 0); onComplete(); setFinishDialogue(chooseDialogue(!onNext ? "final" : newAchievement ? "achievement" : "finish")); requestSound(newAchievement ? "achievement" : "complete"); setFinished(true); return; }
     setPosition(position + 1); setChoice(""); setPieces([]); setFeedback(null); setHint(false); setShowTranscript(false); setDialogue(null);
   }
@@ -75,6 +79,7 @@ export default function Lesson({ index, onBack, onComplete, onNext, preferences 
     <div className={styles.toolbar}><button className={styles.secondary} onClick={() => { stop(); onBack(); }}><ArrowLeft size={18} aria-hidden="true" /> Voltar à trilha</button><span>{finished ? "Etapa concluída" : `${position + 1} de ${lesson.exercises.length}`}</span></div>
     <div className={styles.progress} role="progressbar" aria-label="Atividades concluídas nesta lição" aria-valuemin={0} aria-valuemax={lesson.exercises.length} aria-valuenow={finished ? lesson.exercises.length : position}><span style={{width:`${(finished ? 1 : position / lesson.exercises.length) * 100}%`, backgroundColor:`hsl(${45 + (finished ? 1 : position / lesson.exercises.length) * 80} 42% 65%)`}} /></div>
     {finished ? <div className={styles.finish}>
+      <span className={styles.sparkles} aria-hidden="true">✦ ✧ ✦</span>
       <Image className="luna-celebrate" src="/mascotes/comemorando.svg" width={180} height={180} alt="Mascote comemorando" />
       <h2 id="lesson-title" ref={title} tabIndex={-1}>Uma etapa cheia de descobertas!</h2>
       {newAchievement && <div className={`${styles.achievementUnlocked} achievement-reveal`} role="status"><span aria-hidden="true">{newAchievement.icon}</span><div><strong><Trophy size={18} aria-hidden="true"/> Você liberou uma conquista!</strong><p>{newAchievement.title}</p></div></div>}
@@ -105,15 +110,15 @@ export default function Lesson({ index, onBack, onComplete, onNext, preferences 
       </div>}
       {exercise.optionAudio && Object.values(exercise.optionAudio).some(hasAudio) && <p className={styles.audioExplanation}>Toque em uma opção para selecionar e ouvir a Nina. Depois, confirme sua resposta.{exercise.id.startsWith("animal-") && " Aqui, a Nina imita os sons dos animais."}</p>}
       {exercise.kind === "choice" && <div className={`${styles.options} ${exercise.passage?styles.phraseOptions:""}`} role="group" aria-label="Opções de resposta">{exercise.options!.map((option) => <button key={option} aria-pressed={choice === option} disabled={feedback === "correct"} className={`${styles.option} ${choice === option ? styles.chosen : ""} ${exercise.options!.some(value=>value.length>2)?styles.wordOption:""}`} onClick={() => { changeChoice(option); const audioId = exercise.optionAudio?.[option]; if (audioId && hasAudio(audioId)) void speak(audioId); }}>{option}{exercise.optionAudio?.[option] && hasAudio(exercise.optionAudio[option]) && <Volume2 size={18} aria-hidden="true" />}</button>)}</div>}
-      {exercise.kind === "order" && <>
-        <div className={styles.assembled} aria-label="Sua palavra" aria-live="polite">{pieces.length ? pieces.map((piece, slot) => <button key={piece} className={styles.piece} disabled={feedback === "correct"} aria-label={`Retirar ${exercise.options![piece]}, posição ${slot+1}`} onClick={() => togglePiece(piece)}>{exercise.options![piece]}</button>) : exercise.separator ? "Toque nas palavras para montar" : "Toque nas sílabas para montar"}</div>
+      {exercise.kind === "order" && <div ref={assemblyRoot} data-assembly="true">
+        <div className={styles.assembled} aria-label="Sua palavra" aria-live="polite">{pieces.length ? pieces.map((piece, slot) => <button key={piece} data-piece={piece} className={styles.piece} disabled={feedback === "correct"} aria-label={`Retirar ${exercise.options![piece]}, posição ${slot+1}`} onClick={() => togglePiece(piece)}>{exercise.options![piece]}</button>) : exercise.separator ? "Toque nas palavras para montar" : "Toque nas sílabas para montar"}</div>
         {feedback === null && pieces.length > 0 && <p className={styles.editHelp}>Toque novamente em um pedacinho para retirá-lo. Você pode mudar a ordem antes de confirmar.</p>}
-        <div className={styles.options} role="group" aria-label={exercise.separator ? "Palavras da frase" : "Sílabas da palavra"}>{exercise.options!.map((option, i) => <button key={i} className={`${styles.option} ${pieces.includes(i) ? styles.chosen : ""}`} aria-pressed={pieces.includes(i)} aria-label={`${option}, opção ${i+1}`} disabled={feedback === "correct"} onClick={() => togglePiece(i)}>{option}</button>)}</div>
-      </>}
-      {exercise.kind === 'memory'&&<MemoryGame key={exercise.id} pairs={exercise.memoryPairs!} onAttempt={correct=>{if(!recordAttempt(index,correct))setStorageWarning('A tentativa vale nesta sessão; confira o salvamento.');}} onSolved={()=>showResult(true,false)}/>}
+        <div className={styles.options} role="group" aria-label={exercise.separator ? "Palavras da frase" : "Sílabas da palavra"}>{exercise.options!.map((option, i) => <button key={i} data-bank={i} className={`${styles.option} ${pieces.includes(i) ? styles.chosen : ""}`} aria-pressed={pieces.includes(i)} aria-label={`${option}, opção ${i+1}`} disabled={feedback === "correct"} onClick={() => togglePiece(i)}>{option}</button>)}</div>
+      </div>}
+      {exercise.kind === 'memory'&&<MemoryGame key={exercise.id} pairs={exercise.memoryPairs!} onAttempt={correct=>{requestSound(correct?"success":"retry");if(!recordAttempt(index,correct))setStorageWarning('A tentativa vale nesta sessão; confira o salvamento.');}} onSolved={()=>showResult(true,false)}/>}
       {exercise.kind === "write" && <label className={styles.inputLabel}>Sua palavra<input value={choice} onChange={(event) => changeChoice(event.target.value)} disabled={feedback === "correct"} onKeyDown={(event) => { if (event.key === "Enter") { event.preventDefault(); confirm(); } }} autoComplete="off" autoCorrect="off" autoCapitalize="characters" spellCheck={false} maxLength={30} /></label>}
       {hint && <div className={styles.hint}><p>{exercise.hint}</p>{hasAudio(`${exercise.id}-dica`) && <button className={styles.secondary} onClick={() => speak(`${exercise.id}-dica`)}><Volume2 size={18} aria-hidden="true" /> Ouvir a dica</button>}</div>}
-      {feedback && <div className={`${styles.feedback} ${feedback === "correct" ? styles.correct : styles.retry}`} role="status"><Image className={feedback === "correct" ? "luna-happy" : "luna-encourage"} src={`/mascotes/${feedback === "correct" ? "feliz" : "encorajador"}.svg`} width={80} height={80} alt={feedback === "correct" ? "Mascote feliz" : "Mascote encorajando"} /><div><strong>{feedback === "correct" ? exercise.kind === "speak" ? "Muito bem! Você praticou com sua voz." : "Isso! Você acertou." : "Vamos tentar de outro jeito?"}</strong><p>{dialogue?.text || (feedback === "correct" ? "Mais uma descoberta na sua trilha." : "Olhe a dica. Você pode tentar novamente.")}</p>{dialogue && hasAudio(dialogue.id) && <button className={styles.feedbackAudio} onClick={() => speak(dialogue!.id)} aria-label="Ouvir a mensagem de apoio"><Volume2 size={17} aria-hidden="true" /> Ouvir</button>}</div></div>}
+      {feedback && <div className={`${styles.feedback} ${feedback === "correct" ? styles.correct : styles.retry}`} role="status"><span className={styles.resultIcon} aria-hidden="true">{feedback === "correct" ? "✓" : "↻"}</span><Image className={feedback === "correct" ? "luna-happy" : "luna-encourage"} src={`/mascotes/${feedback === "correct" ? "feliz" : "encorajador"}.svg`} width={80} height={80} alt={feedback === "correct" ? "Mascote feliz" : "Mascote encorajando"} /><div><strong>{feedback === "correct" ? exercise.kind === "speak" ? "Muito bem! Você praticou com sua voz." : "Isso! Você acertou." : "Vamos tentar de outro jeito?"}</strong><p>{dialogue?.text || (feedback === "correct" ? "Mais uma descoberta na sua trilha." : "Olhe a dica. Você pode tentar novamente.")}</p>{dialogue && hasAudio(dialogue.id) && <button className={styles.feedbackAudio} onClick={() => speak(dialogue!.id)} aria-label="Ouvir a mensagem de apoio"><Volume2 size={17} aria-hidden="true" /> Ouvir</button>}</div></div>}
       <div className={styles.actions}>{feedback === "correct" ? <button className={styles.primary} onClick={next}>{position === lesson.exercises.length - 1 ? "Concluir etapa" : exercise.kind === "speak" ? "Próximo" : "Continuar"}<ArrowRight size={18} aria-hidden="true" /></button> : exercise.kind === "order" && feedback === "retry" ? <button className={styles.primary} onClick={retryOrder}><RotateCcw size={18} aria-hidden="true" /> Tentar novamente</button> : exercise.kind === "memory" ? null : <>{exercise.kind !== "speak" && <button className={styles.secondary} onClick={() => setHint(!hint)}>{hint ? "Fechar dica" : "Ver uma dica"}</button>}{exercise.kind !== "speak" && <button className={styles.primary} onClick={confirm} disabled={!ready}>Confirmar</button>}</>}</div>
       </MiniTutorial>
     </>}

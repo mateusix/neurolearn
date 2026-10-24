@@ -16,6 +16,7 @@ let cleanups=[];function render(){for(const cleanup of cleanups)cleanup?.();clea
  button.hasAttribute=()=>false;button.getAttribute=()=> 'Ouvir a apresentação da Luna';view.props.onClick({target:{closest:()=>button}});assert.equal(calls.length,5);
  button.getAttribute=()=>'';button.textContent='Continuar';view.props.onClick({target:{closest:()=>button}});await Promise.resolve();assert.equal(calls.length,6);
  initialAudioState='interrupted';view=render();time+=500;comfort.requestSound('success');await Promise.resolve();await Promise.resolve();assert.equal(resumes,1);initialAudioState='running';
+ view=render();time+=500;comfort.requestSound('retry');await Promise.resolve();await Promise.resolve();assert.equal(calls.at(-2).frequency,392);assert.equal(calls.at(-1).frequency,349);
  comfort.saveComfort('10');view=render();assert.equal(view.props['data-motion'],'off');reduced=true;comfort.saveComfort('11');view=render();assert.equal(view.props['data-motion'],'off');
  console.log('QA de conforto: efeitos desligados por padrão, ganho baixo, limite de repetição, exclusão de seleção/narração e movimento reduzido passaram.');
 })().catch(error=>{console.error(error);process.exitCode=1;});

@@ -1,4 +1,4 @@
-export type SoundCue = 'click' | 'success' | 'complete' | 'achievement';
+export type SoundCue = 'click' | 'success' | 'retry' | 'complete' | 'achievement';
 const key = 'neurolearn-comfort-v1';
 let session = '01';
 export function getComfortSnapshot() {
