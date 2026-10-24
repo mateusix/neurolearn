@@ -3,6 +3,7 @@ import dynamic from "next/dynamic";
 import { getExperienceSnapshot, getServerExperienceSnapshot, subscribeExperience, toggleFavorite } from '@/lib/experience';
 import type { Experience } from '@/lib/experience-values';
 import LearningLoading from "./learning-loading";
+import WelcomeScreen from "./welcome-screen";
 import Image from "next/image";
 import { canOpenStage } from "@/lib/learning-access";
 import { useMemo, useRef, useState, useSyncExternalStore } from "react";
@@ -51,7 +52,10 @@ steps.push(...lessons.slice(8).map((lesson,index) => ({
 })));
 
 export default function Home() {
+  const [started, setStarted] = useState(false);
   const family = useSyncExternalStore(subscribeFamily, getFamilySnapshot, getServerFamilySnapshot);
+  const avatarId = useSyncExternalStore(subscribeAvatar, getAvatar, () => "");
+  if (!started) return <WelcomeScreen returning={!!avatarId} onStart={() => { setStarted(true); window.scrollTo({top:0,behavior:"instant"}); }} />;
   return <LearningHome key={`${family.userId || "guest"}:${family.selected}`} />;
 }
 function LearningHome() {

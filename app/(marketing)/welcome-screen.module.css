@@ -1,0 +1,52 @@
+.page { width:100%; max-width:1088px; margin:0 auto; padding:clamp(28px,5vw,68px) 28px 30px; color:var(--nl-text); }
+.hero { display:grid; grid-template-columns:1.15fr 1fr; align-items:center; gap:clamp(24px,5vw,64px); }
+.copy { min-width:0; }
+.eyebrow { font-size:12px; font-weight:900; letter-spacing:.15em; margin:0 0 18px; }
+.copy h1 { font-size:clamp(34px,4.6vw,54px); line-height:1.12; font-weight:900; letter-spacing:-.035em; margin:0 0 22px; }
+.description { max-width:440px; font-size:19px; line-height:1.65; margin:0 0 28px; }
+.start { display:inline-flex; justify-content:center; align-items:center; gap:14px; min-height:58px; max-width:100%; padding:15px 24px; border:2px solid var(--nl-text); border-radius:18px; background:var(--nl-text); color:var(--nl-button-ink); box-shadow:0 5px 0 color-mix(in srgb,var(--nl-text) 65%,black); font-size:17px; line-height:1.4; font-weight:900; cursor:pointer; touch-action:manipulation; }
+.start svg { flex-shrink:0; }
+.start:hover { filter:brightness(1.06); }
+.start:active { transform:translateY(3px); box-shadow:0 2px 0 color-mix(in srgb,var(--nl-text) 65%,black); }
+.start:focus-visible { outline:3px solid var(--nl-text); outline-offset:6px; }
+.hint { max-width:420px; font-size:14px; line-height:1.6; margin:18px 0 0; }
+.illustration { position:relative; min-width:0; padding-top:14px; }
+.bubble { position:relative; z-index:1; width:fit-content; max-width:100%; margin:0 auto -12px; padding:15px 22px; background:var(--nl-cfff); border:2px solid var(--nl-cc6dde4); border-radius:20px; font-size:17px; font-weight:900; text-align:center; }
+.scene { position:relative; min-height:340px; display:flex; align-items:center; justify-content:center; border-radius:42% 42% 32% 32%; background:var(--nl-cf6f9fc); border:1px solid var(--nl-ce2eaf0); }
+.luna { z-index:1; width:66%; max-width:260px; height:auto; margin-bottom:16px; }
+.letter { position:absolute; display:grid; place-items:center; width:62px; height:68px; border-radius:18px; font-size:35px; line-height:1; font-weight:900; background:var(--nl-cfff); border:2px solid var(--nl-cc6dde4); box-shadow:0 4px 0 var(--nl-cc6dde4); }
+.a { top:54px; left:10px; transform:rotate(-10deg); }
+.e { top:54px; right:10px; transform:rotate(9deg); }
+.o { bottom:62px; right:16px; transform:rotate(-7deg); }
+.word { position:absolute; bottom:17px; left:50%; transform:translateX(-50%); display:flex; align-items:center; justify-content:center; gap:9px; width:max-content; max-width:calc(100% - 28px); padding:12px 16px; border-radius:16px; border:1px solid var(--nl-cc6dde4); background:var(--nl-cfff); font-size:14px; font-weight:900; }
+.word svg { flex-shrink:0; }
+.preview { margin-top:56px; padding-top:28px; border-top:2px solid var(--nl-ce2eaf0); }
+.preview h2 { margin:0 0 24px; text-align:center; font-size:21px; font-weight:900; line-height:1.4; }
+.steps { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px; padding:0; margin:0; list-style:none; }
+.steps li { display:flex; align-items:flex-start; gap:12px; min-width:0; }
+.stepIcon { display:grid; place-items:center; flex-shrink:0; width:48px; height:48px; border-radius:16px; background:var(--nl-cf6f9fc); border:1px solid var(--nl-ce2eaf0); }
+.steps h3 { font-size:15px; line-height:1.5; font-weight:900; margin:0 0 4px; }
+.steps p { font-size:14px; line-height:1.6; margin:0; }
+.familyNote { max-width:680px; margin:30px auto 0; text-align:center; font-size:12px; line-height:1.7; }
+@media(max-width:700px) {
+ .page { padding:26px 20px 26px; }
+ .hero { grid-template-columns:1fr; gap:26px; text-align:center; }
+ .eyebrow { margin-bottom:12px; font-size:11px; }
+ .copy h1 { font-size:clamp(32px,8vw,44px); margin-bottom:16px; }
+ .description { margin:0 auto 22px; font-size:17px; line-height:1.55; }
+ .start { width:100%; max-width:370px; font-size:16px; }
+ .hint { margin:16px auto 0; font-size:13px; }
+ .illustration { width:min(100%,340px); margin:0 auto; padding-top:0; }
+ .scene { min-height:270px; }
+ .luna { max-width:205px; }
+ .letter { width:48px; height:53px; font-size:28px; border-radius:14px; }
+ .a,.e { top:40px; }
+ .o { bottom:52px; }
+ .bubble { font-size:15px; padding:11px 18px; }
+ .word { bottom:12px; font-size:12px; padding:9px 12px; }
+ .preview { margin-top:30px; padding-top:24px; }
+ .preview h2 { font-size:19px; }
+ .steps { grid-template-columns:1fr; gap:20px; max-width:350px; margin:0 auto; }
+ .familyNote { margin-top:26px; }
+}
+@media(prefers-reduced-motion:reduce) { .start:active { transform:none; } }
