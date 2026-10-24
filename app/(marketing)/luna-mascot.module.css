@@ -12,4 +12,14 @@
 :global([data-motion=on]) .head { animation:nod 1.2s ease-in-out 1 both; }
 :global([data-motion=on]) .eyes { animation:blink 1.2s ease-in-out 1 both; }
 :global([data-motion=on]) .body { animation:greet 1.2s ease-in-out 1 both; }
+@keyframes celebrate { 0%,100% { transform:translateY(0) rotate(0); } 30% { transform:translateY(-12px) rotate(-3deg); } 65% { transform:translateY(-4px) rotate(3deg); } }
+@keyframes encourage { 0%,100% { transform:rotate(0); } 35% { transform:rotate(5deg); } 70% { transform:rotate(-2deg); } }
+@keyframes thoughtful { 0%,100% { transform:rotate(0); } 50% { transform:rotate(-7deg); } }
+@keyframes settle { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-3px); } }
+:global([data-motion=on]) .mascot[data-luna-mood=celebrate] .body { animation:celebrate 1.2s ease-in-out 1 both; }
+:global([data-motion=on]) .mascot[data-luna-mood=support] .head { animation:encourage 1.2s ease-in-out 1 both; }
+:global([data-motion=on]) .mascot[data-luna-mood=think] .head { animation:thoughtful 1.2s ease-in-out 1 both; }
+:global([data-motion=on]) .mascot[data-luna-mood=calm] .body { animation:settle 1.8s ease-in-out 1 both; }
+:global([data-motion=on]) .mascot:is([data-luna-mood=support],[data-luna-mood=think],[data-luna-mood=calm]) .arm { animation:none; }
+:global([data-motion=on]) .mascot[data-luna-mood=calm] .head { animation:none; }
 @media(prefers-reduced-motion:reduce) { .mascot * { animation:none!important; } }

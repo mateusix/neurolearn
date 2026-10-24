@@ -2,20 +2,24 @@
 
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight, BookOpen, Hand, Heart, PawPrint, Sparkles } from "lucide-react";
-import LunaMascot from "./luna-mascot";
+import LunaMascot, { type LunaMood } from "./luna-mascot";
 import styles from "./welcome-screen.module.css";
 
 export default function WelcomeScreen({ onStart, returning }: { onStart: () => void; returning: boolean }) {
   const [greeting, setGreeting] = useState(0);
   const [greetingBusy, setGreetingBusy] = useState(false);
+  const [mood, setMood] = useState<LunaMood>('wave');
+  const [customMessage, setCustomMessage] = useState('');
   const greetingTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => () => { if (greetingTimer.current) clearTimeout(greetingTimer.current); }, []);
   const greetings = ["Que bom ter você aqui!", "Oi! Vamos descobrir juntos?", "Cada tentativa é uma descoberta!", "Eu acompanho você. Sem pressa."];
-  function sayHello() {
+  function interact(nextMood: LunaMood = 'wave') {
     if (greetingBusy) return;
+    setMood(nextMood);
+    setCustomMessage(nextMood === 'celebrate' ? 'Viva! Cada pequeno passo merece um sorriso.' : nextMood === 'calm' ? 'Podemos fazer uma pausa. Você escolhe quando continuar.' : '');
     setGreeting(value => value + 1);
     setGreetingBusy(true);
-    greetingTimer.current = setTimeout(() => setGreetingBusy(false), 1300);
+    greetingTimer.current = setTimeout(() => setGreetingBusy(false), 1900);
   }
   return <div className={styles.page}>
     <section className={styles.hero} aria-labelledby="intro-title">
@@ -31,16 +35,20 @@ export default function WelcomeScreen({ onStart, returning }: { onStart: () => v
       </div>
 
       <div className={styles.illustration}>
-        <div className={styles.bubble} role="status" aria-live="polite">{greetings[greeting % greetings.length]}</div>
+        <div className={styles.bubble} role="status" aria-live="polite">{customMessage || greetings[greeting % greetings.length]}</div>
         <div className={styles.scene} aria-hidden="true">
           <span className={`${styles.letter} ${styles.a}`}>A</span>
           <span className={`${styles.letter} ${styles.e}`}>E</span>
           <span className={`${styles.letter} ${styles.o}`}>O</span>
           <Sparkles className={styles.sparkle} size={23} />
-          <LunaMascot gesture={greeting} className={styles.luna} />
+          <LunaMascot gesture={greeting} mood={mood} className={styles.luna} />
           <div className={styles.word}><BookOpen size={24} /><span>Aprender é descobrir</span></div>
         </div>
-        <button type="button" className={styles.hello} onClick={sayHello} disabled={greetingBusy} aria-label="Dar um oi para a Luna"><Hand size={18} aria-hidden="true" /> Oi, Luna!</button>
+        <div className={styles.interactions} role="group" aria-label="Interagir com a Luna">
+          <button type="button" className={styles.hello} onClick={() => interact('wave')} aria-disabled={greetingBusy} aria-label="Dar um oi para a Luna"><Hand size={18} aria-hidden="true" /> Oi, Luna!</button>
+          <button type="button" className={styles.hello} onClick={() => interact('celebrate')} aria-disabled={greetingBusy}><Sparkles size={18} aria-hidden="true" /> Comemorar</button>
+          <button type="button" className={styles.hello} onClick={() => interact('calm')} aria-disabled={greetingBusy}><Heart size={18} aria-hidden="true" /> Uma pausa</button>
+        </div>
       </div>
     </section>
 

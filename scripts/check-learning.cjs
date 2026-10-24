@@ -31,9 +31,15 @@ data.set('neurolearn-resume-v1','broken');assert.equal(api.readLessonPosition(2)
 console.log('QA: 26 etapas, 96 exercícios, validação de resposta, retomada e progresso verificados.');
 const React = require('react');
 const {renderToStaticMarkup} = require('react-dom/server');
+const lunaModule={exports:{},require(name){
+ if(name.endsWith('.module.css')) return {default:{}};
+ return require(name);
+}};
+vm.runInNewContext(ts.transpileModule(fs.readFileSync('app/(marketing)/luna-mascot.tsx','utf8'),{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.CommonJS,jsx:ts.JsxEmit.ReactJSX}}).outputText,lunaModule);
 const guidanceContext={exports:{},require:name=>name==='@/content/exercise-guidance.pt-BR.json'?{default:JSON.parse(fs.readFileSync('content/exercise-guidance.pt-BR.json','utf8'))}:require(name)};
 vm.runInNewContext(ts.transpileModule(fs.readFileSync('lib/exercise-guidance.ts','utf8'),{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.CommonJS}}).outputText,guidanceContext);
 const lessonModule = {exports:{}, require(name) {
+ if(name==='./luna-mascot')return lunaModule.exports;
  if(name==='@/lib/piece-motion')return {movePiece(){},cancelPieceTransfers(){}};
  if(name==='@/lib/lessons') return api;
  if(name==='@/lib/experience') return {recordAttempt:()=>true};
@@ -91,6 +97,6 @@ bankButton(orderTree,0).props.onClick();orderTree=orderRender();assert.equal(ban
 findVoiceNode(orderTree,n=>n.type==='button'&&n.props['aria-label']==='Retirar NA, posição 2').props.onClick();orderTree=orderRender();assert.equal(bankButton(orderTree,1).props['aria-pressed'],false);
 bankButton(orderTree,2).props.onClick();orderTree=orderRender();assert.equal(confirmButton(orderTree).props.disabled,true);
 for(const i of [2,1,0]){bankButton(orderTree,i).props.onClick();orderTree=orderRender();}
-assert.equal(findVoiceNode(orderTree,n=>n.props?.src==='/mascotes/feliz.svg'),undefined);confirmButton(orderTree).props.onClick();orderTree=orderRender();assert.ok(findVoiceNode(orderTree,n=>n.props?.src==='/mascotes/feliz.svg'));
+assert.equal(findVoiceNode(orderTree,n=>n.props?.mood==='celebrate'),undefined);confirmButton(orderTree).props.onClick();orderTree=orderRender();assert.ok(findVoiceNode(orderTree,n=>n.props?.mood==='celebrate'));
 assert.equal(bankButton(orderTree,0).props.disabled,true);
 console.log('QA de montagem: selecionar/desselecionar na origem e na palavra, sílabas NA independentes, confirmação vazia bloqueada e acerto somente após Confirmar passaram.');
