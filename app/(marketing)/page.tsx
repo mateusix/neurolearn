@@ -4,6 +4,7 @@ import { getExperienceSnapshot, getServerExperienceSnapshot, subscribeExperience
 import type { Experience } from '@/lib/experience-values';
 import LearningLoading from "./learning-loading";
 import WelcomeScreen from "./welcome-screen";
+import LunaMascot from "./luna-mascot";
 import Image from "next/image";
 import { canOpenStage } from "@/lib/learning-access";
 import { useMemo, useRef, useState, useSyncExternalStore } from "react";
@@ -113,7 +114,7 @@ function LearningHome() {
     </>}
     {active !== null ? <Lesson key={`${family.selected}:${active}`} preferences={preferences} index={active} onBack={back} onComplete={complete} onNext={active + 1 < lessons.length ? nextStage : undefined} /> : <>
       <section className={styles.welcome} aria-labelledby="welcome-title">
-        <div className={styles.mascot}><Image src="/mascotes/corpo-acenando.svg" width={112} height={112} className="luna-wave" alt="Luna, o mascote azul do NeuroLearn, acenando" preload /></div>
+        <div className={styles.mascot} role="img" aria-label="Luna, o mascote azul do NeuroLearn, acenando"><LunaMascot /></div>
         <div className={styles.welcomeText}><p className={styles.eyebrow}>UM PASSO DE CADA VEZ</p><h1 id="welcome-title">Que bom ter você aqui{currentChild()?.name ? `, ${currentChild()!.name}` : ""}!</h1><p>Eu sou a Luna. Seu amigo {avatar.name.toLocaleLowerCase("pt-BR")} já está pronto! Vamos descobrir letras, palavras e histórias, no seu ritmo.</p></div>
         <button className={styles.listen} onClick={() => speak("luna-apresentacao")} aria-label="Ouvir a apresentação da Luna"><Volume2 size={22} aria-hidden="true" /><span>Ouvir</span></button>
       </section>

@@ -1,0 +1,15 @@
+.mascot { display:block; overflow:visible; }
+.arm { transform-origin:245px 240px; }
+.head { transform-origin:200px 235px; }
+.eyes { transform-box:fill-box; transform-origin:center; }
+.body { transform-origin:200px 360px; }
+.shadow { transform-origin:200px 367px; }
+@keyframes wave { 0%,100% { transform:rotate(0); } 22%,62% { transform:rotate(-13deg); } 42%,82% { transform:rotate(9deg); } }
+@keyframes nod { 0%,100% { transform:rotate(0); } 45% { transform:rotate(-3deg); } }
+@keyframes blink { 0%,40%,60%,100% { transform:scaleY(1); } 50% { transform:scaleY(.12); } }
+@keyframes greet { 0%,100% { transform:translateY(0); } 40% { transform:translateY(-4px); } }
+:global([data-motion=on]) .arm { animation:wave 1.2s ease-in-out 1 both; }
+:global([data-motion=on]) .head { animation:nod 1.2s ease-in-out 1 both; }
+:global([data-motion=on]) .eyes { animation:blink 1.2s ease-in-out 1 both; }
+:global([data-motion=on]) .body { animation:greet 1.2s ease-in-out 1 both; }
+@media(prefers-reduced-motion:reduce) { .mascot * { animation:none!important; } }
