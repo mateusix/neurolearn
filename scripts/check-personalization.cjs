@@ -16,4 +16,35 @@ assert.equal(personalizedLesson(11,{theme:'animals',support:'model'}).exercises[
 assert.equal(personalizedLesson(10,{theme:'food',support:'model'}).exercises[0].hideModel,true);
 assert.equal(personalizedLesson(2,{theme:'food',support:'hint'}).exercises[0].optionAudio,undefined);
 assert.equal(earnedAchievements(2).length,0);assert.equal(earnedAchievements(3).length,1);assert.equal(earnedAchievements(10).length,3);assert.equal(earnedAchievements(21).length,7);assert.equal(new Set(achievements.map(a=>a.id)).size,9);
-console.log('QA: 8 combinações de preferências × 26 etapas; respostas válidas, retomada com mesmos tamanhos, modelos, transcrições e conquistas graduais passaram.');
+console.log('QA: 8 combinações de preferências × 30 etapas; respostas válidas, retomada com mesmos tamanhos, modelos, transcrições e conquistas graduais passaram.');
+
+function canAssemble(exercise) {
+ const parts=exercise.options, separator=exercise.separator||'';
+ function visit(value,used) {
+  if(used.size===parts.length)return value===exercise.answer;
+  for(let i=0;i<parts.length;i++)if(!used.has(i)) {
+   const next=value+(used.size?separator:'')+parts[i];
+   if(exercise.answer.startsWith(next)&&visit(next,new Set([...used,i])))return true;
+  }
+  return false;
+ }
+ return visit('',new Set());
+}
+for(const theme of ['animals','food','travel','mixed'])for(const support of ['model','hint']) {
+ for(let i=0;i<lessons.length;i++)for(const exercise of personalizedLesson(i,{theme,support}).exercises) {
+  for(const option of exercise.options||[])assert.equal(option,option.toLocaleUpperCase('pt-BR'));
+  if(exercise.kind==='choice')assert.equal(new Set(exercise.options.map(normalizeAnswer)).size,exercise.options.length);
+  if(exercise.kind==='order')assert.ok(canAssemble(exercise),`Montagem sem solução: ${exercise.id}`);
+ }
+ if(theme!=='mixed') {
+  let previous=new Set();
+  for(const index of [2,3,5,6,9,10,11,13]) {
+   const words=new Set(personalizedLesson(index,{theme,support}).exercises.map(e=>e.word));
+   assert.ok([...words].every(word=>!previous.has(word)),`Vocabulário repetido entre etapas de ${theme}`);
+   previous=words;
+  }
+ }
+}
+assert.ok(lessons.slice(26).every(stage=>stage.exercises.length===4));
+assert.ok(lessons[29].exercises.every(e=>e.passage&&e.storyTitle));
+console.log('QA da ampliação: alternativas em caixa alta e sem duplicação, montagem solucionável com peças repetidas, vocabulário variado e novos desafios graduais passaram.');

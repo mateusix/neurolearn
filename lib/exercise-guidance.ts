@@ -14,7 +14,6 @@ export function exerciseGuidance(exercise:Exercise):{id:string;text:string}|null
  else if(exercise.kind==='order')id=exercise.separator?'guia-montar-frase':exercise.hideModel?'guia-montar-imagem':'guia-montar-modelo';
  else if(exercise.kind==='write')id=exercise.hideModel?'guia-escrever-imagem':'guia-escrever-modelo';
  else if(exercise.id.startsWith('animal-'))id='guia-sons-animais';
- else if(exercise.id.startsWith('minuscula-'))id='guia-minusculas';
  else if(exercise.prompt.startsWith('Qual pedacinho completa'))id='guia-completar-silaba';
  else if(exercise.prompt.startsWith('Com qual letra'))id='guia-letra-inicial';
  else if(exercise.picture)id='guia-imagem-palavra';

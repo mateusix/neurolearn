@@ -67,7 +67,7 @@ export default function Lesson({ index, onBack, onComplete, onNext, preferences 
     stop(); cancelPieceTransfers(assemblyRoot.current); setPieces([]); setFeedback(null); setHint(false);
     requestAnimationFrame(() => title.current?.focus());
   }
-  function changeChoice(value: string) { setChoice(value); setFeedback(null); }
+  function changeChoice(value: string) { setChoice(exercise.kind === "write" ? value.toLocaleUpperCase("pt-BR") : value); setFeedback(null); }
   function restart() {
     stop(); cancelPieceTransfers(assemblyRoot.current); saveLessonPosition(index, 0); setPosition(0); setChoice(""); setPieces([]); setFeedback(null); setHint(false); setShowTranscript(false); setDialogue(null); setFinishDialogue(null); setFinished(false);
   }

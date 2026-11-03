@@ -38,14 +38,14 @@ export const lessons: { title: string; exercises: Exercise[] }[] = [
     { id: "montar-gato", kind: "order", prompt: "Monte a palavra GATO", spoken: "Vamos montar a palavra gato.", word: "GATO", picture: "🐱", answer: "GATO", options: ["TO", "GA"], hint: "GATO começa com GA. Depois vem TO." },
   ] },
   { title: "Minhas primeiras palavras", exercises: [
-    { id: "escrever-bola", kind: "write", prompt: "Escreva BOLA", spoken: "Vamos escrever a palavra bola. Você pode olhar o modelo e digitar as letras.", word: "BOLA", picture: "⚽", answer: "BOLA", hint: "Você pode copiar o modelo: B, O, L, A." },
-    { id: "escrever-gato", kind: "write", prompt: "Escreva GATO", spoken: "Agora vamos escrever a palavra gato.", word: "GATO", picture: "🐱", answer: "GATO", hint: "Você pode copiar o modelo: G, A, T, O." },
-    { id: "escrever-uva", kind: "write", prompt: "Escreva UVA", spoken: "Vamos escrever a palavra uva.", word: "UVA", picture: "🍇", answer: "UVA", hint: "Você pode copiar o modelo: U, V, A." },
+    { id: "escrever-casa", kind: "write", prompt: "Escreva CASA", spoken: "Vamos escrever a palavra casa. Você pode olhar o modelo e digitar as letras.", word: "CASA", picture: "🏠", answer: "CASA", hint: "Você pode copiar o modelo: C, A, S, A." },
+    { id: "escrever-dado", kind: "write", prompt: "Escreva DADO", spoken: "Agora vamos escrever a palavra dado.", word: "DADO", picture: "🎲", answer: "DADO", hint: "Você pode copiar o modelo: D, A, D, O." },
+    { id: "escrever-lua", kind: "write", prompt: "Escreva LUA", spoken: "Vamos escrever a palavra lua.", word: "LUA", picture: "🌙", answer: "LUA", hint: "Você pode copiar o modelo: L, U, A." },
   ] },
 ];
 // Extra practice stays in short sessions and preserves the original stage order.
 const initialWords = [
-  ["ILHA", "🏝️", "I"], ["OVO", "🥚", "O"], ["BOLA", "⚽", "B"], ["PATO", "🦆", "P"], ["GATO", "🐱", "G"],
+  ["ILHA", "🏝️", "I"], ["OVO", "🥚", "O"], ["DADO", "🎲", "D"], ["SAPO", "🐸", "S"], ["NAVIO", "🚢", "N"],
 ];
 lessons.push({ title: "Descobrir letras iniciais", exercises: initialWords.map(([word, picture, answer], i) => ({
   id: `inicial-extra-${i}`, kind: "choice", prompt: `Com qual letra começa ${word}?`, spoken: `Com qual letra começa a palavra ${word.toLowerCase()}?`,
@@ -59,7 +59,7 @@ lessons.push({ title: "Mais palavras com sílabas", exercises: moreWords.map(([w
   id:`silaba-extra-${i}`, kind:"order", prompt:`Monte a palavra ${word}`, spoken:`Vamos montar a palavra ${word.toLowerCase()}.`,
   word,picture,answer:word,options:[last,first],hint:`${word} começa com ${first}. Depois vem ${last}.`,
 })) });
-lessons.push({ title: "Escrever novas palavras", exercises: moreWords.slice(0,4).map(([word,picture],i) => ({
+lessons.push({ title: "Escrever novas palavras", exercises: [["SINO","🔔"],["BOLO","🍰"],["FITA","🎀"],["CUBO","🧊"]].map(([word,picture],i) => ({
   id:`escrita-extra-${i}`,kind:"write",prompt:`Escreva ${word}`,spoken:`Escreva a palavra ${word.toLowerCase()}. Você pode olhar o modelo.`,
   word,picture,answer:word,hint:`Você pode copiar as letras: ${word.split("").join(", ")}.`,
 })) });
@@ -68,25 +68,25 @@ lessons.push({ title: "Revisar minhas descobertas", exercises: [
   {id:"revisao-bola",kind:"order",prompt:"Monte a palavra BOLA",spoken:"Monte a palavra bola.",word:"BOLA",picture:"⚽",answer:"BOLA",options:["LA","BO"],hint:"Primeiro BO. Depois LA."},
   {id:"revisao-pato",kind:"write",prompt:"Escreva PATO",spoken:"Escreva a palavra pato.",word:"PATO",picture:"🦆",answer:"PATO",hint:"Observe o modelo: P, A, T, O."},
 ] });
-// Gradual transfer: matching forms, completing words, reading, then short sentences.
-lessons.push({ title: "Vogais de outro jeito", exercises: ["A","E","I","O","U"].map((answer,i) => ({
-  id:`minuscula-${answer.toLowerCase()}`,kind:"choice",prompt:`Qual letra pequena combina com ${answer}?`,spoken:`Qual letra minúscula corresponde à letra ${answer}?`,answer,
-  options: [["a","e","o"],["i","u","e"],["i","a","u"],["e","o","a"],["u","i","e"]][i],hint:`${answer} e ${answer.toLowerCase()} são duas formas da mesma letra.`,
+// Explore vowels in new words before completing syllables and reading sentences.
+lessons.push({ title: "Vogais de outro jeito", exercises: [["ABACAXI","🍍","A"],["ELEFANTE","🐘","E"],["IGLU","🧊","I"],["OVELHA","🐑","O"],["URSO","🐻","U"]].map(([word,picture,answer],i) => ({
+  id:`vogal-na-palavra-${i}`,kind:"choice",prompt:`Com qual letra começa ${word}?`,spoken:`Com qual vogal começa a palavra ${word.toLocaleLowerCase("pt-BR")}?`,answer,word,picture,
+  options: [["A","E","O"],["I","U","E"],["I","A","U"],["E","O","A"],["U","I","E"]][i],hint:`${word} começa com a vogal ${answer}. Observe a primeira letra.`,
 })) });
 lessons.push({ title: "Complete os pedacinhos", exercises: [
-  ["BOLA","⚽","BO","LA","BO__"],["PATO","🦆","PA","TO","PA__"],["GATO","🐱","GA","TO","GA__"],["MALA","🧳","MA","LA","MA__"],
+  ["FADA","🧚","FA","DA","FA__"],["BOTA","🥾","BO","TA","BO__"],["SUCO","🧃","SU","CO","SU__"],["PIPA","🪁","PI","PA","PI__"],
 ].map(([word,picture,first,answer,model],i) => ({
   id:`completar-${i}`,kind:"choice",prompt:`Qual pedacinho completa ${model}?`,spoken:`Qual sílaba completa a palavra ${word.toLowerCase()}?`,word:model,picture,answer,
   options: [answer,first,"VA"],hint:`A palavra é ${word}: ${first} + ${answer}.`,
 })) });
 lessons.push({ title: "Ler e encontrar", exercises: [
-  ["BOLA","⚽",["BOTA","BOLA","MALA"]],["PATO","🦆",["GATO","SAPO","PATO"]],["GATO","🐱",["GATO","PATO","VACA"]],["SAPO","🐸",["MALA","SAPO","GATO"]],
+  ["PEIXE","🐟",["PIPA","PEIXE","FITA"]],["ROSA","🌹",["RODA","BOTA","ROSA"]],["SINO","🔔",["SINO","SUCO","SAPO"]],["CASA","🏠",["MALA","CASA","GATO"]],
 ].map(([word,picture,options],i) => ({
   id:`ler-imagem-${i}`,kind:"choice",prompt:"Qual palavra combina com a imagem?",spoken:"Observe a imagem e escolha a palavra que combina com ela.",word:word as string,picture:picture as string,answer:word as string,options:options as string[],hideModel:true,
   hint:`Observe as letras de ${word}. Essa é a palavra da imagem.`,
 })) });
 lessons.push({ title: "Montar com menos apoio", exercises: [
-  ["BOLA","⚽","BO","LA"],["PATO","🦆","PA","TO"],["GATO","🐱","GA","TO"],["SAPO","🐸","SA","PO"],
+  ["LUPA","🔎","LU","PA"],["DADO","🎲","DA","DO"],["CUBO","🧊","CU","BO"],["RODA","🛞","RO","DA"],
 ].map(([word,picture,first,last],i) => ({
   id:`montar-sem-modelo-${i}`,kind:"order",prompt:"Monte o nome da imagem",spoken:"Monte o nome da imagem usando as sílabas.",word,picture,answer:word,hideModel:true,options:[last,first],hint:`A palavra é ${word}. Primeiro ${first}, depois ${last}.`,
 })) });
@@ -97,7 +97,7 @@ lessons.push({ title: "Palavras com três sílabas", exercises: [
   options:[...(parts as string[])].reverse(),hint:`Siga esta ordem: ${(parts as string[]).join(" → ")}.`,
 })) });
 lessons.push({ title: "Escrever com uma dica", exercises: [
-  ["BOLA","⚽"],["PATO","🦆"],["GATO","🐱"],["MALA","🧳"],
+  ["BOTA","🥾"],["VACA","🐮"],["FADA","🧚"],["SAPO","🐸"],
 ].map(([word,picture],i) => ({
   id:`escrita-sem-modelo-${i}`,kind:"write",prompt:"Escreva o nome da imagem",spoken:"Escreva o nome da imagem. Você pode abrir uma dica se precisar.",word,picture,answer:word,hideModel:true,
   hint:`A palavra é ${word}. Você pode usar este modelo para escrever.`,
@@ -156,6 +156,37 @@ for(const [i,story] of stories.entries())lessons.push({title:`História: ${story
 lessons.push({title:'Combinar imagens e palavras',exercises:[['GATO','🐱'],['BOLA','⚽'],['MAÇÃ','🍎'],['LIVRO','📚']].map(([answer,picture],i)=>({id:`combinar-imagem-${i}`,kind:'choice',prompt:'Qual palavra combina com esta imagem?',spoken:'Observe a imagem e escolha a palavra que combina com ela.',picture,pictureLabel:answer.toLocaleLowerCase("pt-BR"),answer,options:[answer,...['GATO','BOLA','MAÇÃ','LIVRO'].filter(w=>w!==answer).slice(0,2)].reverse(),hint:`A imagem mostra ${answer.toLocaleLowerCase('pt-BR')}. Procure essa palavra.`}))});
 for(const [i,title,words] of [[0,'Memória dos bichinhos',[['GATO','🐱'],['PATO','🦆'],['SAPO','🐸']]],[1,'Memória das frutas',[['UVA','🍇'],['MAÇÃ','🍎'],['PERA','🍐']]]] as const)lessons.push({title,exercises:[0,1].map(round=>({id:`memoria-${i}-${round}`,kind:'memory',prompt:'Encontre os pares de imagem e palavra',spoken:'Vire duas cartas. Combine a imagem com seu nome, sem pressa.',answer:'COMPLETO',hint:'Procure a palavra que dá nome à imagem. Se precisar, vire as cartas de novo.',memoryPairs:words.map(([word,picture])=>({word,picture}))}))});
 
+// Append challenges after the existing trail so saved stage indexes remain valid.
+lessons.push({title:"Descobrir novas sílabas",exercises:[
+  ["PRATO","🍽️","PRA","TO"],["FLORES","💐","FLO","RES"],["FOLHA","🍃","FO","LHA"],["CHAVE","🔑","CHA","VE"],
+].map(([word,picture,first,answer],i)=>({
+  id:`novas-silabas-${i}`,kind:"choice",prompt:`Qual pedacinho completa ${first}__?`,spoken:`Complete a palavra ${word.toLocaleLowerCase("pt-BR")}.`,
+  word:`${first}__`,picture,pictureLabel:word,answer,options:[answer,"MA","PA"].reverse(),hint:`A palavra é ${word}. Junte ${first} e ${answer}.`,
+}))});
+lessons.push({title:"Palavras para explorar",exercises:[
+  ["MACACO","🐒",["MA","CA","CO"]],["JANELA","🪟",["JA","NE","LA"]],["CANECA","☕",["CA","NE","CA"]],["PIPOCA","🍿",["PI","PO","CA"]],
+].map(([word,picture,parts],i)=>({
+  id:`explorar-palavra-${i}`,kind:"order",prompt:"Monte o nome da imagem",spoken:`Vamos montar a palavra ${String(word).toLocaleLowerCase("pt-BR")}.`,
+  word:word as string,picture:picture as string,answer:word as string,hideModel:true,options:[...(parts as string[])].reverse(),
+  hint:`A palavra é ${word}. Siga esta ordem: ${(parts as string[]).join(" → ")}.`,
+}))});
+lessons.push({title:"Frases com mais descobertas",exercises:[
+  ["A MENINA LÊ UM LIVRO","📖"],["O MENINO REGA A FLOR","🌷"],["O COELHO COME UMA CENOURA","🐰"],["A BORBOLETA POUSA NA FOLHA","🦋"],
+].map(([word,picture],i)=>({
+  id:`frase-ampliada-${i}`,kind:"order",prompt:"Monte a frase seguindo o modelo",spoken:`Monte a frase: ${word.toLocaleLowerCase("pt-BR")}.`,
+  word,picture,answer:word,separator:" ",options:word.split(" ").reverse(),hint:`Observe o modelo. A ordem é: ${word.split(" ").join(" → ")}.`,
+}))});
+const gardenStory = [
+  {text:"Lia foi à horta com Ivo. Ela levou uma cesta.",question:"O que Lia levou?",answer:"CESTA",options:["BOLA","CESTA","MALA"],hint:"Lia levou uma cesta para a horta."},
+  {text:"Na horta, eles colheram cenouras e tomates.",question:"O que eles colheram?",answer:"CENOURAS E TOMATES",options:["MAÇÃS E UVAS","LIVROS E LÁPIS","CENOURAS E TOMATES"],hint:"Procure no trecho os nomes dos legumes que colheram."},
+  {text:"Ivo lavou os tomates. Lia guardou os legumes na cesta.",question:"Quem lavou os tomates?",answer:"IVO",options:["IVO","LIA","O COELHO"],hint:"Leia de novo: Ivo lavou os tomates."},
+  {text:"Antes de voltar para casa, eles regaram as plantas.",question:"O que fizeram antes de voltar para casa?",answer:"REGARAM AS PLANTAS",options:["CHUTARAM A BOLA","REGARAM AS PLANTAS","ABRIRAM UM LIVRO"],hint:"O último trecho conta que eles regaram as plantas."},
+];
+lessons.push({title:"História: A horta da Lia",exercises:gardenStory.map((part,i)=>({
+  id:`historia-horta-${i}`,kind:"choice",prompt:part.question,spoken:part.question,answer:part.answer,options:part.options,hint:part.hint,
+  storyTitle:"A horta da Lia",picture:"🥕",pictureLabel:"Horta",passage:gardenStory.slice(0,i+1).map(p=>p.text).join("\n\n"),
+}))});
+
 // Recordings are reused across activities; no generation occurs while a child plays.
 for (const lesson of lessons) for (const exercise of lesson.exercises) {
   if (exercise.picture === "🐱" && !exercise.listening) exercise.pictureAudioId = "palavra-gato";
@@ -168,7 +199,8 @@ export const learningBlocks = [
   { title:"Das palavras às frases", detail:"Três sílabas, escrita e leitura de frases curtas." },
   { title:"Escutar e descobrir", detail:"Frases, sons dos animais e palavras do dia a dia." },
   { title:"Histórias e descobertas", detail:"Transportes, pequenas histórias e associação de imagens." },
-  { title:"Brincar com as palavras", detail:"Jogos de memória com imagens e palavras." },
+  { title:"Jogos e novas palavras", detail:"Memória, novas sílabas e palavras para explorar com apoio." },
+  { title:"Frases e novas histórias", detail:"Frases maiores e uma história para ler aos poucos." },
 ];
 export function assembleAnswer(exercise: Exercise, pieces: number[]) {
   return pieces.map(i => exercise.options?.[i] ?? "").join(exercise.separator ?? "");

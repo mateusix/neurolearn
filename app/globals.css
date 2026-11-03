@@ -129,6 +129,16 @@
   }
 }
 /* Brief gestures only: no continuous movement or flashing. */
+/* Print capitals support the current literacy activities. Keep stored names,
+   identifiers and natural-language audio unchanged. */
+.neurolearn-reading { text-transform: uppercase; }
+.neurolearn-reading button,
+.neurolearn-reading input,
+.neurolearn-reading select,
+.neurolearn-reading textarea { text-transform: inherit; }
+.neurolearn-reading button { white-space: normal; overflow-wrap: anywhere; }
+.neurolearn-reading .cl-rootBox { text-transform: none; }
+
 @keyframes luna-arrive { from { opacity:.65; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
 @keyframes luna-wave { 0%,100% { transform:rotate(0); } 30% { transform:rotate(-5deg); } 65% { transform:rotate(4deg); } }
 @keyframes luna-happy { 0%,100% { transform:translateY(0); } 45% { transform:translateY(-5px); } }

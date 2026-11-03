@@ -47,7 +47,7 @@ steps.push(
 
 steps.push(...lessons.slice(8).map((lesson,index) => ({
   title:lesson.title,
-  detail:["Combine letras maiúsculas e minúsculas.","Encontre a sílaba que falta.","Leia e associe a palavra à imagem.","Monte palavras conhecidas usando uma dica se precisar.","Descubra palavras um pouco maiores.","Escreva sem copiar; abra uma dica quando quiser.","Coloque palavras em ordem para formar uma frase.","Leia uma frase e descubra o que ela conta.","Escute a Nina e coloque as palavras em ordem.","Descubra miau, au au e muu.","Conheça palavras com frutas coloridas.","Descubra os objetos que usamos para aprender.","Leia os nomes dos transportes."][index] || (lesson.exercises[0]?.kind === "memory" ? "Vire cartas e combine imagens com palavras, sem pressa." : "Leia, observe e responda com a ajuda da Luna."),
+  detail:["Descubra as vogais no começo de novas palavras.","Encontre a sílaba que falta.","Leia e associe a palavra à imagem.","Monte palavras conhecidas usando uma dica se precisar.","Descubra palavras um pouco maiores.","Escreva sem copiar; abra uma dica quando quiser.","Coloque palavras em ordem para formar uma frase.","Leia uma frase e descubra o que ela conta.","Escute a Nina e coloque as palavras em ordem.","Descubra miau, au au e muu.","Conheça palavras com frutas coloridas.","Descubra os objetos que usamos para aprender.","Leia os nomes dos transportes."][index] || (lesson.exercises[0]?.kind === "memory" ? "Vire cartas e combine imagens com palavras, sem pressa." : "Leia, observe e responda com a ajuda da Luna."),
   icon:["vogais","silabas","palavras","silabas","silabas","palavras","palavras","sons","sons","sons","palavras","palavras","palavras"][index] || "palavras",
   color:["blue","purple","green","peach"][index % 4],
 })));
@@ -131,7 +131,7 @@ function LearningHome() {
             <div className={styles.stepCard}>
               {available && <button type="button" className={styles.selectCard} aria-label={`Selecionar etapa: ${step.title}`} aria-pressed={selected === index} onClick={() => setSelected(index)} />}
               {(done || selected === index) && <span className={styles.selectionMark} aria-hidden="true"><Check size={18} strokeWidth={3} /></span>}
-              <span className={styles.blockLabel}>{learningBlocks[Math.floor(index / 4)].title}</span>
+              <span className={styles.blockLabel}>{learningBlocks[Math.min(Math.floor(index / 4), learningBlocks.length - 1)].title}</span>
               <span className={styles.stepLabel}>{done ? "CONCLUÍDA" : index === completed ? "SUA PRÓXIMA DESCOBERTA" : `ETAPA ${index + 1}`}</span>
               <h3>{step.title}</h3><p>{preferences.theme !== "mixed" && [2,3,5,6,9,10,11,13].includes(index) ? `Palavras no tema ${themes.find(theme => theme.id === preferences.theme)?.name.toLocaleLowerCase("pt-BR")}, com imagens e dicas para ajudar.` : step.detail}</p>
               {available ? <button className={`${styles.start} ${done ? styles.practiceStart : styles.nextStart}`} onClick={() => openLesson(index)} aria-label={`${done ? "Praticar de novo" : "Começar"}: ${step.title}`}><Play size={17} fill="currentColor" aria-hidden="true" /> {done ? "Praticar de novo" : "Começar"}<ArrowRight size={19} aria-hidden="true" /></button> : <span className={styles.lockLabel}><LockKeyhole size={15} aria-hidden="true" /> Abre depois da etapa {index}</span>}

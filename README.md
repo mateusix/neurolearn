@@ -9,7 +9,8 @@ Aplicação web de apoio à alfabetização infantil desenvolvida no contexto de
 - Histórias em trechos, associação de imagens e jogos de memória sem cronômetro.
 - Bichinhos e acessórios desbloqueáveis, adesivos, favoritos e tamanho de leitura.
 - Relatórios por criança com tentativas e taxa de acerto registrada a partir desta versão.
-- Trilha com 26 etapas e 96 exercícios de letras, sílabas, palavras, frases e escuta.
+- Trilha com 30 etapas e 112 exercícios de letras, sílabas, palavras, frases, histórias, memória e escuta.
+- Textos da experiência infantil em caixa alta e vocabulário variado entre etapas e temas.
 - Liberação gradual das etapas e retomada das atividades.
 - Escolha de bichinho, tema das atividades e quatro paletas de cores.
 - Demonstrações de uso, dicas e feedback de incentivo com a mascote Luna.
