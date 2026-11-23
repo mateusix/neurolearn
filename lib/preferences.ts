@@ -1,11 +1,11 @@
 import { palettes, type PaletteId } from './palettes';
 import { currentChild, isAccountMode, updateChild } from './family-store';
-export type Preferences = { theme: 'animals' | 'food' | 'travel' | 'mixed'; support: 'model' | 'hint'; palette?: PaletteId };
+export type Preferences = { theme: 'animals' | 'food' | 'travel' | 'mixed'; support: 'model' | 'hint'; palette?: PaletteId; comfort?: '00' | '01' | '10' | '11' };
 export const themes = [{id:'animals',name:'Animais',icon:'🐱'},{id:'food',name:'Comidas',icon:'🍎'},{id:'travel',name:'Passeios',icon:'🚲'},{id:'mixed',name:'Um pouco de tudo',icon:'🌈'}] as const;
 export function validPreferences(value: unknown): value is Preferences {
   if (!value || typeof value !== 'object') return false;
   const p = value as Preferences;
-  return themes.some(t => t.id === p.theme) && ['model','hint'].includes(p.support) && (p.palette === undefined || palettes.some(item => item.id === p.palette));
+  return themes.some(t => t.id === p.theme) && ['model','hint'].includes(p.support) && (p.palette === undefined || palettes.some(item => item.id === p.palette)) && (p.comfort === undefined || ['00','01','10','11'].includes(p.comfort));
 }
 const key='neurolearn-preferences-v1'; let session='';
 export function getPreferencesSnapshot() {

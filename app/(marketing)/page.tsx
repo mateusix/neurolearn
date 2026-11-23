@@ -104,7 +104,7 @@ function LearningHome() {
   if (panel==='suggestions') return <SuggestionsPanel completed={completed} experience={experience} preferences={preferences} onBack={()=>setPanel(null)} onOpen={index=>{setPanel(null);openLesson(index);}}/>;
   if (panel==='collection') return <CollectionPanel onBack={()=>setPanel(null)}/>;
   if (panel==='favorites') return <FavoritesPanel onBack={()=>setPanel(null)} onOpen={index=>{setPanel(null);openLesson(index);}}/>;
-  if (showAchievements) return <div className={styles.page}><AchievementsPanel completed={completed} onBack={() => setShowAchievements(false)} /></div>;
+  if (showAchievements) return <div className={styles.page}><AchievementsPanel completed={completed} experience={experience} avatarName={avatar?.name || 'este perfil'} onBack={() => setShowAchievements(false)} /></div>;
   return <div className={styles.page}>
     <div className={styles.avatarProfile}><div><span>Meu bichinho: <strong>{avatar.name}</strong></span></div><button onClick={() => { stop(); setChangingAvatar(true); }}>Trocar bichinho</button></div>
     <div className={styles.topline}><span><BookOpen size={18} aria-hidden="true" /> Minha aprendizagem</span><span className={styles.previewTag}>Protótipo de aprendizagem</span></div>

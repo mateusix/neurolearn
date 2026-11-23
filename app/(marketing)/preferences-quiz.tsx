@@ -5,21 +5,31 @@ import { ArrowLeft, ArrowRight, Check } from 'lucide-react';
 import { themes, type Preferences } from '@/lib/preferences';
 import styles from './trail.module.css';
 export default function PreferencesQuiz({current,onSave,onCancel}:{current:Preferences|null;onSave:(value:Preferences)=>void;onCancel:()=>void}) {
- const [step,setStep]=useState(0);const [theme,setTheme]=useState<Preferences['theme']|''>(current?.theme||'');const [support,setSupport]=useState<Preferences['support']|''>(current?.support||'');
+ const [step,setStep]=useState<'start'|'themes'>(current?'themes':'start');const [theme,setTheme]=useState<Preferences['theme']|''>(current?.theme||'');
  const title=useRef<HTMLHeadingElement>(null);useEffect(()=>{title.current?.focus();},[step]);
+ const savePreset=(comfort:NonNullable<Preferences['comfort']>)=>onSave({...current,theme:'mixed',support:'hint',palette:'blue',comfort});
  return <section className={styles.avatarWelcome} aria-labelledby="preferences-title">
    <Image className={`${styles.quizMascot} luna-hello`} src="/mascotes/curioso.svg" alt="Luna curiosa" width={80} height={80}/>
-   <p className={styles.eyebrow}>DO SEU JEITINHO • {step+1} DE 2</p>
-   <h1 id="preferences-title" ref={title} tabIndex={-1}>{step===0?'O que você gosta de descobrir?':'Como você gosta de tentar?'}</h1>
-   <p>{step===0?'Vamos trazer seus gostos para algumas atividades.':'Você sempre poderá pedir uma dica e aprender com calma.'}</p>
-   <fieldset className={styles.avatarChoices}><legend>{step===0?'Seu tema favorito':'Sua forma de tentar'}</legend>
-   {(step===0?themes:[{id:'model',name:'Ver um modelo',icon:'👀'},{id:'hint',name:'Tentar com dicas',icon:'💡'}]).map(option=><label key={option.id} className={`${styles.avatarCard} ${(step===0?theme:support)===option.id?styles.avatarSelected:''}`}>
-    <input type="radio" name={`preference-${step}`} checked={(step===0?theme:support)===option.id} onChange={()=>step===0?setTheme(option.id as Preferences['theme']):setSupport(option.id as Preferences['support'])}/>
-    <span className={styles.preferenceIcon} aria-hidden="true">{option.icon}</span><span>{option.name}</span>{(step===0?theme:support)===option.id&&<Check className={styles.avatarCheck} size={20} aria-hidden="true"/>}
-   </label>)}</fieldset>
-   <div className={styles.quizActions}><button className={styles.avatarContinue} disabled={step===0?!theme:!support} onClick={()=>step===0?setStep(1):onSave({...current,theme:theme as Preferences['theme'],support:support as Preferences['support']})}>{step===0?'Continuar':current?'Salvar escolhas':'Começar minha trilha'}<ArrowRight size={20} aria-hidden="true"/></button>
-   <div className={styles.quizSecondaryActions}>{step===1&&<button className={styles.avatarCancel} onClick={()=>setStep(0)}><ArrowLeft size={16} aria-hidden="true"/> Revisar gostos</button>}
-   <button className={styles.avatarCancel} onClick={()=>current?onCancel():onSave({theme:'mixed',support:'hint'})}>{current?'Cancelar alterações':'Usar escolhas sugeridas'}</button>
-   </div></div><p className={styles.developmentNote}>Você pode mudar seus gostos quando quiser.</p>
+   {step==='start' ? <>
+     <p className={styles.eyebrow}>PARA COMEÇAR</p>
+     <h1 id="preferences-title" ref={title} tabIndex={-1}>Como vamos começar?</h1>
+     <p>Você pode escolher uma forma pronta de iniciar. Depois, tudo pode ser mudado.</p>
+     <div className={styles.presetChoices}>
+       <button className={styles.presetCard} onClick={()=>savePreset('00')}><span aria-hidden="true">🌿</span><strong>Começar com calma</strong><small>Menos sons e movimentos, com dicas sempre disponíveis.</small></button>
+       <button className={styles.presetCard} onClick={()=>savePreset('01')}><span aria-hidden="true">✨</span><strong>Explorar aos poucos</strong><small>Movimentos suaves, dicas disponíveis e uma descoberta por vez.</small></button>
+       <button className={styles.presetCard} onClick={()=>setStep('themes')}><span aria-hidden="true">🎨</span><strong>Escolher meus gostos</strong><small>Selecione o tema que você mais gosta de descobrir.</small></button>
+     </div>
+   </> : <>
+     <p className={styles.eyebrow}>SEUS GOSTOS</p>
+     <h1 id="preferences-title" ref={title} tabIndex={-1}>O que você gosta de descobrir?</h1>
+     <p>Vamos trazer seus gostos para algumas atividades. As dicas da Luna continuam disponíveis.</p>
+     <fieldset className={styles.avatarChoices}><legend>Seu tema favorito</legend>{themes.map(option=><label key={option.id} className={`${styles.avatarCard} ${theme===option.id?styles.avatarSelected:''}`}>
+       <input type="radio" name="theme" checked={theme===option.id} onChange={()=>setTheme(option.id)}/>
+       <span className={styles.preferenceIcon} aria-hidden="true">{option.icon}</span><span>{option.name}</span>{theme===option.id&&<Check className={styles.avatarCheck} size={20} aria-hidden="true"/>}
+     </label>)}</fieldset>
+     <div className={styles.quizActions}><button className={styles.avatarContinue} disabled={!theme} onClick={()=>onSave({...current,theme:theme as Preferences['theme'],support:'hint',palette:'blue',comfort:current?.comfort||'01'})}>{current?'Salvar escolhas':'Começar minha trilha'}<ArrowRight size={20} aria-hidden="true"/></button>
+     <div className={styles.quizSecondaryActions}><button className={styles.avatarCancel} onClick={()=>current?onCancel():setStep('start')}><ArrowLeft size={16} aria-hidden="true"/> {current?'Cancelar alterações':'Voltar'}</button></div></div>
+   </>}
+   <p className={styles.developmentNote}>O tema branco suave com detalhes azuis é usado para começar. Você pode mudar seus gostos quando quiser.</p>
  </section>;
 }

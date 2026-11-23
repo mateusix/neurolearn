@@ -9,6 +9,10 @@ export default function ChooseAvatar({ current, onChoose, onCancel }: {
   current: string; onChoose: (id: string) => void; onCancel: () => void;
 }) {
   const [selected, setSelected] = useState(current);
+  const chooseForMe = () => {
+    const available = avatars.filter(avatar => getProgress() >= avatar.at);
+    setSelected(available[Math.floor(Math.random() * available.length)]?.id || '');
+  };
   return <section className={styles.avatarWelcome} aria-labelledby="avatar-title">
     <div className={styles.avatarGuide}><Image src="/mascotes/corpo-acenando.svg" className="luna-wave" alt="Luna acenando" width={88} height={88} /></div>
     <p className={styles.eyebrow}>UMA AVENTURA NO SEU RITMO</p>
@@ -20,6 +24,7 @@ export default function ChooseAvatar({ current, onChoose, onCancel }: {
       <span>{avatar.name}</span>{getProgress()<avatar.at&&<small>Abre após {avatar.at} etapas</small>}{selected === avatar.id && <Check className={styles.avatarCheck} size={20} aria-hidden="true" />}
     </label>)}</fieldset>
     <button className={styles.avatarContinue} disabled={!selected || !avatars.some(a=>a.id===selected&&a.at<=getProgress())} onClick={() => onChoose(selected)}>Vamos aprender <ArrowRight size={20} aria-hidden="true" /></button>
+    <button className={styles.avatarCancel} onClick={chooseForMe}>Escolher um bichinho para mim</button>
     {current && <button className={styles.avatarCancel} onClick={onCancel}>Voltar sem trocar</button>}
     <p className={styles.developmentNote}>Seu bichinho fica salvo neste navegador.</p>
   </section>;

@@ -90,9 +90,9 @@ export default function Lesson({ index, onBack, onComplete, onNext, preferences 
       {finishDialogue && hasAudio(finishDialogue.id) && <button className={styles.secondary} onClick={() => speak(finishDialogue.id)}><Volume2 size={20} aria-hidden="true" /> Ouvir</button>}
       <div className={styles.finishActions}>
         <button className={styles.secondary} onClick={() => { stop(); onBack(); }}><ArrowLeft size={18} aria-hidden="true" /> Voltar à trilha</button>
-        {onNext ? <button className={styles.primary} onClick={() => { stop(); onNext(); }}>Próxima etapa <ArrowRight size={18} aria-hidden="true" /></button> : <button className={styles.primary} onClick={restart}><RotateCcw size={18} aria-hidden="true" /> Praticar de novo</button>}
+        {!onNext && <button className={styles.primary} onClick={restart}><RotateCcw size={18} aria-hidden="true" /> Praticar de novo</button>}
       </div>
-      {onNext && <p className={styles.nextStage}>A seguir: {lessons[index + 1].title}</p>}
+      {onNext && <section className={styles.nextStageSpotlight} aria-label="Próxima etapa recomendada"><span>PRÓXIMA DESCOBERTA</span><strong>{lessons[index + 1].title}</strong><p>Quando quiser continuar, este é o próximo passo da sua trilha.</p><button className={styles.primary} onClick={() => { stop(); onNext(); }}>Começar próxima etapa <ArrowRight size={18} aria-hidden="true" /></button></section>}
     </div> : <>
       <p className={styles.eyebrow}>{lesson.title}</p>
       <h2 id="lesson-title" ref={title} tabIndex={-1}>{exercise.prompt}</h2>
