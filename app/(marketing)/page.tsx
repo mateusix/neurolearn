@@ -8,7 +8,7 @@ import LunaMascot from "./luna-mascot";
 import Image from "next/image";
 import { canOpenStage } from "@/lib/learning-access";
 import { useMemo, useRef, useState, useSyncExternalStore } from "react";
-import { ArrowRight, BookOpen, Check, LockKeyhole, Play, Volume2, Trophy } from "lucide-react";
+import { ArrowRight, BookOpen, Check, LockKeyhole, Play, Volume2, Trophy, Heart } from "lucide-react";
 import { getProgress, saveProgress, subscribeProgress, lessons, learningBlocks } from "@/lib/lessons";
 import { useNarration } from "@/lib/use-narration";
 
@@ -25,6 +25,7 @@ import styles from "./trail.module.css";
 const SuggestionsPanel = dynamic(() => import('./suggestions-panel'), {loading: () => <LearningLoading />});
 const CollectionPanel = dynamic(() => import('./collection-panel'));
 const FavoritesPanel = dynamic(() => import('./favorites-panel'));
+const EmotionsPanel = dynamic(() => import('./emotions-panel'), {loading: () => <LearningLoading />});
 const Lesson = dynamic(() => import("./lesson"), {loading: () => <LearningLoading />});
 const ChooseAvatar = dynamic(() => import("./choose-avatar"), {loading: () => <LearningLoading />});
 const PreferencesQuiz = dynamic(() => import("./preferences-quiz"), {loading: () => <LearningLoading />});
@@ -65,7 +66,7 @@ function LearningHome() {
   const preferences = useMemo(() => preferenceSnapshot ? JSON.parse(preferenceSnapshot) as Preferences : null, [preferenceSnapshot]);
   const [changingPreferences, setChangingPreferences] = useState(false);
   const experience=JSON.parse(useSyncExternalStore(subscribeExperience,getExperienceSnapshot,getServerExperienceSnapshot)) as Experience;
-  const [panel,setPanel]=useState<'collection'|'favorites'|'suggestions'|null>(null);
+  const [panel,setPanel]=useState<'collection'|'favorites'|'suggestions'|'emotions'|null>(null);
   const [showAchievements, setShowAchievements] = useState(false);
   const avatarId = useSyncExternalStore(subscribeAvatar, getAvatar, () => "");
   const [changingAvatar, setChangingAvatar] = useState(false);
@@ -104,12 +105,13 @@ function LearningHome() {
   if (panel==='suggestions') return <SuggestionsPanel completed={completed} experience={experience} preferences={preferences} onBack={()=>setPanel(null)} onOpen={index=>{setPanel(null);openLesson(index);}}/>;
   if (panel==='collection') return <CollectionPanel onBack={()=>setPanel(null)}/>;
   if (panel==='favorites') return <FavoritesPanel onBack={()=>setPanel(null)} onOpen={index=>{setPanel(null);openLesson(index);}}/>;
+  if (panel==='emotions') return <EmotionsPanel onBack={()=>setPanel(null)}/>;
   if (showAchievements) return <div className={styles.page}><AchievementsPanel completed={completed} experience={experience} avatarName={avatar?.name || 'este perfil'} onBack={() => setShowAchievements(false)} /></div>;
   return <div className={styles.page}>
     <div className={styles.avatarProfile}><div><span>Meu bichinho: <strong>{avatar.name}</strong></span></div><button onClick={() => { stop(); setChangingAvatar(true); }}>Trocar bichinho</button></div>
     <div className={styles.topline}><span><BookOpen size={18} aria-hidden="true" /> Minha aprendizagem</span><span className={styles.previewTag}>Protótipo de aprendizagem</span></div>
     {active === null && <>
-      <nav className={styles.trailTabs} aria-label="Minha aprendizagem"><button aria-current="page">Minha trilha</button><button onClick={() => { stop(); setShowAchievements(true); }}><Trophy size={18} aria-hidden="true" /> Minhas conquistas ({earnedAchievements(completed).length})</button><button onClick={()=>{stop();setPanel("collection");}}>Meu bichinho e coleção</button><button onClick={()=>{stop();setPanel("favorites");}}>Favoritos ({experience.favorites.length})</button><button onClick={()=>{stop();setPanel("suggestions");}}>Sugestões da Luna</button></nav>
+      <nav className={styles.trailTabs} aria-label="Minha aprendizagem"><button aria-current="page">Minha trilha</button><button onClick={() => { stop(); setShowAchievements(true); }}><Trophy size={18} aria-hidden="true" /> Minhas conquistas ({earnedAchievements(completed).length})</button><button onClick={()=>{stop();setPanel("collection");}}>Meu bichinho e coleção</button><button onClick={()=>{stop();setPanel("favorites");}}>Favoritos ({experience.favorites.length})</button><button onClick={()=>{stop();setPanel("suggestions");}}>Sugestões da Luna</button><button onClick={()=>{stop();setPanel("emotions");}}><Heart size={18} aria-hidden="true" /> Emoções da Luna</button></nav>
       <div className={styles.preferenceSummary}><span>Meu tema: {themes.find(theme => theme.id === preferences.theme)?.name}</span><button onClick={() => { stop(); setChangingPreferences(true); }}>Mudar meus gostos</button></div>
     </>}
     {active !== null ? <Lesson key={`${family.selected}:${active}`} preferences={preferences} index={active} onBack={back} onComplete={complete} onNext={active + 1 < lessons.length ? nextStage : undefined} /> : <>
